@@ -60,7 +60,7 @@ const SignInView = () => {
 
     // Email regex check
     if (!email) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Please enter your email address";
       valid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = "Enter a valid email address";
@@ -69,7 +69,7 @@ const SignInView = () => {
 
     // Password check
     if (!password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Please enter your password";
       valid = false;
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
@@ -97,8 +97,8 @@ const SignInView = () => {
           navigate("/forgot-password", { state: { goToStep3: true } });
         }
       } else {
-        showToast("error", "Login Failed", "Invalid email or password");
-        setErrors({ ...errors, password: "Invalid email or password" });
+        showToast("error", "Login Failed", "Invalid password");
+        setErrors({ ...errors, password: "Invalid password" });
       }
     } else {
       showToast(
@@ -124,7 +124,7 @@ const SignInView = () => {
         replace: true,
       });
     }
-  }, [location.state,navigate]);
+  }, [location.state, navigate]);
 
   return (
     <AuthContent>
@@ -222,67 +222,94 @@ const SignInView = () => {
       />
 
       {/* Password Field */}
-      <TextField
+      {/* <TextField
         fullWidth
         label="Password"
         variant="outlined"
-        type={showPassword ? "text" : "password"}
-        value={password}
-        onChange={(e) => {
-          const value = e.target.value;
-
-          setPassword(value);
-
-          setErrors({
-            ...errors,
-            password: validatePassword(value),
-          });
-        }}
-        error={Boolean(errors.password)}
-        helperText={errors.password}
-        sx={{
-          mb: 3,
-
-          "& .MuiOutlinedInput-root": {
-            borderRadius: "16px",
-            backgroundColor: "rgba(255,255,255,0.7)",
-
-            "& fieldset": {
-              borderColor: errors.password
-                ? "#ef4444"
-                : password
-                  ? "#10b981"
-                  : "#d1d5db",
-            },
-
-            "&:hover fieldset": {
-              borderColor: "#091b52ff",
-            },
-
-            "&.Mui-focused fieldset": {
-              borderColor: "#091b52ff",
-              borderWidth: "2px",
-            },
-          },
-
-          "& .MuiInputLabel-root": {
-            color: "#6b7280",
-          },
-
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: "#404758ff",
-          },
-        }}
         InputProps={{
+          type: showPassword ? "text" : "password",
+
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={() => setShowPassword(!showPassword)}>
+              <IconButton
+                onClick={() => setShowPassword(!showPassword)}
+                edge="end"
+              >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>
           ),
-        }}
-      />
+        }} */}
+      <Box sx={{ position: "relative", mb: 3 }}>
+        <TextField
+          fullWidth
+          label="Password"
+          variant="outlined"
+          type={showPassword ? "text" : "password"}
+          value={password}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            setPassword(value);
+
+            setErrors({
+              ...errors,
+              password: validatePassword(value),
+            });
+          }}
+          error={Boolean(errors.password)}
+          helperText={errors.password}
+          sx={{
+            mb: 3,
+
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "16px",
+              backgroundColor: "rgba(255,255,255,0.7)",
+
+              "& .MuiInputBase-input": {
+                paddingRight: "50px",
+              },
+
+              "& fieldset": {
+                borderColor: errors.password
+                  ? "#ef4444"
+                  : password
+                    ? "#10b981"
+                    : "#d1d5db",
+              },
+
+              "&:hover fieldset": {
+                borderColor: "#091b52ff",
+              },
+
+              "&.Mui-focused fieldset": {
+                borderColor: "#091b52ff",
+                borderWidth: "2px",
+              },
+            },
+
+            "& .MuiInputLabel-root": {
+              color: "#6b7280",
+            },
+
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "#404758ff",
+            },
+          }}
+        />
+        <IconButton
+          onClick={() => setShowPassword(!showPassword)}
+          sx={{
+            position: "absolute",
+            right: "18px",
+            top: "28px",
+            transform: "translateY(-50%)",
+            color: "#6b7280",
+          }}
+        >
+          {showPassword ? <Visibility /> : <VisibilityOff />}
+        </IconButton>
+      </Box>
 
       {/* Forgot Password */}
       <Box

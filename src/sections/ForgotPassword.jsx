@@ -34,7 +34,8 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [stage, setStage] = useState(1);
-  const [passwordError, setPasswordError] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -92,7 +93,7 @@ const ForgotPassword = () => {
 
     setStage(2);
 
-    showToast("success", "Success", "OTP sent successfully");
+    showToast("success", "Success", `OTP has been sent to ${email}`);
   };
 
   // Verify OTP
@@ -164,27 +165,39 @@ const ForgotPassword = () => {
 
   // Reset Password
   const handleResetPassword = () => {
-    if (!newPassword || !confirmPassword) {
-      setPasswordError("Please fill all fields");
-      showToast("error", "Validation Error", "Please fill all fields");
-      return;
+    let hasError = false;
+
+    if (!newPassword) {
+      setNewPasswordError("Please enter a new password");
+      hasError = true;
+    } else {
+      setNewPasswordError("");
     }
+
+    if (!confirmPassword) {
+      setConfirmPasswordError("Please confirm your password");
+      hasError = true;
+    } else {
+      setConfirmPasswordError("");
+    }
+
+    if (hasError) return;
 
     const strengthErrors = validatePasswordStrength(newPassword);
     if (strengthErrors.length > 0) {
       const message = "Password must have: " + strengthErrors.join(", ");
-      setPasswordError(message);
+      setNewPasswordError(message);
       showToast("error", "Weak Password", message);
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords do not match");
+      setConfirmPasswordError("Passwords do not match");
       showToast("error", "Validation Error", "Passwords do not match");
       return;
     }
 
-    setPasswordError("");
+    setNewPasswordError("");
     showToast("success", "Success", "Password reset successful");
     setTimeout(
       () => navigate("/", { state: { passwordChanged: true, newPassword } }),
@@ -368,188 +381,198 @@ const ForgotPassword = () => {
               New Password
             </Typography>
 
-            <TextField
-              fullWidth
-              placeholder="New Password"
-              type={showNewPassword ? "text" : "password"}
-              value={newPassword}
-              onChange={(e) => {
-                const value = e.target.value;
-                setNewPassword(value);
-                setPasswordStrength(getPasswordStrength(value));
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowNewPassword(!showNewPassword)}
-                    >
-                      {showNewPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              error={Boolean(passwordError)}
-              helperText={passwordError}
-              sx={{
-                mb: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "14px",
-                },
-              }}
-            />
+            <Box sx={{ position: "relative", mb: 2 }}>
+              <TextField
+                fullWidth
+                placeholder="New Password"
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setNewPassword(value);
+                  setPasswordStrength(getPasswordStrength(value));
+                  setNewPasswordError("");
+                }}
+                error={Boolean(newPasswordError)}
+                helperText={newPasswordError}
+                sx={{
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "14px",
+                  },
+                }}
+              />
 
-            {/* 👇 Strength indicator goes right here */}
-            {newPassword && (
-              <Box sx={{ mt: 1, mb: 3 }}>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontWeight: 600,
-                    color:
-                      passwordStrength === "Weak"
-                        ? "error.main"
-                        : passwordStrength === "Medium"
-                          ? "warning.main"
-                          : "success.main",
-                  }}
-                >
-                  Strength: {passwordStrength}
-                </Typography>
+              <IconButton
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                sx={{
+                  position: "absolute",
+                  right: "18px",
+                  top: "28px",
+                  transform: "translateY(-50%)",
+                  color: "#6b7280",
+                }}
+              >
+                {showNewPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
 
-                <Box
-                  sx={{
-                    mt: 0.5,
-                    height: 6,
-                    borderRadius: 3,
-                    backgroundColor: "#e0e0e0",
-                  }}
-                >
+              {/* 👇 Strength indicator goes right here */}
+              {newPassword && (
+                <Box sx={{ mt: 1, mb: 3 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 600,
+                      color:
+                        passwordStrength === "Weak"
+                          ? "error.main"
+                          : passwordStrength === "Medium"
+                            ? "warning.main"
+                            : "success.main",
+                    }}
+                  >
+                    Strength: {passwordStrength}
+                  </Typography>
+
                   <Box
                     sx={{
-                      height: "100%",
+                      mt: 0.5,
+                      height: 6,
                       borderRadius: 3,
-                      width:
-                        passwordStrength === "Weak"
-                          ? "33%"
-                          : passwordStrength === "Medium"
-                            ? "66%"
-                            : "100%",
-                      backgroundColor:
-                        passwordStrength === "Weak"
-                          ? "#ef4444"
-                          : passwordStrength === "Medium"
-                            ? "#f59e0b"
-                            : "#10b981",
-                      transition: "width 0.3s ease",
+                      backgroundColor: "#e0e0e0",
                     }}
-                  />
-                </Box>
-                <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" fontWeight={600}>
-                    Password must contain:
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={
-                      /[A-Z]/.test(newPassword)
-                        ? "success.main"
-                        : "text.secondary"
-                    }
                   >
-                    • One uppercase letter
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={
-                      /[a-z]/.test(newPassword)
-                        ? "success.main"
-                        : "text.secondary"
-                    }
-                  >
-                    • One lowercase letter
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={
-                      /[0-9]/.test(newPassword)
-                        ? "success.main"
-                        : "text.secondary"
-                    }
-                  >
-                    • One number
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={
-                      /[!@#$%^&*]/.test(newPassword)
-                        ? "success.main"
-                        : "text.secondary"
-                    }
-                  >
-                    • One special character (!@#$%^&*)
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={
-                      newPassword.length >= 8
-                        ? "success.main"
-                        : "text.secondary"
-                    }
-                  >
-                    • At least 8 characters
-                  </Typography>
-                </Box>
-              </Box>
-            )}
-
-            <Typography fontSize={14} fontWeight={600} mb={1}>
-              Confirm Password
-            </Typography>
-
-            <TextField
-              fullWidth
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
+                    <Box
+                      sx={{
+                        height: "100%",
+                        borderRadius: 3,
+                        width:
+                          passwordStrength === "Weak"
+                            ? "33%"
+                            : passwordStrength === "Medium"
+                              ? "66%"
+                              : "100%",
+                        backgroundColor:
+                          passwordStrength === "Weak"
+                            ? "#ef4444"
+                            : passwordStrength === "Medium"
+                              ? "#f59e0b"
+                              : "#10b981",
+                        transition: "width 0.3s ease",
+                      }}
+                    />
+                  </Box>
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="body2" fontWeight={600}>
+                      Password must contain:
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={
+                        /[A-Z]/.test(newPassword)
+                          ? "success.main"
+                          : "text.secondary"
                       }
                     >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              error={Boolean(passwordError)}
-              helperText={passwordError}
-              sx={{
-                mb: 4,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "14px",
-                },
-              }}
-            />
+                      • One uppercase letter
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={
+                        /[a-z]/.test(newPassword)
+                          ? "success.main"
+                          : "text.secondary"
+                      }
+                    >
+                      • One lowercase letter
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={
+                        /[0-9]/.test(newPassword)
+                          ? "success.main"
+                          : "text.secondary"
+                      }
+                    >
+                      • One number
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={
+                        /[!@#$%^&*]/.test(newPassword)
+                          ? "success.main"
+                          : "text.secondary"
+                      }
+                    >
+                      • One special character (!@#$%^&*)
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={
+                        newPassword.length >= 8
+                          ? "success.main"
+                          : "text.secondary"
+                      }
+                    >
+                      • At least 8 characters
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            </Box>
 
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleResetPassword}
-              sx={{
-                py: 1.5,
-                borderRadius: "14px",
-                fontSize: "16px",
-                textTransform: "none",
-                background: "linear-gradient(to right, #091540, #1f3c88)",
-              }}
-            >
-              Reset Password
-            </Button>
+            <Box sx={{ position: "relative", mb: 4 }}>
+              <Typography fontSize={14} fontWeight={600} mb={1}>
+                Confirm Password
+              </Typography>
+
+              <TextField
+                fullWidth
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  setConfirmPasswordError("");
+                }}
+                error={Boolean(confirmPasswordError)}
+                helperText={confirmPasswordError}
+                sx={{
+                  mb: 4,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "14px",
+                  },
+                }}
+              />
+
+              <IconButton
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                sx={{
+                  position: "absolute",
+                  right: "18px",
+                  top: "52px",
+                  transform: "translateY(-50%)",
+                  color: "#6b7280",
+                }}
+              >
+                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleResetPassword}
+                sx={{
+                  py: 1.5,
+                  borderRadius: "14px",
+                  fontSize: "16px",
+                  textTransform: "none",
+                  background: "linear-gradient(to right, #091540, #1f3c88)",
+                }}
+              >
+                Reset Password
+              </Button>
+            </Box>
           </>
         )}
       </Card>
