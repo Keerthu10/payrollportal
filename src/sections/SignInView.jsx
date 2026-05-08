@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Box,
@@ -9,6 +9,8 @@ import {
   Link,
 } from "@mui/material";
 
+import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "../context/ToastContext";
 import AuthContent from "../layouts/AuthContent";
 import Visibility from "@mui/icons-material/Visibility";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -18,7 +20,111 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const SignInView = () => {
+  const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [passwordChanged, setPasswordChanged] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const DUMMY_EMAIL = "abc@gmail.com";
+  const [dummyPassword, setDummyPassword] = useState("Password@123");
+
+  const validateEmail = (value) => {
+    if (!value.trim()) {
+      return "Email is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(value)) {
+      return "Enter a valid email address";
+    }
+
+    return "";
+  };
+
+  const validatePassword = (value) => {
+    if (!value.trim()) {
+      return "Password is required";
+    }
+
+    return "";
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { email: "", password: "" };
+
+    // Email regex check
+    if (!email) {
+      newErrors.email = "Email is required";
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Enter a valid email address";
+      valid = false;
+    }
+
+    // Password check
+    if (!password) {
+      newErrors.password = "Password is required";
+      valid = false;
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleLogin = () => {
+    if (validateForm()) {
+      if (email === DUMMY_EMAIL && password === dummyPassword) {
+        if (passwordChanged) {
+          // ✅ Already changed → go to dashboard
+          showToast("success", "Login Successful", "Welcome back!");
+          navigate("/dashboard");
+        } else {
+          // ❌ Not changed → force reset
+          showToast(
+            "warn",
+            "Password Change Required",
+            "Please reset your password",
+          );
+          navigate("/forgot-password", { state: { goToStep3: true } });
+        }
+      } else {
+        showToast("error", "Login Failed", "Invalid email or password");
+        setErrors({ ...errors, password: "Invalid email or password" });
+      }
+    } else {
+      showToast(
+        "error",
+        "Validation Error",
+        "Please fix the highlighted fields",
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (location.state?.passwordChanged && location.state?.newPassword) {
+      setPasswordChanged(true);
+
+      setDummyPassword(location.state.newPassword);
+
+      showToast(
+        "success",
+        "Password Updated",
+        "Your password has been changed successfully",
+      );
+      navigate(location.pathname, {
+        replace: true,
+      });
+    }
+  }, [location.state,navigate]);
 
   return (
     <AuthContent>
@@ -68,15 +174,31 @@ const SignInView = () => {
         fullWidth
         label="Email address"
         variant="outlined"
+        value={email}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setEmail(value);
+
+          setErrors({
+            ...errors,
+            email: validateEmail(value),
+          });
+        }}
+        error={Boolean(errors.email)}
+        helperText={errors.email}
         sx={{
           mb: 4,
 
           "& .MuiOutlinedInput-root": {
             borderRadius: "16px",
             backgroundColor: "rgba(255,255,255,0.7)",
-
             "& fieldset": {
-              borderColor: "#d1d5db",
+              borderColor: errors.email
+                ? "#ef4444" // 🔴 red when invalid
+                : email
+                  ? "#10b981" // 🟢 green when valid
+                  : "#d1d5db", // default gray
             },
 
             "&:hover fieldset": {
@@ -105,6 +227,19 @@ const SignInView = () => {
         label="Password"
         variant="outlined"
         type={showPassword ? "text" : "password"}
+        value={password}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setPassword(value);
+
+          setErrors({
+            ...errors,
+            password: validatePassword(value),
+          });
+        }}
+        error={Boolean(errors.password)}
+        helperText={errors.password}
         sx={{
           mb: 3,
 
@@ -113,7 +248,11 @@ const SignInView = () => {
             backgroundColor: "rgba(255,255,255,0.7)",
 
             "& fieldset": {
-              borderColor: "#d1d5db",
+              borderColor: errors.password
+                ? "#ef4444"
+                : password
+                  ? "#10b981"
+                  : "#d1d5db",
             },
 
             "&:hover fieldset": {
@@ -131,7 +270,7 @@ const SignInView = () => {
           },
 
           "& .MuiInputLabel-root.Mui-focused": {
-            color: "#2563eb",
+            color: "#404758ff",
           },
         }}
         InputProps={{
@@ -153,9 +292,13 @@ const SignInView = () => {
           mb: 3,
         }}
       >
-        <Link variant="body2" sx={{ cursor: "pointer" }}>
+        <Typography
+          variant="body2"
+          sx={{ cursor: "pointer", color: "primary.main" }}
+          onClick={() => navigate("/forgot-password")}
+        >
           Forgot password?
-        </Link>
+        </Typography>
       </Box>
 
       {/* Sign In Button */}
@@ -163,6 +306,7 @@ const SignInView = () => {
         fullWidth
         size="large"
         variant="contained"
+        onClick={handleLogin}
         sx={{
           py: 1.8,
           borderRadius: "14px",
