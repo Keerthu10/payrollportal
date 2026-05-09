@@ -13,6 +13,7 @@ import {
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
+import { EyeIcon } from "../icons/CustomIcons";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -63,7 +64,7 @@ const ForgotPassword = () => {
   const handleSendOtp = () => {
     // Empty Validation
     if (!email.trim()) {
-      setEmailError("Email address is required");
+      setEmailError("Please enter Valid email address");
 
       showToast("error", "Required Field", "Email address is required");
 
@@ -200,7 +201,8 @@ const ForgotPassword = () => {
     setNewPasswordError("");
     showToast("success", "Success", "Password reset successful");
     setTimeout(
-      () => navigate("/", { state: { passwordChanged: true, newPassword } }),
+      () =>
+        navigate("/login", { state: { passwordChanged: true, newPassword } }),
       1200,
     );
   };
@@ -413,7 +415,7 @@ const ForgotPassword = () => {
                   color: "#6b7280",
                 }}
               >
-                {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                {showNewPassword ? <Visibility /> : <EyeIcon />}
               </IconButton>
 
               {/* 👇 Strength indicator goes right here */}
@@ -555,7 +557,7 @@ const ForgotPassword = () => {
                   color: "#6b7280",
                 }}
               >
-                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                {showConfirmPassword ? <Visibility /> : <EyeIcon />}
               </IconButton>
 
               <Button

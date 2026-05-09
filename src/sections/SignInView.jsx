@@ -12,6 +12,8 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import AuthContent from "../layouts/AuthContent";
+import { EyeIcon } from "../icons/CustomIcons";
+import { PasswordEyeIcon } from "../icons/CustomIcons";
 import Visibility from "@mui/icons-material/Visibility";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -86,6 +88,7 @@ const SignInView = () => {
         if (passwordChanged) {
           // ✅ Already changed → go to dashboard
           showToast("success", "Login Successful", "Welcome back!");
+          localStorage.setItem("token","dummy_admin_token");
           navigate("/dashboard");
         } else {
           // ❌ Not changed → force reset
@@ -307,7 +310,7 @@ const SignInView = () => {
             color: "#6b7280",
           }}
         >
-          {showPassword ? <Visibility /> : <VisibilityOff />}
+          {showPassword ? <Visibility /> : <EyeIcon />}
         </IconButton>
       </Box>
 
@@ -316,7 +319,7 @@ const SignInView = () => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          mb: 3,
+          mb: 2,
         }}
       >
         <Typography
@@ -337,7 +340,7 @@ const SignInView = () => {
         sx={{
           py: 1.8,
           borderRadius: "14px",
-          mb: 3,
+          mb: 2,
 
           background: "linear-gradient(to right, #0f172a, #1e3a8a)",
 
@@ -359,7 +362,7 @@ const SignInView = () => {
           },
         }}
       >
-        Sign In
+        LOGIN
       </Button>
 
       {/* Divider */}
