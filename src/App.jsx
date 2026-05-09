@@ -9,6 +9,7 @@ import PublicRoute from "./routes/PublicRoute";
 const App = () => {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
