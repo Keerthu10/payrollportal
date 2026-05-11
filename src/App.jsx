@@ -5,6 +5,7 @@ import ForgotPassword from "./sections/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
+import AdminLayout from "./layouts/AdminLayout";
 
 const App = () => {
   return (
@@ -14,7 +15,13 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
-      <Route element={<ProtectedRoute />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
     </Routes>

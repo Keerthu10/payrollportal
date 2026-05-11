@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Box, Typography } from "@mui/material";
 import { GlobalSessionTimeoutModal } from "../ui/GlobalModal";
+import StatsCards from "../components/Dashboard/StatsCards";
 
 const Dashboard = () => {
   const inactivityTimerRef = useState(null);
@@ -9,7 +11,7 @@ const Dashboard = () => {
     clearTimeout(inactivityTimerRef.current);
     inactivityTimerRef.current = setTimeout(() => {
       setOpenSessionModal(true);
-    }, 10000);
+    }, 300000);
   };
   useEffect(() => {
     startInactivityTimer();
@@ -40,7 +42,18 @@ const Dashboard = () => {
   };
   return (
     <>
-      <div>Dashboard</div>
+      <Box sx={{ p: 3, width: "100%" }}>
+        <Typography
+          sx={{ fontSize: "28px", fontWeight: "700", color: "#0F172A", mb: 2 }}
+        >
+          Dashboard
+        </Typography>
+        <Typography sx={{ color: "#64748B" }}>
+          Welcome to Payroll Portal Dashboard
+        </Typography>
+        <StatsCards />
+      </Box>
+
       <GlobalSessionTimeoutModal
         open={openSessionModal}
         countdown={countdown}
