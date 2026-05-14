@@ -200,11 +200,22 @@ const ForgotPassword = () => {
 
     setNewPasswordError("");
     showToast("success", "Success", "Password reset successful");
-    setTimeout(
-      () =>
-        navigate("/login", { state: { passwordChanged: true, newPassword } }),
-      1200,
-    );
+    setTimeout(() => {
+      if (location.state?.goToStep3) {
+        showToast("success", "Success", "Password reset successful");
+
+        localStorage.setItem("token", "dummy_admin_token");
+
+        navigate("/dashboard");
+      } else {
+        navigate("/login", {
+          state: {
+            passwordChanged: true,
+            newPassword,
+          },
+        });
+      }
+    }, 1200);
   };
 
   useEffect(() => {

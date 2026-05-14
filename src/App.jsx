@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import AdminLayout from "./layouts/AdminLayout";
+import RunPayroll from "./pages/RunPayroll";
+import Payroll from "./pages/PayRoll";
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
         }
       >
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/run-payroll" element={<RunPayroll />} />
+        <Route path="/payroll" element={<Payroll />}/>
       </Route>
     </Routes>
   );
