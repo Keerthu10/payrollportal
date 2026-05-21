@@ -366,6 +366,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const Sidebar = ({ open }) => {
   const location = useLocation();
 
+  const SIDEBAR_WIDTH = 240;
+  const COLLAPSED_WIDTH = 90;
+
   const navigate = useNavigate();
 
   // ACTIVE MENU STYLE
@@ -420,7 +423,7 @@ const Sidebar = ({ open }) => {
   return (
     <Box
       sx={{
-        width: open ? "220px" : "88px",
+        width: open ? `${SIDEBAR_WIDTH}px` : `${COLLAPSED_WIDTH}px`,
 
         transition: "width 0.25s ease",
 
@@ -438,7 +441,7 @@ const Sidebar = ({ open }) => {
 
         boxShadow: "4px 0 20px rgba(0,0,0,0.03)",
 
-        padding: "24px 16px",
+        padding: "20px 14px",
 
         height: "100vh",
 
@@ -556,7 +559,7 @@ const Sidebar = ({ open }) => {
         </ListItemButton>
 
         {/* PAYSLIPS */}
-        <ListItemButton
+        {/* <ListItemButton
           component={Link}
           to="/payslips"
           sx={{
@@ -570,7 +573,7 @@ const Sidebar = ({ open }) => {
           </ListItemIcon>
 
           {open && <ListItemText primary="Payslips" />}
-        </ListItemButton>
+        </ListItemButton> */}
 
         {/* ATTENDANCE */}
         {/* <ListItemButton
@@ -605,7 +608,7 @@ const Sidebar = ({ open }) => {
 
           {open && <ListItemText primary="Leave" />}
         </ListItemButton> */}
-        <ListItemButton
+        {/* <ListItemButton
           component={Link}
           to="/reports"
           sx={{
@@ -634,7 +637,7 @@ const Sidebar = ({ open }) => {
           </ListItemIcon>
 
           {open && <ListItemText primary="Settings" />}
-        </ListItemButton>
+        </ListItemButton> */}
       </List>
 
       {/* REPORTS */}

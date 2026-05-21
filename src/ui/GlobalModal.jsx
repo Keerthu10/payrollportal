@@ -40,7 +40,7 @@ const GlobalModal = ({
     borderRadius: isMobile ? 0 : 3,
     boxShadow: theme.shadows[25],
     maxHeight: "90vh",
-    overflowY: "auto",
+    overflowY: "hidde",
     p: 4,
     display: "flex",
     flexDirection: "column",

@@ -2,58 +2,115 @@ import React from "react";
 
 import { Box, Typography } from "@mui/material";
 
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import DescriptionIcon from "@mui/icons-material/Description";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import EmailIcon from "@mui/icons-material/Email";
+import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
+import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 const stats = [
+  // {
+  //   label: "Total Employees",
+  //   value: "1248",
+  //   icon: <DirectionsRunIcon fontSize="small" />,
+  //   badge: "+4.2%",
+  //   up: true,
+
+  //   accent: "#8B5CF6",
+
+  //   points: "0,30 20,24 40,18 60,14 80,10 100,8 120,4",
+  // },
+
+  // {
+  //   label: "Payslips Generated",
+  //   value: "340",
+  //   icon: <DescriptionIcon fontSize="small" />,
+  //   badge: "+2.8%",
+  //   up: true,
+
+  //   accent: "#06B6D4",
+
+  //   points: "0,26 20,22 40,20 60,14 80,12 100,10 120,8",
+  // },
+
+  // {
+  //   label: "Emails Sent",
+  //   value: "318 / 340",
+  //   icon: <EmailIcon fontSize="small" />,
+  //   badge: "+99%",
+  //   up: true,
+
+  //   accent: "#10B981",
+
+  //   points: "0,28 20,26 40,18 60,20 80,12 100,10 120,6",
+  // },
+  // {
+  //   label: "Total Employees",
+  //   value: "1,248",
+  //   badge: "+4.2%",
+  //   accent: "#8B5CF6",
+
+  //   subStats: [
+  //     { label: "Active", value: "900" },
+  //     { label: "On Leave", value: "48" },
+  //     { label: "New", value: "12" },
+  //   ],
+  // },
+
+  // {
+  //   label: "Payslips Generated",
+  //   value: "340",
+  //   badge: "+2.8%",
+  //   accent: "#10B981",
+
+  //   subStats: [
+  //     { label: "Generated", value: "340" },
+  //     { label: "Pending", value: "46" },
+  //     { label: "Failed", value: "0" },
+  //   ],
+  // },
+
+  // {
+  //   label: "Emails Sent",
+  //   value: "318 / 340",
+  //   badge: "+99%",
+  //   accent: "#3B82F6",
+
+  //   subStats: [
+  //     { label: "Delivered", value: "318" },
+  //     { label: "Pending", value: "22" },
+  //     { label: "Failed", value: "0" },
+  //   ],
+  // },
   {
-    label: "Total Runs",
-    value: "12",
-    icon: <DirectionsRunIcon fontSize="small" />,
-    badge: "+2.6%",
-    up: true,
-
-    accent: "#2563EB",
-
-    points: "0,28 20,22 40,26 60,14 80,18 100,10 120,6",
+    label: "Total Employees",
+    value: "912",
+    icon: <GroupsRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
+    gradient: "linear-gradient(135deg,#8B5CF6 0%,#4F46E5 100%)",
+    subStats: [
+      { label: "Active", value: "900" },
+      { label: "New", value: "12" },
+    ],
   },
-
   {
     label: "Payslips Generated",
     value: "340",
-    icon: <DescriptionIcon fontSize="small" />,
-    badge: "-0.1%",
-    up: false,
-
-    accent: "#7C3AED",
-
-    points: "0,10 20,18 40,12 60,22 80,16 100,24 120,20",
+    icon: <DescriptionRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
+    gradient: "linear-gradient(135deg,#4ADE80 0%,#22C55E 100%)",
+    subStats: [
+      { label: "Generated", value: "340" },
+      { label: "Pending", value: "46" },
+      { label: "Failed", value: "0" },
+    ],
   },
-
-  {
-    label: "Total Payout",
-    value: "₹4,20,000",
-    icon: <CurrencyRupeeIcon fontSize="small" />,
-    badge: "+2.8%",
-    up: true,
-
-    accent: "#16A34A",
-
-    points: "0,30 20,20 40,24 60,10 80,14 100,8 120,4",
-  },
-
   {
     label: "Emails Sent",
-    value: "318",
-    icon: <EmailIcon fontSize="small" />,
-    badge: "+3.6%",
-    up: true,
-
-    accent: "#EA580C",
-
-    points: "0,26 20,30 40,18 60,24 80,12 100,16 120,8",
+    value: "318/340",
+    icon: <EmailRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
+    gradient: "linear-gradient(135deg,#FB923C 0%,#F43F5E 100%)",
+    subStats: [
+      { label: "Delivered", value: "318" },
+      { label: "Pending", value: "22" },
+      { label: "Failed", value: "0" },
+    ],
   },
 ];
 
@@ -66,116 +123,164 @@ const StatsCards = () => {
         gridTemplateColumns: {
           xs: "1fr",
           sm: "1fr 1fr",
-          lg: "1fr 1fr 1fr 1fr",
+          lg: "1fr 1fr 1fr",
         },
 
         gap: 3,
-
+        mb:4,
       }}
     >
       {stats.map((stat) => (
+        // <Box
+        //   key={stat.label}
+        //   sx={{
+        //     position: "relative",
+        //     overflow: "hidden",
+
+        //     borderRadius: "20px",
+
+        //     p: 2.2,
+
+        //     background: "#FFFFFF",
+
+        //     border: "1px solid #E5E7EB",
+
+        //     borderLeft: `4px solid ${stat.accent}`,
+
+        //     boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+
+        //     transition: "all 0.25s ease",
+
+        //     "&:hover": {
+        //       transform: "translateY(-4px)",
+        //       boxShadow: "0 12px 30px rgba(15,23,42,0.10)",
+        //     },
+        //   }}
+        // >
+        //   {/* TOP */}
+        //   <Box
+        //     sx={{
+        //       display: "flex",
+        //       justifyContent: "space-between",
+        //       alignItems: "center",
+        //       mb: 2,
+        //     }}
+        //   >
+        //     <Typography
+        //       sx={{
+        //         fontSize: 14,
+        //         fontWeight: 600,
+        //         color: "#475569",
+        //       }}
+        //     >
+        //       {stat.label}
+        //     </Typography>
+
+        //     <Box
+        //       sx={{
+        //         px: 1.4,
+        //         py: 0.4,
+        //         borderRadius: "999px",
+        //         fontSize: 12,
+        //         fontWeight: 700,
+        //         background: "#DCFCE7",
+        //         color: "#15803D",
+        //       }}
+        //     >
+        //       {stat.badge}
+        //     </Box>
+        //   </Box>
+
+        //   {/* VALUE */}
+        //   <Typography
+        //     sx={{
+        //       fontSize: 28,
+        //       fontWeight: 700,
+        //       color: "#0F172A",
+        //       lineHeight: 1,
+        //       mb: 1.8,
+        //     }}
+        //   >
+        //     {stat.value}
+        //   </Typography>
+
+        //   {/* DIVIDER */}
+        //   <Box
+        //     sx={{
+        //       height: "1px",
+        //       background: "rgba(148,163,184,0.18)",
+        //       mb: 1.2,
+        //     }}
+        //   />
+
+        //   {/* SUB STATS */}
+        //   <Box
+        //     sx={{
+        //       display: "flex",
+        //       justifyContent: "space-between",
+        //     }}
+        //   >
+        //     {stat.subStats.map((item) => (
+        //       <Box key={item.label}>
+        //         <Typography
+        //           sx={{
+        //             fontSize: 13,
+        //             color: "#64748B",
+        //             mb: 0.5,
+        //           }}
+        //         >
+        //           {item.label}
+        //         </Typography>
+
+        //         <Typography
+        //           sx={{
+        //             fontSize: 18,
+        //             fontWeight: 700,
+        //             color: "#111827",
+        //             lineHeight: 1,
+        //           }}
+        //         >
+        //           {item.value}
+        //         </Typography>
+        //       </Box>
+        //     ))}
+        //   </Box>
+        // </Box>
         <Box
           key={stat.label}
           sx={{
-            position: "relative",
-
-            overflow: "hidden",
-
-            borderRadius: "18px",
-
-            p: 2.5,
-
-            background: "rgba(255,255,255,0.72)",
-
-            backdropFilter: "blur(14px)",
-
-            WebkitBackdropFilter: "blur(14px)",
-
-            border: "1px solid rgba(255,255,255,0.2)",
-
-            boxShadow: "0 8px 32px rgba(15,23,42,0.06)",
-
-            transition: "all 0.3s ease",
-
-            cursor: "pointer",
-
+            borderRadius: "20px",
+            p: 2.2,
+            background: "#FFFFFF",
+            border: "1px solid #E5E7EB",
+            boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+            transition: "all 0.25s ease",
             "&:hover": {
-              transform: "translateY(-5px)",
-
-              boxShadow: "0 14px 40px rgba(15,23,42,0.12)",
+              transform: "translateY(-4px)",
+              boxShadow: "0 12px 30px rgba(15,23,42,0.10)",
             },
           }}
         >
-          {/* TOP ROW */}
+          {/* ICON */}
           <Box
             sx={{
+              width: 44,
+              height: 44,
+              borderRadius: "14px",
+              background: stat.gradient,
               display: "flex",
-
               alignItems: "center",
-
-              justifyContent: "space-between",
-
+              justifyContent: "center",
+              boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
               mb: 2,
             }}
           >
-            {/* ICON */}
-            <Box
-              sx={{
-                width: 44,
-
-                height: 44,
-
-                borderRadius: "14px",
-
-                display: "flex",
-
-                alignItems: "center",
-
-                justifyContent: "center",
-
-                background: stat.accent + "18",
-
-                color: stat.accent,
-              }}
-            >
-              {stat.icon}
-            </Box>
-
-            {/* BADGE */}
-            <Box
-              sx={{
-                px: 1.2,
-
-                py: 0.5,
-
-                borderRadius: "30px",
-
-                fontSize: 12,
-
-                fontWeight: 600,
-
-                background: stat.up
-                  ? "rgba(22,163,74,0.10)"
-                  : "rgba(220,38,38,0.10)",
-
-                color: stat.up ? "#15803D" : "#DC2626",
-              }}
-            >
-              {stat.up ? "↑" : "↓"} {stat.badge}
-            </Box>
+            {stat.icon}
           </Box>
 
           {/* LABEL */}
           <Typography
-            sx={{
-              fontSize: 13,
-
-              fontWeight: 500,
-
-              color: "#64748B",
-
-              mb: 1,
-            }}
+            sx={{ fontSize: 13, fontWeight: 600, color: "#475569", mb: 0.5 }}
           >
             {stat.label}
           </Typography>
@@ -183,43 +288,39 @@ const StatsCards = () => {
           {/* VALUE */}
           <Typography
             sx={{
-              fontSize: 24,
-
+              fontSize: 22,
               fontWeight: 700,
-
-              letterSpacing: "-1px",
-
               color: "#0F172A",
-
-              lineHeight: 1.2,
-
-              mb: 2,
+              lineHeight: 1,
+              mb: 1.2,
             }}
           >
             {stat.value}
           </Typography>
 
-          {/* SPARKLINE */}
+          {/* DIVIDER */}
           <Box
             sx={{
-              mt: 1,
+              height: "1px",
+              background: "rgba(148,163,184,0.18)",
+              mb: 1.2,
             }}
-          >
-            <svg
-              width="100%"
-              height="40"
-              viewBox="0 0 120 36"
-              preserveAspectRatio="none"
-            >
-              <polyline
-                points={stat.points}
-                fill="none"
-                stroke={stat.accent}
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          />
+
+          {/* SUB STATS */}
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            {stat.subStats.map((item) => (
+              <Box key={item.label}>
+                <Typography sx={{ fontSize: 12, color: "#64748B", mb: 0.3 }}>
+                  {item.label}
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: 700, color: "#111827" }}
+                >
+                  {item.value}
+                </Typography>
+              </Box>
+            ))}
           </Box>
         </Box>
       ))}

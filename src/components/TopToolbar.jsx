@@ -98,51 +98,65 @@
 
 import React from "react";
 
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Box,
-  Stack,
-  Badge,
-  InputBase,
-  Avatar,
-  Typography,
-} from "@mui/material";
-
-import {
-  Menu as MenuIcon,
-  NotificationsNoneOutlined,
-  MailOutlineOutlined,
-  Search,
-} from "@mui/icons-material";
+import { AppBar, Toolbar, Box, Stack, Avatar, Typography } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 import ProfilePopover from "../ui/ProfilePopover";
+import CloudeLogo from "../assets/cloude.png";
 
-const TopToolbar = ({ open, setOpen }) => {
+const TopToolbar = () => {
+  const location = useLocation();
+
   return (
     <AppBar
       position="fixed"
       elevation={0}
+      // sx={{
+      //   background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)",
+      //   borderBottom: "1px solid #1F2937",
+      //   backdropFilter: "blur(10px)",
+
+      //   color: "#111827",
+
+      //   zIndex: 1200,
+
+      //   height: "68px",
+
+      //   justifyContent: "center",
+
+      //   boxShadow: "none",
+
+      //   left: open ? `${SIDEBAR_WIDTH}px` : `${COLLAPSED_WIDTH}px`,
+
+      //   width: open
+      //     ? `calc(100% - ${SIDEBAR_WIDTH}px)`
+      //     : `calc(100% - ${COLLAPSED_WIDTH}px)`,
+
+      //   transition: "all 0.25s ease",
+      // }}
       sx={{
-        background: "#FFFFFF",
+        background: "rgba(255,255,255,0.12)",
 
-        borderBottom: "1px solid #E5E7EB",
+        backdropFilter: "blur(14px)",
 
-        color: "#111827",
+        border: "1px solid rgba(255,255,255,0.15)",
 
-        zIndex: 1400,
+        borderRadius: "20px",
 
-        height: "88px",
+        color: "#fff",
 
-        justifyContent: "center",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
 
-        boxShadow: "none",
+        height: "80px",
 
-        left: open ? "240px" : "88px",
+        top: 20,
 
-        width: open ? "calc(100% - 240px)" : "calc(100% - 88px)",
+        left: 20,
 
-        transition: "left 0.25s ease, width 0.25s ease",
+        right: 20,
+
+        width: "auto",
+
+        zIndex: 1200,
       }}
     >
       <Toolbar
@@ -150,134 +164,121 @@ const TopToolbar = ({ open, setOpen }) => {
           display: "flex",
 
           justifyContent: "space-between",
+
+          alignItems: "center",
+
+          height: "100%",
+
+          px: 4,
         }}
       >
         {/* LEFT SIDE */}
         <Box
           sx={{
             display: "flex",
-
             alignItems: "center",
-
-            gap: 2,
+            width: "100%",
+            position: "relative",
           }}
         >
-          {/* SIDEBAR TOGGLE */}
-          <IconButton
-            onClick={() => setOpen((prev) => !prev)}
-            sx={{
-              color: "#64748B",
+          {/* LOGO */}
 
-              display: { xs: "none", lg: "flex" },
-            }}
+          <Stack
+            direction="row"
+            spacing={3}
+            alignItems="center"
+            sx={{ height: "100%" }}
           >
-            <MenuIcon />
-          </IconButton>
-
-          {/* SEARCH BAR */}
-          {/* <Box
-            sx={{
-              display: "flex",
-
-              alignItems: "center",
-
-              background: "#F8FAFC",
-
-              border: "1px solid #E5E7EB",
-
-              borderRadius: "14px",
-
-              px: 2,
-
-              width: "320px",
-
-              height: "44px",
-            }}
-          >
-            <Search
+            {/* LOGO */}
+            <Box
+              component="img"
+              src={CloudeLogo}
+              alt="Company Logo"
               sx={{
-                color: "#94A3B8",
-
-                mr: 1,
+                width: 90,
+                height: 50,
+                objectFit: "contain",
+                filter: "drop-shadow(0 0 6px rgba(255,255,255,0.6))",
               }}
             />
 
-            <InputBase
-              placeholder="Search here..."
+            {/* TITLE */}
+            <Typography
               sx={{
-                flex: 1,
-
-                fontSize: "14px",
-
-                color: "#111827",
+                fontSize: "20px",
+                fontWeight: 700,
+                color: "#fff",
+                letterSpacing: "0.5px",
+                lineHeight: 1,
+                display: "flex",
+                alignItems: "center",
               }}
-            />
-          </Box> */}
+            >
+              PAYROLL PORTAL
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            spacing={5}
+            alignItems="center"
+            sx={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <Typography
+              component={Link}
+              to="/dashboard"
+              sx={{
+                color: location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
+                fontWeight: location.pathname === "/dashboard" ? 700 : 500,
+                fontSize: "17px",
+                position: "relative",
+                textDecoration: "none",
+                "&::after": location.pathname === "/dashboard" && {
+                  content: '""',
+                  position: "absolute",
+                  bottom: -4,
+                  left: 0,
+                  width: "100%",
+                  height: "2px",
+                  backgroundColor: "#fff",
+                  borderRadius: "2px",
+                },
+              }}
+            >
+              DASHBOARD
+            </Typography>
+            <Typography
+              component={Link}
+              to="/payroll"
+              sx={{
+                color: location.pathname === "/payroll" ? "#fff" : "#E2E8F0",
+                fontWeight: location.pathname === "/payroll" ? 700 : 500,
+                fontSize: "17px",
+                textDecoration: "none",
+                position: "relative",
+                "&::after": location.pathname === "/payroll" && {
+                  content: '""',
+                  position: "absolute",
+                  bottom: -4,
+                  left: 0,
+                  width: "100%",
+                  height: "2px",
+                  backgroundColor: "#fff",
+                  borderRadius: "2px",
+                },
+              }}
+            >
+              PAYROLL
+            </Typography>
+          </Stack>
         </Box>
 
         {/* RIGHT SIDE */}
         <Stack direction="row" spacing={2} alignItems="center">
-          {/* NOTIFICATIONS */}
-          <IconButton
-            sx={{
-              color: "#64748B",
-            }}
-          >
-            <Badge badgeContent={3} color="error">
-              <NotificationsNoneOutlined />
-            </Badge>
-          </IconButton>
-
-          {/* MAIL */}
-          <IconButton
-            sx={{
-              color: "#64748B",
-            }}
-          >
-            <Badge badgeContent={2} color="error">
-              <MailOutlineOutlined />
-            </Badge>
-          </IconButton>
-
-          {/* PROFILE */}
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            {/* <Avatar
-              src="https://i.pravatar.cc/150?img=12"
-              sx={{
-                width: 42,
-
-                height: 42,
-              }}
-            /> */}
-
-            <ProfilePopover />
-
-            {/* <Box>
-              <Typography
-                sx={{
-                  fontSize: "14px",
-
-                  fontWeight: 600,
-
-                  color: "#111827",
-
-                  lineHeight: 1.2,
-                }}
-              >
-                Admin
-              </Typography>
-
-              <Typography
-                sx={{
-                  fontSize: "12px",
-
-                  color: "#94A3B8",
-                }}
-              >
-                Super Admin
-              </Typography>
-            </Box> */}
-          </Stack>
+          <ProfilePopover />
         </Stack>
       </Toolbar>
     </AppBar>

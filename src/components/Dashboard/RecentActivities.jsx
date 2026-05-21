@@ -4,42 +4,49 @@ import React from "react";
 
 import { Box, Typography, Stack, Avatar } from "@mui/material";
 
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
-import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
-import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+
+import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
+
+import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 
 const activities = [
   {
-    title: "Payroll processed for May 2026",
-    time: "Today, 10:30 AM",
-    icon: <PaymentsOutlinedIcon fontSize="small" />,
+    title: "Payroll sheet uploaded",
+    subtitle: "Admin uploaded May 2026 data",
+    time: "10:14 AM",
     bg: "#DCFCE7",
     color: "#16A34A",
-  },
-
-  {
-    title: "Payslips generated for 980 employees",
-    time: "Today, 09:15 AM",
-    icon: <DescriptionOutlinedIcon fontSize="small" />,
-    bg: "#DBEAFE",
-    color: "#2563EB",
-  },
-
-  {
-    title: "Excel file uploaded by Admin",
-    time: "Yesterday, 04:45 PM",
     icon: <UploadFileOutlinedIcon fontSize="small" />,
+  },
+
+  // {
+  //   title: "Preview reviewed",
+  //   subtitle: "Breakdown confirmed by admin",
+  //   time: "10:18 AM",
+  //   bg: "#DBEAFE",
+  //   color: "#2563EB",
+  //   icon: <VisibilityOutlinedIcon fontSize="small" />,
+  // },
+
+  {
+    title: "Payslips dispatched",
+    subtitle: "5 PDFs sent to all employees",
+    time: "10:22 AM",
     bg: "#FEF3C7",
     color: "#D97706",
+    icon: <MailOutlineOutlinedIcon fontSize="small" />,
   },
 
   {
-    title: "New employee John Doe joined",
-    time: "May 24, 2026",
-    icon: <PersonAddAltOutlinedIcon fontSize="small" />,
-    bg: "#FEE2E2",
-    color: "#DC2626",
+    title: "Apr 2026 completed",
+    subtitle: "Payroll closed successfully",
+    time: "Apr 30",
+    bg: "#DCFCE7",
+    color: "#059669",
+    icon: <TaskAltOutlinedIcon fontSize="small" />,
   },
 ];
 
@@ -88,50 +95,127 @@ const RecentActivities = () => {
 
       {/* ACTIVITIES */}
       <Stack spacing={3}>
-        {activities.map((item) => (
+        {activities.map((item, index) => (
+          // <Box
+          //   key={item.title}
+          //   sx={{
+          //     display: "flex",
+          //     alignItems: "flex-start",
+          //     gap: 1.5,
+          //   }}
+          // >
+          //   {/* ICON */}
+          //   <Avatar
+          //     sx={{
+          //       width: 38,
+          //       height: 38,
+          //       background: item.bg,
+          //       color: item.color,
+          //     }}
+          //   >
+          //     {item.icon}
+          //   </Avatar>
+
+          //   {/* TEXT */}
+          //   <Box>
+          //     <Typography
+          //       sx={{
+          //         fontSize: "14px",
+          //         fontWeight: 600,
+          //         color: "#0F172A",
+          //         lineHeight: 1.4,
+          //       }}
+          //     >
+          //       {item.title}
+          //     </Typography>
+
+          //     <Typography
+          //       sx={{
+          //         fontSize: "13px",
+          //         color: "#64748B",
+          //         mt: 0.3,
+          //       }}
+          //     >
+          //       {item.time}
+          //     </Typography>
+          //   </Box>
+          // </Box>
           <Box
-            key={item.title}
             sx={{
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "flex-start",
-              gap: 1.5,
+              py: 1.6,
+
+              borderBottom:
+                index !== activities.length - 1
+                  ? "1px solid rgba(148,163,184,0.14)"
+                  : "none",
             }}
           >
-            {/* ICON */}
-            <Avatar
+            {/* LEFT */}
+            <Box
               sx={{
-                width: 38,
-                height: 38,
-                background: item.bg,
-                color: item.color,
+                display: "flex",
+                gap: 1.5,
               }}
             >
-              {item.icon}
-            </Avatar>
-
-            {/* TEXT */}
-            <Box>
-              <Typography
+              {/* ICON */}
+              <Box
                 sx={{
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  color: "#0F172A",
-                  lineHeight: 1.4,
+                  width: 34,
+                  height: 34,
+                  borderRadius: "50%",
+                  background: item.color,
+
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+
+                  color: item.iconColor,
+                  fontSize: 14,
+                  fontWeight: 700,
                 }}
               >
-                {item.title}
-              </Typography>
+                •
+              </Box>
 
-              <Typography
-                sx={{
-                  fontSize: "13px",
-                  color: "#64748B",
-                  mt: 0.3,
-                }}
-              >
-                {item.time}
-              </Typography>
+              {/* TEXT */}
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: "#0F172A",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {item.title}
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontSize: 13,
+                    color: "#64748B",
+                    mt: 0.3,
+                  }}
+                >
+                  {item.subtitle}
+                </Typography>
+              </Box>
             </Box>
+
+            {/* TIME */}
+            <Typography
+              sx={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#64748B",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {item.time}
+            </Typography>
           </Box>
         ))}
       </Stack>

@@ -174,6 +174,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -181,6 +182,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const ProfilePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const navigate = useNavigate();
 
   const open = Boolean(anchorEl);
 
@@ -190,6 +193,15 @@ const ProfilePopover = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    sessionStorage.clear();
+    handleClose();
+
+    navigate("/login", { replace: "true" });
   };
 
   return (
@@ -207,16 +219,23 @@ const ProfilePopover = () => {
       >
         <Avatar
           sx={{
-            width: 42,
-            height: 42,
+            width: 46,
+            height: 46,
 
-            background: "linear-gradient(135deg,#3B82F6 0%, #6366F1 100%)",
+            background:
+              "linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(49,46,129,0.92) 100%)",
+
+            color: "#fff",
 
             fontWeight: 700,
 
-            border: "2px solid rgba(255,255,255,0.25)",
+            fontSize: "20px",
 
-            boxShadow: "0 4px 18px rgba(59,130,246,0.35)",
+            border: "1px solid rgba(255,255,255,0.12)",
+
+            boxShadow: "0 8px 24px rgba(0,0,0,0.28)",
+
+            backdropFilter: "blur(12px)",
           }}
         >
           K
@@ -319,7 +338,7 @@ const ProfilePopover = () => {
         />
 
         {/* PROFILE */}
-        <MenuItem
+        {/* <MenuItem
           sx={{
             py: 1.5,
             px: 2,
@@ -350,7 +369,7 @@ const ProfilePopover = () => {
         </MenuItem>
 
         {/* SETTINGS */}
-        <MenuItem
+        {/* <MenuItem
           sx={{
             py: 1.5,
             px: 2,
@@ -378,7 +397,7 @@ const ProfilePopover = () => {
             }}
           />
           Settings
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider
           sx={{
@@ -388,6 +407,7 @@ const ProfilePopover = () => {
 
         {/* LOGOUT */}
         <MenuItem
+          onClick={handleLogout}
           sx={{
             py: 1.5,
             px: 2,

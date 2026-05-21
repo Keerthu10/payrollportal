@@ -228,33 +228,21 @@ import { ResponsiveContainer, RadialBarChart, RadialBar } from "recharts";
 
 const data = [
   {
-    name: "Engineering",
-    value: 40,
+    name: "PF",
+    value: 58,
     fill: "#7C3AED",
   },
 
   {
-    name: "Finance",
-    value: 25,
+    name: "TDS",
+    value: 32,
     fill: "#3B82F6",
   },
 
   {
-    name: "HR",
-    value: 20,
-    fill: "#10B981",
-  },
-
-  {
-    name: "Marketing",
+    name: "ESI",
     value: 10,
-    fill: "#F59E0B",
-  },
-
-  {
-    name: "Support",
-    value: 5,
-    fill: "#06B6D4",
+    fill: "#10B981",
   },
 ];
 
@@ -287,7 +275,7 @@ const DepartmentDistribution = () => {
           mb: 3,
         }}
       >
-        Department Distribution
+        Deduction Split
       </Typography>
 
       {/* CONTENT */}

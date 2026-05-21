@@ -8,20 +8,38 @@ import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 
 const DashboardHeader = () => {
+  const today = new Date();
+
+  const hour = today.getHours();
+
+  const greeting =
+    hour < 12
+      ? "Good Morning"
+      : hour < 17
+        ? "Good Afternoon"
+        : hour < 21
+          ? "Good Evening"
+          : "Good Night";
+
+  const formattedDate = today.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <Box
       sx={{
-        background: "#FFFFFF",
+        background: "transparent",
 
-        border: "1px solid #E2E8F0",
+        border: "none",
 
-        borderRadius: "18px",
+        borderRadius: "0",
+        boxShadow: "none",
 
         p: 3,
 
         mb: 1,
-
-        boxShadow: "0 2px 10px rgba(15,23,42,0.03)",
       }}
     >
       {/* TOP SECTION */}
@@ -41,22 +59,25 @@ const DashboardHeader = () => {
         <Box sx={{ flex: 1 }}>
           <Typography
             sx={{
-              fontSize: "20px",
+              fontSize: "28px",
               fontWeight: 700,
-              color: "#0F172A",
+              color: "#fff",
+              textShadow: "0 2px 6px rgba(0,0,0,0.25)",
+              letterSpacing: "-0.5px",
               mb: 1,
             }}
           >
-            Good Morning, Admin! 👋
+            Welcome, Admin! <span>👋</span>
           </Typography>
 
           <Typography
             sx={{
-              fontSize: "14px",
-              color: "#64748B",
+              fontSize: "15px",
+              color: "rgba(255,255,255,0.85)",
+              fontWeight: 500,
             }}
           >
-            Here's what's happening with your payroll today.
+            Hope you're having a productive day ✨
           </Typography>
         </Box>
 
@@ -67,101 +88,6 @@ const DashboardHeader = () => {
           alignItems="center"
           sx={{ ml: "auto" }}
         >
-          {/* RUN PAYROLL */}
-          <Button
-            variant="contained"
-            startIcon={<PlayArrowRoundedIcon />}
-            sx={{
-              height: "42px",
-
-              minWidth: "145px",
-
-              background: "linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%)",
-
-              borderRadius: "10px",
-
-              textTransform: "none",
-
-              fontWeight: 600,
-
-              fontSize: "14px",
-
-              whiteSpace: "nowrap",
-
-              boxShadow: "0 6px 14px rgba(99,102,241,0.18)",
-
-              "&:hover": {
-                background: "linear-gradient(135deg, #6D28D9 0%, #4338CA 100%)",
-              },
-            }}
-          >
-            Run Payroll
-          </Button>
-
-          {/* UPLOAD EXCEL */}
-          <Button
-            variant="outlined"
-            startIcon={<UploadFileRoundedIcon />}
-            sx={{
-              height: "42px",
-
-              minWidth: "145px",
-
-              borderRadius: "10px",
-
-              textTransform: "none",
-
-              fontWeight: 600,
-
-              fontSize: "14px",
-
-              whiteSpace: "nowrap",
-
-              borderColor: "#D1D5DB",
-
-              color: "#0F172A",
-
-              "&:hover": {
-                borderColor: "#6366F1",
-                background: "#EEF2FF",
-              },
-            }}
-          >
-            Upload Excel
-          </Button>
-
-          {/* GENERATE PAYSLIPS */}
-          <Button
-            variant="outlined"
-            startIcon={<DescriptionRoundedIcon />}
-            sx={{
-              height: "42px",
-
-              minWidth: "145px",
-
-              borderRadius: "10px",
-
-              textTransform: "none",
-
-              fontWeight: 600,
-
-              fontSize: "14px",
-
-              whiteSpace: "nowrap",
-
-              borderColor: "#D1D5DB",
-
-              color: "#0F172A",
-
-              "&:hover": {
-                borderColor: "#6366F1",
-                background: "#EEF2FF",
-              },
-            }}
-          >
-            Generate Payslips
-          </Button>
-
           {/* DATE BUTTON */}
           <Button
             variant="outlined"
@@ -177,17 +103,24 @@ const DashboardHeader = () => {
 
               fontWeight: 600,
 
-              borderColor: "#D1D5DB",
+              background: "linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%)",
 
-              color: "#0F172A",
+              border: "1px solid #C7D2FE",
+
+              color: "#4338CA",
+
+              boxShadow: "0 4px 12px rgba(99,102,241,0.12)",
 
               "&:hover": {
-                borderColor: "#6366F1",
-                background: "#EEF2FF",
+                background: "linear-gradient(135deg, #E0E7FF 0%, #EDE9FE 100%)",
+
+                borderColor: "#818CF8",
+
+                transform: "translateY(-1px)",
               },
             }}
           >
-            May 20 - May 26, 2026
+            {formattedDate}
           </Button>
         </Stack>
       </Stack>
