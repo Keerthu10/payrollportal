@@ -534,6 +534,11 @@ import {
   CircularProgress,
 } from "@mui/material";
 
+import {
+  downloadPayrollTemplate,
+  generatePayrollEmails,
+} from "../services/payroll";
+
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
@@ -543,6 +548,8 @@ import PreviewOutlinedIcon from "@mui/icons-material/PreviewOutlined";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import ChecklistOutlinedIcon from "@mui/icons-material/ChecklistOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import { useToast } from "../context/ToastContext";
+import PayrollLoader from "../components/PayrollLoader";
 
 import * as XLSX from "xlsx";
 
@@ -573,12 +580,20 @@ const sampleHeaders = [
   "Other Deductions",
 ];
 
-const previewHeaders = [...sampleHeaders, "GrossPay", "Deductions", "NetPay"];
+const previewHeaders = [
+  "S.No",
+  ...sampleHeaders,
+  "GrossPay",
+  "Deductions",
+  "NetPay",
+];
 
 const Payroll = () => {
   // =========================
   // STATES
   // =========================
+
+  const { showToast } = useToast();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -598,20 +613,50 @@ const Payroll = () => {
 
   const [dragActive, setDragActive] = useState(false);
 
+  const [failedEmployeeIds, setFailedEmployeeIds] = useState([]);
+
+  const [emailSummary, setEmailSummary] = useState(null);
+
+  const [sendingEmails, setSendingEmails] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+
+  const [processedCount, setProcessedCount] = useState(0);
+
   const fileInputRef = useRef(null);
 
   // =========================
   // DOWNLOAD TEMPLATE
   // =========================
 
-  const handleDownloadTemplate = () => {
-    const worksheet = XLSX.utils.aoa_to_sheet([sampleHeaders]);
+  const handleDownloadTemplate = async () => {
+    try {
+      const response = await downloadPayrollTemplate();
 
-    const workbook = XLSX.utils.book_new();
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Payroll Template");
+      const url = window.URL.createObjectURL(blob);
 
-    XLSX.writeFile(workbook, "Payroll_template.xlsx");
+      const link = document.createElement("a");
+
+      link.href = url;
+
+      link.setAttribute("download", "Payroll_Template.xlsx");
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.log(error);
+
+      showToast("error", "Download Failed", "Unable to download template");
+    }
   };
 
   // =========================
@@ -648,9 +693,18 @@ const Payroll = () => {
       }
 
       // DOB
-      const dob = employee["Date Of Birth "] || "";
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dob))) {
-        errors.push(`Row ${row}: DOB must be YYYY-MM-DD`);
+      const dobValue = employee["Date Of Birth"];
+
+      let dob = "";
+
+      if (typeof dobValue === "number") {
+        dob = XLSX.SSF.format("dd-mm-yyyy", dobValue);
+      } else {
+        dob = String(dobValue).trim();
+      }
+
+      if (!/^\d{2}-\d{2}-\d{4}$/.test(dob)) {
+        errors.push(`Row ${row}: DOB must be DD-MM-YYYY`);
       }
 
       // DESIGNATION
@@ -781,7 +835,12 @@ const Payroll = () => {
         return;
       }
 
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+      const allData = XLSX.utils.sheet_to_json(worksheet, {
+        defval: "",
+        raw: false,
+      });
+
+      const jsonData = allData.slice(1);
 
       if (jsonData.length === 0) {
         setValidationErrors(["No data rows found in uploaded file"]);
@@ -798,6 +857,20 @@ const Payroll = () => {
       // =========================
 
       const processedData = jsonData.map((row, index) => {
+        let formattedDOB = row["Date Of Birth"];
+
+        if (formattedDOB) {
+          const date = new Date(formattedDOB);
+          if (!isNaN(date)) {
+            const day = String(date.getDate()).padStart(2, "0");
+
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+
+            const year = date.getFullYear();
+
+            formattedDOB = `${day}-${month}-${year}`;
+          }
+        }
         const basic = Number(row["Basic Salary"]) || 0;
         const hra = Number(row["HRA"]) || 0;
         const specialAllowance = Number(row["Special Allowance"]) || 0;
@@ -826,8 +899,9 @@ const Payroll = () => {
         const netPay = grossPay - deductions;
 
         return {
-          id: index + 1,
+          "S.No": index + 1,
           ...row,
+          "Date Of Birth": formattedDOB,
           GrossPay: grossPay,
           Deductions: deductions,
           NetPay: netPay,
@@ -848,6 +922,218 @@ const Payroll = () => {
 
       setLoading(false);
     };
+  };
+
+  // const handleGenerateEmails = async () => {
+  //   try {
+  //     setSendingEmails(true);
+  //     setProgress(0);
+  //     setProcessedCount(0);
+
+  //     let count = 0;
+
+  //     const totalEmployees = excelData.length;
+
+  //     const progressInterval = setInterval(() => {
+  //       count++;
+
+  //       setProcessedCount(count);
+
+  //       const percentage = Math.round((count / totalEmployees) * 100);
+
+  //       setProgress(percentage > 100 ? 100 : percentage);
+
+  //       if (count >= totalEmployees) {
+  //         clearInterval(progressInterval);
+  //       }
+  //     }, 400);
+  //     setEmailSummary(null);
+  //     setFailedEmployeeIds([]);
+
+  //     const payload = {
+  //       runId:null,
+  //       employees: excelData.map((item) => ({
+  //         employeeId: item["Employee ID"],
+  //         employeeName: item["Employee Name"],
+  //         email: item["Email"],
+  //         dateOfBirth: item["Date Of Birth"]?.split("-")?.reverse()?.join("-"),
+  //         designation: item["Designation"],
+  //         location: item["Location"],
+  //         bankName: item["Bank Name"],
+  //         bankAccountNo: item["Bank Account No"],
+  //         panNo: item["PAN No"],
+  //         uanNo: item["UAN No"],
+  //         payPeriod: item["Pay Period (DD.MM.YYYY-DD.MM.YYYY)"],
+
+  //         totalDays: item["Total Days"],
+  //         workingDays: item["Working Days"],
+  //         lopDays: item["LOP Days"],
+
+  //         basicSalary: item["Basic Salary"],
+  //         hra: item["HRA"],
+  //         specialAllowance: item["Special Allowance"],
+
+  //         professionTax: item["Profession Tax"],
+
+  //         groupMedicalInsurance: item["Group Medical Insurance"],
+
+  //         pfEeCon: item["PF EE CON"],
+
+  //         pfErCon: item["PF ER CON"],
+
+  //         tds: item["TDS"],
+
+  //         eduCess: item["EDU Cess"],
+
+  //         otherDeductions: item["Other Deductions"],
+  //       })),
+  //     };
+  //     console.log(
+  //       "Submitting Payroll Payload:",
+  //       JSON.stringify(payload, null, 2),
+  //     );
+  //     const response = await generatePayrollEmails(payload);
+
+  //     const result = response.data.data;
+
+  //     if (result.emailsFailed === 0) {
+  //       setOpenModal(false);
+
+  //       setFailedEmployeeIds([]);
+
+  //       setEmailSummary(null);
+
+  //       showToast(
+  //         "success",
+  //         "Success",
+  //         "Emails sent to all employees successfully",
+  //       );
+  //     } else {
+  //       setEmailSummary(result);
+
+  //       const failedIds = result.failedEmployees.map(
+  //         (emp) => emp.split(" - ")[0],
+  //       );
+
+  //       setFailedEmployeeIds(failedIds);
+
+  //       showToast(
+  //         "warning",
+  //         "Partial Success",
+  //         `${result.emailsFailed} emails failed`,
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+
+  //     showToast("error", "Failed", "Unable to send payroll emails");
+  //   } finally {
+  //     setProgress(100);
+
+  //     setTimeout(() => {
+  //       setSendingEmails(false);
+  //     }, 1000);
+  //   }
+  // };
+
+  const handleGenerateEmails = async () => {
+    try {
+      setSendingEmails(true);
+      setProgress(0);
+      setProcessedCount(0);
+      setEmailSummary(null);
+      setFailedEmployeeIds([]);
+
+      const failedEmployees = [];
+
+      const employees = excelData.map((item) => ({
+        employeeId: item["Employee ID"],
+        employeeName: item["Employee Name"],
+        email: item["Email"],
+
+        dateOfBirth: item["Date Of Birth"]?.split("-")?.reverse()?.join("-"),
+
+        designation: item["Designation"],
+        location: item["Location"],
+        bankName: item["Bank Name"],
+        bankAccountNo: item["Bank Account No"],
+        panNo: item["PAN No"],
+        uanNo: item["UAN No"],
+        payPeriod: item["Pay Period (DD.MM.YYYY-DD.MM.YYYY)"],
+
+        totalDays: Number(item["Total Days"]),
+        workingDays: Number(item["Working Days"]),
+        lopDays: Number(item["LOP Days"]),
+
+        basicSalary: Number(item["Basic Salary"]),
+        hra: Number(item["HRA"]),
+        specialAllowance: Number(item["Special Allowance"]),
+
+        professionTax: Number(item["Profession Tax"]),
+        groupMedicalInsurance: Number(item["Group Medical Insurance"]),
+        pfEeCon: Number(item["PF EE CON"]),
+        pfErCon: Number(item["PF ER CON"]),
+        tds: Number(item["TDS"]),
+        eduCess: Number(item["EDU Cess"]),
+        otherDeductions: Number(item["Other Deductions"]),
+      }));
+
+      for (let i = 0; i < employees.length; i++) {
+        const employee = employees[i];
+
+        try {
+          await generatePayrollEmails({
+            runId: null,
+            employees: [employee],
+          });
+
+          const currentCount = i + 1;
+
+          setProcessedCount(currentCount);
+
+          setProgress(Math.round((currentCount / employees.length) * 100));
+        } catch (error) {
+          failedEmployees.push(
+            `${employee.employeeId} - ${employee.employeeName}`,
+          );
+        }
+      }
+
+      if (failedEmployees.length === 0) {
+        handleCloseModal();
+
+        showToast(
+          "success",
+          "Success",
+          "Successfully sent payslip emails to all employees",
+        );
+      } else {
+        setEmailSummary({
+          emailsSent: employees.length - failedEmployees.length,
+          totalEmployees: employees.length,
+          failedEmployees,
+          emailsFailed: failedEmployees.length,
+        });
+
+        const failedIds = failedEmployees.map((emp) => emp.split(" - ")[0]);
+
+        setFailedEmployeeIds(failedIds);
+
+        showToast(
+          "warning",
+          "Partial Success",
+          `${failedEmployees.length} emails failed`,
+        );
+      }
+    } catch (error) {
+      console.log(error);
+
+      showToast("error", "Failed", "Unable to send payroll emails");
+    } finally {
+      setTimeout(() => {
+        setSendingEmails(false);
+      }, 800);
+    }
   };
 
   const handleCloseModal = () => {
@@ -1341,6 +1627,45 @@ const Payroll = () => {
                 Processing Payroll Sheet...
               </Typography>
             </Backdrop>
+            <Backdrop
+              open={sendingEmails}
+              sx={{
+                position: "absolute",
+                zIndex: 10000,
+                borderRadius: "24px",
+                background: "rgba(15,23,42,0.72)",
+                backdropFilter: "blur(6px)",
+                flexDirection: "column",
+                gap: 3,
+              }}
+            >
+              <CircularProgress
+                size={65}
+                thickness={4}
+                sx={{
+                  color: "#10B981",
+                }}
+              />
+
+              <Typography
+                sx={{
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "22px",
+                }}
+              >
+                Processing Payroll...
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: "#CBD5E1",
+                  fontSize: "15px",
+                }}
+              >
+                Sending emails to employees...
+              </Typography>
+            </Backdrop>
             {/* VALIDATION ERRORS */}
 
             {validationErrors.length > 0 && (
@@ -1379,6 +1704,51 @@ const Payroll = () => {
             )}
 
             {/* TABLE PREVIEW */}
+
+            {emailSummary && (
+              <Box
+                sx={{
+                  background: "rgba(239,68,68,0.08)",
+                  border: "1px solid rgba(239,68,68,0.2)",
+                  borderRadius: "16px",
+                  p: 3,
+                  mb: 4,
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#FCA5A5",
+                    fontWeight: 700,
+                    fontSize: "20px",
+                    mb: 2,
+                  }}
+                >
+                  Failed Employees
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    mb: 2,
+                  }}
+                >
+                  Emails Sent:
+                  {emailSummary.emailsSent}/{emailSummary.totalEmployees}
+                </Typography>
+
+                {emailSummary.failedEmployees.map((employee, index) => (
+                  <Typography
+                    key={index}
+                    sx={{
+                      color: "#FCA5A5",
+                      mb: 1,
+                    }}
+                  >
+                    • {employee}
+                  </Typography>
+                ))}
+              </Box>
+            )}
 
             {excelData.length > 0 && (
               <>
@@ -1423,8 +1793,13 @@ const Payroll = () => {
                           <TableRow
                             key={index}
                             sx={{
-                              backgroundColor:
-                                index % 2 === 0 ? "#1F2937" : "#111827",
+                              backgroundColor: failedEmployeeIds.includes(
+                                row["Employee ID"],
+                              )
+                                ? "rgba(239,68,68,0.18)"
+                                : index % 2 === 0
+                                  ? "#1F2937"
+                                  : "#111827",
                             }}
                           >
                             {previewHeaders.map((header) => (
@@ -1554,8 +1929,13 @@ const Payroll = () => {
             >
               <Button
                 variant="contained"
+                onClick={handleGenerateEmails}
                 startIcon={<EmailOutlinedIcon />}
-                disabled={validationErrors.length > 0 || excelData.length === 0}
+                disabled={
+                  validationErrors.length > 0 ||
+                  excelData.length === 0 ||
+                  sendingEmails
+                }
                 sx={{
                   background:
                     validationErrors.length === 0 && excelData.length > 0
@@ -1580,9 +1960,15 @@ const Payroll = () => {
                   },
                 }}
               >
-                Generate Emails
+                {sendingEmails ? "Sending Emails" : "Generate Emails"}
               </Button>
             </Box>
+            <PayrollLoader
+              open={sendingEmails}
+              progress={progress}
+              current={processedCount}
+              total={excelData.length}
+            />
           </DialogContent>
         </Dialog>
       </Box>

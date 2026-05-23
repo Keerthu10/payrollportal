@@ -11,6 +11,8 @@ import {
   StepLabel,
 } from "@mui/material";
 
+import { forgotPassword, verifyOtp, resetPassword } from "../services/login";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { EyeIcon } from "../icons/CustomIcons";
@@ -61,8 +63,7 @@ const ForgotPassword = () => {
   };
 
   // Send OTP
-  const handleSendOtp = () => {
-    // Empty Validation
+  const handleSendOtp = async () => {
     if (!email.trim()) {
       setEmailError("Please enter Valid email address");
 
@@ -71,7 +72,6 @@ const ForgotPassword = () => {
       return;
     }
 
-    // Email Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
@@ -86,19 +86,39 @@ const ForgotPassword = () => {
       return;
     }
 
-    // Clear Error
-    setEmailError("");
+    try {
+      const payload = {
+        email,
+      };
 
-    // Dummy Success
-    setOtp(["", "", "", "", "", ""]);
+      const response = await forgotPassword(payload);
 
-    setStage(2);
+      console.log(response.data);
 
-    showToast("success", "Success", `OTP has been sent to ${email}`);
+      setEmailError("");
+
+      setOtp(["", "", "", "", "", ""]);
+
+      setStage(2);
+
+      showToast(
+        "success",
+        "Success",
+        response.data?.message || `OTP sent successfully`,
+      );
+    } catch (error) {
+      console.log(error);
+
+      showToast(
+        "error",
+        "Error",
+        error?.response?.data?.message || "Failed to send OTP",
+      );
+    }
   };
 
   // Verify OTP
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     const otpValue = otp.join("");
 
     if (!otpValue) {
@@ -118,14 +138,35 @@ const ForgotPassword = () => {
       showToast("error", "Validation Error", "OTP must contain only numbers");
       return;
     }
+    try {
+      const payload = {
+        email,
+        otp: otpValue,
+      };
 
-    if (otpValue === "123456") {
-      setOtpError(""); // clear error
-      showToast("success", "Success", "OTP verified successfully");
+      const response = await verifyOtp(payload);
+
+      console.log(response.data);
+
+      setOtpError("");
+
+      showToast(
+        "success",
+        "Success",
+        response.data?.message || "OTP verified successfully",
+      );
+
       setStage(3);
-    } else {
+    } catch (error) {
+      console.log(error);
+
       setOtpError("Invalid OTP");
-      showToast("error", "Validation Error", "Invalid OTP entered");
+
+      showToast(
+        "error",
+        "Validation Error",
+        error?.response?.data?.message || "Invalid OTP entered",
+      );
     }
   };
 
@@ -165,7 +206,7 @@ const ForgotPassword = () => {
   };
 
   // Reset Password
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     let hasError = false;
 
     if (!newPassword) {
@@ -197,33 +238,38 @@ const ForgotPassword = () => {
       showToast("error", "Validation Error", "Passwords do not match");
       return;
     }
+    try {
+      const payload = {
+        email,
+        newPassword,
+        confirmPassword,
+      };
 
-    setNewPasswordError("");
-    showToast("success", "Success", "Password reset successful");
-    setTimeout(() => {
-      if (location.state?.goToStep3) {
-        showToast("success", "Success", "Password reset successful");
+      const response = await resetPassword(payload);
 
-        localStorage.setItem("token", "dummy_admin_token");
+      console.log(response.data);
 
-        navigate("/dashboard");
-      } else {
-        navigate("/login", {
-          state: {
-            passwordChanged: true,
-            newPassword,
-          },
-        });
-      }
-    }, 1200);
-  };
+      setNewPasswordError("");
 
-  useEffect(() => {
-    if (location.state?.goToStep3) {
-      setStage(3);
-      setHideStepper(true);
+      showToast(
+        "success",
+        "Success",
+        response.data?.message || "Password reset successful",
+      );
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1200);
+    } catch (error) {
+      console.log(error);
+
+      showToast(
+        "error",
+        "Error",
+        error?.response?.data?.message || "Failed to reset password",
+      );
     }
-  }, [location.state]);
+  };
 
   return (
     <Box
