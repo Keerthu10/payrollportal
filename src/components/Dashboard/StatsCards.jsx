@@ -6,115 +6,45 @@ import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
-const stats = [
-  // {
-  //   label: "Total Employees",
-  //   value: "1248",
-  //   icon: <DirectionsRunIcon fontSize="small" />,
-  //   badge: "+4.2%",
-  //   up: true,
+const StatsCards = ({ dashboardStats }) => {
+  const stats = [
+    {
+      label: "Total Employees",
+      value: dashboardStats?.lastRun?.totalEmployees || 0,
+      icon: <GroupsRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
+      gradient: "linear-gradient(135deg,#8B5CF6 0%,#4F46E5 100%)",
+      subStats: [
+        {
+          label: "Active",
+          value: dashboardStats?.lastRun?.totalEmployees || 0,
+        },
+        { label: "New", value: "0" },
+      ],
+    },
 
-  //   accent: "#8B5CF6",
+    {
+      label: "Payslips Generated",
+      value: dashboardStats?.totalRuns || 0,
+      icon: <DescriptionRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
+      gradient: "linear-gradient(135deg,#4ADE80 0%,#22C55E 100%)",
+      subStats: [
+        { label: "Generated", value: dashboardStats?.totalRuns || 0 },
+        { label: "Pending", value: "0" },
+        { label: "Failed", value: dashboardStats?.emailsFailed || 0 },
+      ],
+    },
 
-  //   points: "0,30 20,24 40,18 60,14 80,10 100,8 120,4",
-  // },
-
-  // {
-  //   label: "Payslips Generated",
-  //   value: "340",
-  //   icon: <DescriptionIcon fontSize="small" />,
-  //   badge: "+2.8%",
-  //   up: true,
-
-  //   accent: "#06B6D4",
-
-  //   points: "0,26 20,22 40,20 60,14 80,12 100,10 120,8",
-  // },
-
-  // {
-  //   label: "Emails Sent",
-  //   value: "318 / 340",
-  //   icon: <EmailIcon fontSize="small" />,
-  //   badge: "+99%",
-  //   up: true,
-
-  //   accent: "#10B981",
-
-  //   points: "0,28 20,26 40,18 60,20 80,12 100,10 120,6",
-  // },
-  // {
-  //   label: "Total Employees",
-  //   value: "1,248",
-  //   badge: "+4.2%",
-  //   accent: "#8B5CF6",
-
-  //   subStats: [
-  //     { label: "Active", value: "900" },
-  //     { label: "On Leave", value: "48" },
-  //     { label: "New", value: "12" },
-  //   ],
-  // },
-
-  // {
-  //   label: "Payslips Generated",
-  //   value: "340",
-  //   badge: "+2.8%",
-  //   accent: "#10B981",
-
-  //   subStats: [
-  //     { label: "Generated", value: "340" },
-  //     { label: "Pending", value: "46" },
-  //     { label: "Failed", value: "0" },
-  //   ],
-  // },
-
-  // {
-  //   label: "Emails Sent",
-  //   value: "318 / 340",
-  //   badge: "+99%",
-  //   accent: "#3B82F6",
-
-  //   subStats: [
-  //     { label: "Delivered", value: "318" },
-  //     { label: "Pending", value: "22" },
-  //     { label: "Failed", value: "0" },
-  //   ],
-  // },
-  {
-    label: "Total Employees",
-    value: "912",
-    icon: <GroupsRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
-    gradient: "linear-gradient(135deg,#8B5CF6 0%,#4F46E5 100%)",
-    subStats: [
-      { label: "Active", value: "900" },
-      { label: "New", value: "12" },
-    ],
-  },
-  {
-    label: "Payslips Generated",
-    value: "340",
-    icon: <DescriptionRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
-    gradient: "linear-gradient(135deg,#4ADE80 0%,#22C55E 100%)",
-    subStats: [
-      { label: "Generated", value: "340" },
-      { label: "Pending", value: "46" },
-      { label: "Failed", value: "0" },
-    ],
-  },
-  {
-    label: "Emails Sent",
-    value: "318/340",
-    icon: <EmailRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
-    gradient: "linear-gradient(135deg,#FB923C 0%,#F43F5E 100%)",
-    subStats: [
-      { label: "Delivered", value: "318" },
-      { label: "Pending", value: "22" },
-      { label: "Failed", value: "0" },
-    ],
-  },
-];
-
-const StatsCards = () => {
+    {
+      label: "Emails Sent",
+      value: dashboardStats?.emailsSent || 0,
+      icon: <EmailRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
+      gradient: "linear-gradient(135deg,#FB923C 0%,#F43F5E 100%)",
+      subStats: [
+        { label: "Delivered", value: dashboardStats?.emailsSent || 0 },
+        { label: "Failed", value: dashboardStats?.emailsFailed || 0 },
+      ],
+    },
+  ];
   return (
     <Box
       sx={{
@@ -127,7 +57,7 @@ const StatsCards = () => {
         },
 
         gap: 3,
-        mb:4,
+        mb: 4,
       }}
     >
       {stats.map((stat) => (

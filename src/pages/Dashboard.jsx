@@ -96,6 +96,7 @@ import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import ApprovalRoundedIcon from "@mui/icons-material/ApprovalRounded";
 import BoltRoundedIcon from "@mui/icons-material/BoltRounded";
 import { Legend } from "recharts";
+import { getDashboardStats } from "../services/dashboard";
 
 import {
   ResponsiveContainer,
@@ -224,13 +225,24 @@ const recentActivities = [
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
+  const [dashboardStats, setDashboardStats] = useState(null);
+
+  const fetchDashboardStats = async()=>{
+    try{
+      setLoading(true);
+      const response = await getDashboardStats();
+      console.log("Dashboard stats:",response.data);
+      setDashboardStats(response.data);
+    }catch(error){
+      console.log("Dashboard Stats Error:",error);
+    } finally{
+      setLoading(false);
+    }
+  }
+
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
+    fetchDashboardStats();
   }, []);
   return (
     <>
@@ -326,7 +338,7 @@ const Dashboard = () => {
 
         {/* ================= STATS CARDS ================= */}
 
-        <StatsCards />
+        <StatsCards dashboardStats={dashboardStats}/>
 
         {/* ================= CHART SECTION ================= */}
 

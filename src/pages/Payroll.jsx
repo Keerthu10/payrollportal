@@ -564,7 +564,7 @@ const sampleHeaders = [
   "Bank Account No",
   "PAN No",
   "UAN No",
-  "Pay Period (DD.MM.YYYY-DD.MM.YYYY)",
+  "Pay Period",
   "Total Days",
   "Working Days",
   "LOP Days",
@@ -666,6 +666,10 @@ const Payroll = () => {
   const validatePayrollData = (data) => {
     let errors = [];
     const employeeIds = new Set();
+    const emails = new Set();
+    const bankAccount = new Set();
+    const panNumbers = new Set();
+    const uanNumbers = new Set();
 
     data.forEach((employee, index) => {
       const row = index + 1;
@@ -685,11 +689,15 @@ const Payroll = () => {
       }
 
       // EMAIL
-      const email = employee["Email"];
+      const email = String(employee["Email"]).trim().toLowerCase();
       if (!email) {
         errors.push(`Row ${row}: Email is required`);
       } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
         errors.push(`Row ${row}: Invalid Email`);
+      } else if(emails.has(email)){
+        errors.push(`Row ${row}:Duplicate Email`);
+      } else {
+        emails.add(email);
       }
 
       // DOB
@@ -723,22 +731,38 @@ const Payroll = () => {
       }
 
       // ACCOUNT NUMBER
-      if (!employee["Bank Account No"]) {
-        errors.push(`Row ${row}: Account Number required`);
+      const bankAccounts = String(employee["Bank Account No"]).trim();
+      if (!bankAccount) {
+        errors.push(`Row ${row}:Account Number Required`);
+      } else if (bankAccount.has(bankAccounts)) {
+        errors.push(`Row ${row}:Duplicate Bank Account No`);
+      } else {
+        bankAccount.add(bankAccounts);
       }
 
       // PAN
-      if (!employee["PAN No"]) {
-        errors.push(`Row ${row}: PAN No is required`);
+      const panNo = String(employee["PAN No"]).trim().toUpperCase();
+      if (!panNo) {
+        errors.push(`Row ${row}:PAN no is required`);
+      } else if (panNumbers.has(panNo)) {
+        errors.push(`Row ${row}:Duplicate PAN No`);
+      } else {
+        panNumbers.add(panNo);
       }
 
       // UAN
-      if (!employee["UAN No"]) {
-        errors.push(`Row ${row}: UAN No is required`);
+      const uanNo = String(employee["UAN No"]).trim();
+
+      if(!uanNo){
+        errors.push(`Row ${row}:UAN No is required`);
+      }else if(uanNumbers.has(uanNo)){
+        errors.push(`Row ${row}:Duplicate UAN No`);
+      } else{
+        uanNumbers.add(uanNo);
       }
 
       // PAY PERIOD
-      if (!employee["Pay Period (DD.MM.YYYY-DD.MM.YYYY)"]) {
+      if (!employee["Pay Period"]) {
         errors.push(`Row ${row}: Pay Period is required`);
       }
 
@@ -825,13 +849,22 @@ const Payroll = () => {
 
       setTemplateHeaders(headers);
 
-      const normalizedHeaders = headers.map((h) => h.trim().toUpperCase());
+      const normalizedHeaders = headers.map((h) =>
+        String(h).trim().toUpperCase(),
+      );
+
       const normalizedTemplate = sampleHeaders.map((h) =>
         h.trim().toUpperCase(),
       );
 
-      if (normalizedHeaders.join(",") !== normalizedTemplate.join(",")) {
-        setValidationErrors(["Uploaded file does not match template headers"]);
+      const missingHeaders = normalizedTemplate.filter(
+        (header) => !normalizedHeaders.includes(header),
+      );
+
+      if (missingHeaders.length > 0) {
+        setValidationErrors([`Missing columns: ${missingHeaders.join(", ")}`]);
+
+        setLoading(false);
         return;
       }
 
