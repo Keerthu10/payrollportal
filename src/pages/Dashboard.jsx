@@ -86,6 +86,7 @@ import {
   Backdrop,
   CircularProgress,
 } from "@mui/material";
+import dayjs from "dayjs";
 
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
@@ -96,6 +97,7 @@ import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import ApprovalRoundedIcon from "@mui/icons-material/ApprovalRounded";
 import BoltRoundedIcon from "@mui/icons-material/BoltRounded";
 import { Legend } from "recharts";
+import { getDashboardStats } from "../services/dashboard";
 
 import {
   ResponsiveContainer,
@@ -112,126 +114,39 @@ import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import StatsCards from "../components/Dashboard/StatsCards";
 
 const chartData = [
-  { month: "Jan", payroll: 20, employees: 10 },
-  { month: "Feb", payroll: 45, employees: 30 },
-  { month: "Mar", payroll: 25, employees: 18 },
-  { month: "Apr", payroll: 50, employees: 35 },
-  { month: "May", payroll: 32, employees: 22 },
-  { month: "Jun", payroll: 62, employees: 48 },
-];
-
-const statsCards = [
-  {
-    title: "Total Payroll Runs",
-    value: "12",
-    icon: (
-      <CalendarMonthRoundedIcon
-        sx={{
-          color: "#fff",
-          fontSize: 28,
-        }}
-      />
-    ),
-    gradient: "linear-gradient(135deg,#8B5CF6 0%,#4F46E5 100%)",
-  },
-
-  {
-    title: "Total Employees",
-    value: "185",
-    icon: (
-      <GroupsRoundedIcon
-        sx={{
-          color: "#fff",
-          fontSize: 28,
-        }}
-      />
-    ),
-    gradient: "linear-gradient(135deg,#8B5CF6 0%,#6366F1 100%)",
-  },
-
-  {
-    title: "Monthly Payroll",
-    value: "$120K",
-    icon: (
-      <PaidRoundedIcon
-        sx={{
-          color: "#fff",
-          fontSize: 28,
-        }}
-      />
-    ),
-    gradient: "linear-gradient(135deg,#4ADE80 0%,#22C55E 100%)",
-  },
-
-  {
-    title: "Pending Approvals",
-    value: "5",
-    icon: (
-      <FactCheckRoundedIcon
-        sx={{
-          color: "#fff",
-          fontSize: 28,
-        }}
-      />
-    ),
-    gradient: "linear-gradient(135deg,#FB923C 0%,#F43F5E 100%)",
-  },
-];
-
-const quickActions = [
-  {
-    title: "Upload Payroll",
-    icon: <UploadFileRoundedIcon />,
-  },
-
-  {
-    title: "Generate Payslips",
-    icon: <BoltRoundedIcon />,
-  },
-
-  {
-    title: "Approve Payroll",
-    icon: <ApprovalRoundedIcon />,
-  },
-
-  {
-    title: "Send Emails",
-    icon: <SendRoundedIcon />,
-  },
-];
-
-const recentActivities = [
-  {
-    title: "Payroll generated for Engineering Department",
-    time: "2 mins ago",
-  },
-
-  {
-    title: "Payslips sent successfully to employees",
-    time: "10 mins ago",
-  },
-
-  {
-    title: "New employee added into payroll",
-    time: "1 hour ago",
-  },
-
-  {
-    title: "Payroll approved by HR Manager",
-    time: "3 hours ago",
-  },
+  { month: "Jan", successfulPayrolls: 20, pendingPayrolls: 10 },
+  { month: "Feb", successfulPayrolls: 45, pendingPayrolls: 8 },
+  { month: "Mar", successfulPayrolls: 25, pendingPayrolls: 18 },
+  { month: "Apr", successfulPayrolls: 50, pendingPayrolls: 5 },
+  { month: "May", successfulPayrolls: 32, pendingPayrolls: 2 },
+  { month: "Jun", successfulPayrolls: 62, pendingPayrolls: 1 },
 ];
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
+  const [dashboardStats, setDashboardStats] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
+
+  const fetchDashboardStats = async () => {
+    try {
+      setLoading(true);
+      const response = await getDashboardStats();
+      console.log("Dashboard stats:", response.data);
+      setDashboardStats(response.data);
+    } catch (error) {
+      console.log("Dashboard Stats Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    fetchDashboardStats(
+      selectedMonth.format("MM"),
+      selectedMonth.format("YYYY"),
+    );
+  }, [selectedMonth]);
 
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <>
       <Backdrop
@@ -322,11 +237,14 @@ const Dashboard = () => {
         />
 
         {/* ================= HEADER ================= */}
-        <DashboardHeader />
+        <DashboardHeader
+          selectedMonth={selectedMonth}
+          setSelectedMonth={setSelectedMonth}
+        />
 
         {/* ================= STATS CARDS ================= */}
 
-        <StatsCards />
+        <StatsCards dashboardStats={dashboardStats} />
 
         {/* ================= CHART SECTION ================= */}
 
@@ -364,7 +282,7 @@ const Dashboard = () => {
                 fontSize: "26px",
               }}
             >
-              Payroll Overview
+              Payroll Processing Trend
             </Typography>
 
             {/* DROPDOWN */}
@@ -412,7 +330,7 @@ const Dashboard = () => {
 
               <XAxis dataKey="month" />
 
-              <YAxis />
+              <YAxis domain={[0, 70]} tickCount={15} />
 
               <Tooltip />
 
@@ -420,7 +338,8 @@ const Dashboard = () => {
 
               <Area
                 type="monotone"
-                dataKey="payroll"
+                dataKey="successfulPayrolls"
+                name="Successful Payrolls"
                 stroke="#38BDF8"
                 fill="url(#payrollGradient)"
                 strokeWidth={4}
@@ -428,7 +347,8 @@ const Dashboard = () => {
 
               <Line
                 type="monotone"
-                dataKey="employees"
+                dataKey="pendingPayrolls"
+                name="Pending Payrolls"
                 stroke="#8B5CF6"
                 strokeWidth={4}
               />

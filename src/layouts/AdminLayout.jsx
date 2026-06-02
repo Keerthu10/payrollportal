@@ -85,15 +85,17 @@
 
 // export default AdminLayout;
 
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import { Box, CssBaseline } from "@mui/material";
 
-import { Outlet,useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import TopToolbar from "../components/TopToolbar";
 
 import { GlobalSessionTimeoutModal } from "../ui/GlobalModal";
+
+import Footer from "../components/Footer";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -194,6 +196,7 @@ const AdminLayout = () => {
         >
           <Outlet />
         </Box>
+        <Footer />
       </Box>
     </>
   );
