@@ -1388,6 +1388,10 @@ const Payroll = () => {
           <Button
             variant="contained"
             startIcon={<UploadFileOutlinedIcon />}
+            onClick={(e) => {
+              e.stopPropagation();
+              fileInputRef.current?.click();
+            }}
             sx={{
               mt: 3,
 

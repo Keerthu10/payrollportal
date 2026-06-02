@@ -9,251 +9,350 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 const StatsCards = ({ dashboardStats }) => {
   const stats = [
     {
-      label: "Total Employees",
+      label: "Employees",
       value: dashboardStats?.lastRun?.totalEmployees || 0,
       icon: <GroupsRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
       gradient: "linear-gradient(135deg,#8B5CF6 0%,#4F46E5 100%)",
       subStats: [
         {
-          label: "Active",
+          label: "From Excel",
           value: dashboardStats?.lastRun?.totalEmployees || 0,
         },
-        { label: "New", value: "0" },
+        { label: "Total runs", value: "0" },
       ],
     },
 
     {
-      label: "Payslips Generated",
+      label: "Payslips Sent",
       value: dashboardStats?.totalRuns || 0,
       icon: <DescriptionRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
       gradient: "linear-gradient(135deg,#4ADE80 0%,#22C55E 100%)",
       subStats: [
-        { label: "Generated", value: dashboardStats?.totalRuns || 0 },
+        { label: "Delivered", value: dashboardStats?.totalRuns || 0 },
         { label: "Pending", value: "0" },
-        { label: "Failed", value: dashboardStats?.emailsFailed || 0 },
+        { label: "This Month", value: dashboardStats?.emailsFailed || 0 },
       ],
     },
 
     {
-      label: "Emails Sent",
+      label: "Failed Emails",
       value: dashboardStats?.emailsSent || 0,
       icon: <EmailRoundedIcon sx={{ color: "#fff", fontSize: 28 }} />,
       gradient: "linear-gradient(135deg,#FB923C 0%,#F43F5E 100%)",
       subStats: [
-        { label: "Delivered", value: dashboardStats?.emailsSent || 0 },
-        { label: "Failed", value: dashboardStats?.emailsFailed || 0 },
+        { label: "Failed", value: dashboardStats?.emailsSent || 0 },
+        { label: "Retried", value: dashboardStats?.emailsFailed || 0 },
+        {label:"Unresolved",value:dashboardStats?.emailsFailed || 0}
       ],
     },
   ];
   return (
-    <Box
-      sx={{
-        display: "grid",
-
-        gridTemplateColumns: {
-          xs: "1fr",
-          sm: "1fr 1fr",
-          lg: "1fr 1fr 1fr",
-        },
-
-        gap: 3,
-        mb: 4,
-      }}
-    >
-      {stats.map((stat) => (
-        // <Box
-        //   key={stat.label}
-        //   sx={{
-        //     position: "relative",
-        //     overflow: "hidden",
-
-        //     borderRadius: "20px",
-
-        //     p: 2.2,
-
-        //     background: "#FFFFFF",
-
-        //     border: "1px solid #E5E7EB",
-
-        //     borderLeft: `4px solid ${stat.accent}`,
-
-        //     boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
-
-        //     transition: "all 0.25s ease",
-
-        //     "&:hover": {
-        //       transform: "translateY(-4px)",
-        //       boxShadow: "0 12px 30px rgba(15,23,42,0.10)",
-        //     },
-        //   }}
-        // >
-        //   {/* TOP */}
-        //   <Box
-        //     sx={{
-        //       display: "flex",
-        //       justifyContent: "space-between",
-        //       alignItems: "center",
-        //       mb: 2,
-        //     }}
-        //   >
-        //     <Typography
-        //       sx={{
-        //         fontSize: 14,
-        //         fontWeight: 600,
-        //         color: "#475569",
-        //       }}
-        //     >
-        //       {stat.label}
-        //     </Typography>
-
-        //     <Box
-        //       sx={{
-        //         px: 1.4,
-        //         py: 0.4,
-        //         borderRadius: "999px",
-        //         fontSize: 12,
-        //         fontWeight: 700,
-        //         background: "#DCFCE7",
-        //         color: "#15803D",
-        //       }}
-        //     >
-        //       {stat.badge}
-        //     </Box>
-        //   </Box>
-
-        //   {/* VALUE */}
-        //   <Typography
-        //     sx={{
-        //       fontSize: 28,
-        //       fontWeight: 700,
-        //       color: "#0F172A",
-        //       lineHeight: 1,
-        //       mb: 1.8,
-        //     }}
-        //   >
-        //     {stat.value}
-        //   </Typography>
-
-        //   {/* DIVIDER */}
-        //   <Box
-        //     sx={{
-        //       height: "1px",
-        //       background: "rgba(148,163,184,0.18)",
-        //       mb: 1.2,
-        //     }}
-        //   />
-
-        //   {/* SUB STATS */}
-        //   <Box
-        //     sx={{
-        //       display: "flex",
-        //       justifyContent: "space-between",
-        //     }}
-        //   >
-        //     {stat.subStats.map((item) => (
-        //       <Box key={item.label}>
-        //         <Typography
-        //           sx={{
-        //             fontSize: 13,
-        //             color: "#64748B",
-        //             mb: 0.5,
-        //           }}
-        //         >
-        //           {item.label}
-        //         </Typography>
-
-        //         <Typography
-        //           sx={{
-        //             fontSize: 18,
-        //             fontWeight: 700,
-        //             color: "#111827",
-        //             lineHeight: 1,
-        //           }}
-        //         >
-        //           {item.value}
-        //         </Typography>
-        //       </Box>
-        //     ))}
-        //   </Box>
-        // </Box>
+    <Box sx={{ mb: 4 }}>
+      {/* <Box
+        sx={{
+          mb: 3,
+          p: 3,
+          borderRadius: "20px",
+          background: "rgba(255,255,255,0.08)",
+          color: "#0F172A",
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            md: "repeat(4,1fr)",
+          },
+          gap: 3,
+          border: "1px solid #E5E7EB",
+          boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+        }}
+      >
         <Box
-          key={stat.label}
           sx={{
-            borderRadius: "20px",
-            p: 2.2,
+            p: 2,
+            borderRadius: "16px",
             background: "#FFFFFF",
-            border: "1px solid #E5E7EB",
-            boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
-            transition: "all 0.25s ease",
-            "&:hover": {
-              transform: "translateY(-4px)",
-              boxShadow: "0 12px 30px rgba(15,23,42,0.10)",
-            },
+            boxShadow: "0 2px 8px rgba(15,23,42,0.06)",
           }}
         >
-          {/* ICON */}
-          <Box
-            sx={{
-              width: 44,
-              height: 44,
-              borderRadius: "14px",
-              background: stat.gradient,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
-              mb: 2,
-            }}
-          >
-            {stat.icon}
-          </Box>
+          <Typography sx={{ color: "#A1A1AA", fontSize: 14 }}>
+            Current month
+          </Typography>
+          <Typography sx={{ fontWeight: 700 }}>June 2026</Typography>
+        </Box>
 
-          {/* LABEL */}
-          <Typography
-            sx={{ fontSize: 13, fontWeight: 600, color: "#475569", mb: 0.5 }}
-          >
-            {stat.label}
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: "16px",
+            background: "#FFFFFF",
+            boxShadow: "0 2px 8px rgba(15,23,42,0.06)",
+          }}
+        >
+          <Typography sx={{ color: "#A1A1AA", fontSize: 14 }}>
+            Payroll status
           </Typography>
 
-          {/* VALUE */}
-          <Typography
-            sx={{
-              fontSize: 22,
-              fontWeight: 700,
-              color: "#0F172A",
-              lineHeight: 1,
-              mb: 1.2,
-            }}
-          >
-            {stat.value}
-          </Typography>
-
-          {/* DIVIDER */}
           <Box
             sx={{
-              height: "1px",
-              background: "rgba(148,163,184,0.18)",
-              mb: 1.2,
+              mt: 1,
+              px: 2,
+              py: 0.5,
+              width: "fit-content",
+              borderRadius: "999px",
+              bgcolor: "#DCFCE7",
+              color: "#166534",
+              fontWeight: 600,
+              fontSize: "13px",
             }}
-          />
-
-          {/* SUB STATS */}
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            {stat.subStats.map((item) => (
-              <Box key={item.label}>
-                <Typography sx={{ fontSize: 12, color: "#64748B", mb: 0.3 }}>
-                  {item.label}
-                </Typography>
-                <Typography
-                  sx={{ fontSize: 16, fontWeight: 700, color: "#111827" }}
-                >
-                  {item.value}
-                </Typography>
-              </Box>
-            ))}
+          >
+            Completed
           </Box>
         </Box>
-      ))}
+
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: "16px",
+            background: "#FFFFFF",
+            boxShadow: "0 2px 8px rgba(15,23,42,0.06)",
+          }}
+        >
+          <Typography sx={{ color: "#A1A1AA", fontSize: 14 }}>
+            Last run
+          </Typography>
+          <Typography sx={{ fontWeight: 700 }}>1 Jun 2026, 10:30 AM</Typography>
+        </Box>
+
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: "16px",
+            background: "#FFFFFF",
+            boxShadow: "0 2px 8px rgba(15,23,42,0.06)",
+          }}
+        >
+          <Typography sx={{ color: "#A1A1AA", fontSize: 14 }}>
+            Success rate
+          </Typography>
+          <Typography
+            sx={{
+              color: "#22C55E",
+              fontWeight: 700,
+              fontSize: "22px",
+            }}
+          >
+            96%
+          </Typography>
+        </Box>
+      </Box> */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            md: "repeat(3, 1fr)",
+          },
+          gap: 3,
+        }}
+      >
+        {/* {stats.map((stat) => (
+    ...
+  ))} */}
+
+        {stats.map((stat) => (
+          // <Box
+          //   key={stat.label}
+          //   sx={{
+          //     position: "relative",
+          //     overflow: "hidden",
+
+          //     borderRadius: "20px",
+
+          //     p: 2.2,
+
+          //     background: "#FFFFFF",
+
+          //     border: "1px solid #E5E7EB",
+
+          //     borderLeft: `4px solid ${stat.accent}`,
+
+          //     boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+
+          //     transition: "all 0.25s ease",
+
+          //     "&:hover": {
+          //       transform: "translateY(-4px)",
+          //       boxShadow: "0 12px 30px rgba(15,23,42,0.10)",
+          //     },
+          //   }}
+          // >
+          //   {/* TOP */}
+          //   <Box
+          //     sx={{
+          //       display: "flex",
+          //       justifyContent: "space-between",
+          //       alignItems: "center",
+          //       mb: 2,
+          //     }}
+          //   >
+          //     <Typography
+          //       sx={{
+          //         fontSize: 14,
+          //         fontWeight: 600,
+          //         color: "#475569",
+          //       }}
+          //     >
+          //       {stat.label}
+          //     </Typography>
+
+          //     <Box
+          //       sx={{
+          //         px: 1.4,
+          //         py: 0.4,
+          //         borderRadius: "999px",
+          //         fontSize: 12,
+          //         fontWeight: 700,
+          //         background: "#DCFCE7",
+          //         color: "#15803D",
+          //       }}
+          //     >
+          //       {stat.badge}
+          //     </Box>
+          //   </Box>
+
+          //   {/* VALUE */}
+          //   <Typography
+          //     sx={{
+          //       fontSize: 28,
+          //       fontWeight: 700,
+          //       color: "#0F172A",
+          //       lineHeight: 1,
+          //       mb: 1.8,
+          //     }}
+          //   >
+          //     {stat.value}
+          //   </Typography>
+
+          //   {/* DIVIDER */}
+          //   <Box
+          //     sx={{
+          //       height: "1px",
+          //       background: "rgba(148,163,184,0.18)",
+          //       mb: 1.2,
+          //     }}
+          //   />
+
+          //   {/* SUB STATS */}
+          //   <Box
+          //     sx={{
+          //       display: "flex",
+          //       justifyContent: "space-between",
+          //     }}
+          //   >
+          //     {stat.subStats.map((item) => (
+          //       <Box key={item.label}>
+          //         <Typography
+          //           sx={{
+          //             fontSize: 13,
+          //             color: "#64748B",
+          //             mb: 0.5,
+          //           }}
+          //         >
+          //           {item.label}
+          //         </Typography>
+
+          //         <Typography
+          //           sx={{
+          //             fontSize: 18,
+          //             fontWeight: 700,
+          //             color: "#111827",
+          //             lineHeight: 1,
+          //           }}
+          //         >
+          //           {item.value}
+          //         </Typography>
+          //       </Box>
+          //     ))}
+          //   </Box>
+          // </Box>
+          <Box
+            key={stat.label}
+            sx={{
+              borderRadius: "20px",
+              p: 2.2,
+              background: "#FFFFFF",
+              border: "1px solid #E5E7EB",
+              boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+              transition: "all 0.25s ease",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0 12px 30px rgba(15,23,42,0.10)",
+              },
+            }}
+          >
+            {/* ICON */}
+            <Box
+              sx={{
+                width: 44,
+                height: 44,
+                borderRadius: "14px",
+                background: stat.gradient,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
+                mb: 2,
+              }}
+            >
+              {stat.icon}
+            </Box>
+
+            {/* LABEL */}
+            <Typography
+              sx={{ fontSize: 13, fontWeight: 600, color: "#475569", mb: 0.5 }}
+            >
+              {stat.label}
+            </Typography>
+
+            {/* VALUE */}
+            <Typography
+              sx={{
+                fontSize: 22,
+                fontWeight: 700,
+                color: "#0F172A",
+                lineHeight: 1,
+                mb: 1.2,
+              }}
+            >
+              {stat.value}
+            </Typography>
+
+            {/* DIVIDER */}
+            <Box
+              sx={{
+                height: "1px",
+                background: "rgba(148,163,184,0.18)",
+                mb: 1.2,
+              }}
+            />
+
+            {/* SUB STATS */}
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              {stat.subStats.map((item) => (
+                <Box key={item.label}>
+                  <Typography sx={{ fontSize: 12, color: "#64748B", mb: 0.3 }}>
+                    {item.label}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: 16, fontWeight: 700, color: "#111827" }}
+                  >
+                    {item.value}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 };

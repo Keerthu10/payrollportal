@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Box, Typography, Stack, Button } from "@mui/material";
 
@@ -6,6 +6,11 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import dayjs from "dayjs";
+
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const DashboardHeader = () => {
   const today = new Date();
@@ -26,6 +31,8 @@ const DashboardHeader = () => {
     day: "numeric",
     year: "numeric",
   });
+
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
 
   return (
     <Box
@@ -89,39 +96,41 @@ const DashboardHeader = () => {
           sx={{ ml: "auto" }}
         >
           {/* DATE BUTTON */}
-          <Button
-            variant="outlined"
-            startIcon={<CalendarTodayOutlinedIcon />}
-            sx={{
-              height: "42px",
-              minWidth: "170px",
-              fontSize: "14px",
-              whiteSpace: "nowrap",
-              borderRadius: "10px",
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              views={["year", "month"]}
+              value={selectedMonth}
+              onChange={(newValue) => setSelectedMonth(newValue)}
+              format="MMMM YYYY"
+              sx={{
+                width: 200,
 
-              textTransform: "none",
+                "& .MuiPickersInputBase-root": {
+                  background: "#FFFFFF !important",
+                  borderRadius: "16px",
+                  boxShadow: "0 6px 16px rgba(0,0,0,0.12)",
 
-              fontWeight: 600,
+                  transition: "all 0.2s ease",
 
-              background: "linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%)",
+                  "&:hover": {
+                    transform: "translateY(-1px)",
+                    boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+                  },
+                },
 
-              border: "1px solid #C7D2FE",
+                "& .MuiPickersSectionList-root": {
+                  color: "#111827",
+                  fontWeight: 600,
+                  fontSize: "15px",
+                },
 
-              color: "#4338CA",
-
-              boxShadow: "0 4px 12px rgba(99,102,241,0.12)",
-
-              "&:hover": {
-                background: "linear-gradient(135deg, #E0E7FF 0%, #EDE9FE 100%)",
-
-                borderColor: "#818CF8",
-
-                transform: "translateY(-1px)",
-              },
-            }}
-          >
-            {formattedDate}
-          </Button>
+                "& .MuiSvgIcon-root": {
+                  color: "#4338CA",
+                  fontSize: "22px",
+                },
+              }}
+            />
+          </LocalizationProvider>
         </Stack>
       </Stack>
     </Box>
