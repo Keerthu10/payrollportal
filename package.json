@@ -2,6 +2,7 @@
   "name": "payroll-portal",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://Keerthu10.github.io/payrollportal",
   "type": "module",
   "scripts": {
     "dev": "vite",
