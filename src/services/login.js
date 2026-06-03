@@ -1,4 +1,4 @@
-import api from "./Api";
+import api from "./api";
 
 export const loginUser = (data) => api.post("/ctpl/auth/login", data);
 
