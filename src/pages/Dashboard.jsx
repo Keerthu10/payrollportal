@@ -1,75 +1,75 @@
-// import React from "react";
+// // import React from "react";
 
-// import { Box, Grid } from "@mui/material";
+// // import { Box, Grid } from "@mui/material";
 
-// import DashboardHeader from "../components/Dashboard/DashboardHeader";
+// // import DashboardHeader from "../components/Dashboard/DashboardHeader";
 
-// import StatsCards from "../components/Dashboard/StatsCards";
+// // import StatsCards from "../components/Dashboard/StatsCards";
 
-// import PayrollOverview from "../components/Dashboard/PayrollOverview";
+// // import PayrollOverview from "../components/Dashboard/PayrollOverview";
 
-// import ChartsSection from "../components/Dashboard/ChartsSection";
-// import DepartmentDistribution from "../components/Dashboard/DepartmentDistribution";
-// import UpcomingPayroll from "../components/Dashboard/UpcomingPayroll";
-// import PendingApprovals from "../components/Dashboard/PendingApprovals";
-// import TopEarners from "../components/Dashboard/TopEarners";
-// import RecentActivities from "../components/Dashboard/RecentActivities";
-// // import AuditPreview from "../components/dashboard/AuditPreview";
-// // import QuickActions from "../components/dashboard/QuickActions";
+// // import ChartsSection from "../components/Dashboard/ChartsSection";
+// // import DepartmentDistribution from "../components/Dashboard/DepartmentDistribution";
+// // import UpcomingPayroll from "../components/Dashboard/UpcomingPayroll";
+// // import PendingApprovals from "../components/Dashboard/PendingApprovals";
+// // import TopEarners from "../components/Dashboard/TopEarners";
+// // import RecentActivities from "../components/Dashboard/RecentActivities";
+// // // import AuditPreview from "../components/dashboard/AuditPreview";
+// // // import QuickActions from "../components/dashboard/QuickActions";
 
-// const Dashboard = () => {
-//   return (
-//     <Box
-//       sx={{
-//         display: "flex",
+// // const Dashboard = () => {
+// //   return (
+// //     <Box
+// //       sx={{
+// //         display: "flex",
 
-//         flexDirection: "column",
+// //         flexDirection: "column",
 
-//         gap: 2,
+// //         gap: 2,
 
-//         px: 1,
+// //         px: 1,
 
-//         mt: 2,
-//       }}
-//     >
-//       {/* FILTER BAR */}
-//       <DashboardHeader />
-//       {/* KPI CARDS */}
-//       <StatsCards />
-//       <PayrollOverview />
-//       {/* CHARTS */}
-//       {/* <ChartsSection /> */}
-//       {/* AUDIT + QUICK ACTIONS */}
-//       {/* <Grid container spacing={3} sx={{ mt: 2 }}>
-//         <Grid item xs={12} lg={4}>
-//           <PayrollOverview />
-//         </Grid>
+// //         mt: 2,
+// //       }}
+// //     >
+// //       {/* FILTER BAR */}
+// //       <DashboardHeader />
+// //       {/* KPI CARDS */}
+// //       <StatsCards />
+// //       <PayrollOverview />
+// //       {/* CHARTS */}
+// //       {/* <ChartsSection /> */}
+// //       {/* AUDIT + QUICK ACTIONS */}
+// //       {/* <Grid container spacing={3} sx={{ mt: 2 }}>
+// //         <Grid item xs={12} lg={4}>
+// //           <PayrollOverview />
+// //         </Grid>
 
-//         <Grid item xs={12} lg={4}>
-//           <DepartmentDistribution />
-//         </Grid>
-//         <Grid item xs={12} lg={4}>
-//           <RecentActivities />
-//         </Grid>
-//       </Grid> */}
-//       {/* <Grid container spacing={3} sx={{ mt: 1 }}>
-//         <Grid item xs={12} lg={5}>
-//           <PendingApprovals />
-//         </Grid>
+// //         <Grid item xs={12} lg={4}>
+// //           <DepartmentDistribution />
+// //         </Grid>
+// //         <Grid item xs={12} lg={4}>
+// //           <RecentActivities />
+// //         </Grid>
+// //       </Grid> */}
+// //       {/* <Grid container spacing={3} sx={{ mt: 1 }}>
+// //         <Grid item xs={12} lg={5}>
+// //           <PendingApprovals />
+// //         </Grid>
 
-//         <Grid item xs={12} lg={5}>
-//           <TopEarners />
-//         </Grid>
+// //         <Grid item xs={12} lg={5}>
+// //           <TopEarners />
+// //         </Grid>
 
-//         <Grid item xs={12} lg={2}>
-//           <RecentActivities />
-//         </Grid>
-//       </Grid> */}
-//     </Box>
-//   );
-// };
+// //         <Grid item xs={12} lg={2}>
+// //           <RecentActivities />
+// //         </Grid>
+// //       </Grid> */}
+// //     </Box>
+// //   );
+// // };
 
-// export default Dashboard;
+// // export default Dashboard;
 
 import React, { useEffect, useState } from "react";
 
