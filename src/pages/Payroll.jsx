@@ -874,7 +874,7 @@ const Payroll = () => {
         raw: false,
       });
 
-      const jsonData = allData;
+      const jsonData = allData.slice(1);
 
       if (jsonData.length === 0) {
         setValidationErrors(["No data rows found in uploaded file"]);
