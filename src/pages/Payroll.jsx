@@ -732,10 +732,11 @@ const Payroll = () => {
 
       // ACCOUNT NUMBER
       const bankAccounts = String(employee["Bank Account No"]).trim();
-      if (!bankAccount) {
-        errors.push(`Row ${row}:Account Number Required`);
+
+      if (!bankAccounts) {
+        errors.push(`Row ${row}: Account Number Required`);
       } else if (bankAccount.has(bankAccounts)) {
-        errors.push(`Row ${row}:Duplicate Bank Account No`);
+        errors.push(`Row ${row}: Duplicate Bank Account No`);
       } else {
         bankAccount.add(bankAccounts);
       }
@@ -873,11 +874,12 @@ const Payroll = () => {
         raw: false,
       });
 
-      const jsonData = allData.slice(1);
+      const jsonData = allData;
 
       if (jsonData.length === 0) {
         setValidationErrors(["No data rows found in uploaded file"]);
         setExcelData([]);
+        setLoading(false);
         return;
       }
 
@@ -1092,7 +1094,7 @@ const Payroll = () => {
         bankAccountNo: item["Bank Account No"],
         panNo: item["PAN No"],
         uanNo: item["UAN No"],
-        payPeriod: item["Pay Period (DD.MM.YYYY-DD.MM.YYYY)"],
+        payPeriod: item["Pay Period"],
 
         totalDays: Number(item["Total Days"]),
         workingDays: Number(item["Working Days"]),
@@ -1119,17 +1121,17 @@ const Payroll = () => {
             runId: null,
             employees: [employee],
           });
-
-          const currentCount = i + 1;
-
-          setProcessedCount(currentCount);
-
-          setProgress(Math.round((currentCount / employees.length) * 100));
         } catch (error) {
           failedEmployees.push(
             `${employee.employeeId} - ${employee.employeeName}`,
           );
         }
+
+        const currentCount = i + 1;
+
+        setProcessedCount(currentCount);
+
+        setProgress(Math.round((currentCount / employees.length) * 100));
       }
 
       if (failedEmployees.length === 0) {
