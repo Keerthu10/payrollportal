@@ -238,7 +238,7 @@ const StatsCards = ({ dashboardStats }) => {
     {
       id: "employees",
       label: "Total Employees Processed",
-      value: dashboardStats?.lastRun?.totalEmployees ?? "—",
+      value: dashboardStats?.lastRun?.emailsSent ?? "—",
       icon: <GroupsRoundedIcon sx={{ color: "#fff", fontSize: 22 }} />,
       gradient: "linear-gradient(135deg,#8B5CF6 0%,#4F46E5 100%)",
       shadowColor: "rgba(139,92,246,0.28)",
