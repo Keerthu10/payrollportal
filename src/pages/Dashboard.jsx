@@ -112,12 +112,12 @@ import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import StatsCards from "../components/Dashboard/StatsCards";
 
 const chartData = [
-  { month: "Jan", successfulPayrolls: 20, pendingPayrolls: 10 },
-  { month: "Feb", successfulPayrolls: 45, pendingPayrolls: 8 },
-  { month: "Mar", successfulPayrolls: 25, pendingPayrolls: 18 },
-  { month: "Apr", successfulPayrolls: 50, pendingPayrolls: 5 },
-  { month: "May", successfulPayrolls: 32, pendingPayrolls: 2 },
-  { month: "Jun", successfulPayrolls: 62, pendingPayrolls: 1 },
+  { month: "Jan", successfulPayrolls: 0, pendingPayrolls: 0 },
+  { month: "Feb", successfulPayrolls: 0, pendingPayrolls: 0 },
+  { month: "Mar", successfulPayrolls: 0, pendingPayrolls: 0 },
+  { month: "Apr", successfulPayrolls: 0, pendingPayrolls: 0 },
+  { month: "May", successfulPayrolls: 0, pendingPayrolls: 0 },
+  { month: "Jun", successfulPayrolls: 0, pendingPayrolls: 0 },
 ];
 
 const Dashboard = () => {
