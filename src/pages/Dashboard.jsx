@@ -83,8 +83,6 @@ import {
   FormControl,
   Select,
   Button,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
 import dayjs from "dayjs";
 
@@ -123,20 +121,16 @@ const chartData = [
 ];
 
 const Dashboard = () => {
-  const [loading, setLoading] = useState(true);
   const [dashboardStats, setDashboardStats] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
 
   const fetchDashboardStats = async () => {
     try {
-      setLoading(true);
       const response = await getDashboardStats();
       console.log("Dashboard stats:", response.data);
       setDashboardStats(response.data);
     } catch (error) {
       console.log("Dashboard Stats Error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -149,34 +143,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <Backdrop
-        open={loading}
-        sx={{
-          zIndex: 9999,
-          background: "rgba(15,23,42,0.65)",
-          backdropFilter: "blur(6px)",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <CircularProgress
-          size={70}
-          thickness={4}
-          sx={{
-            color: "#8B5CF6",
-          }}
-        />
-
-        <Typography
-          sx={{
-            color: "#fff",
-            fontWeight: 600,
-            fontSize: "18px",
-          }}
-        >
-          Loading Dashboard...
-        </Typography>
-      </Backdrop>
       <Box
         sx={{
           position: "relative",

@@ -6,18 +6,26 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
+    window.showGlobalLoader?.();
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    window.hideGlobalLoader?.();
+    return Promise.reject(error);
+  },
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    window.hideGlobalLoader?.();
+    return response;
+  },
   (error) => {
+    window.hideGlobalLoader?.();
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
       window.location.href = "/";

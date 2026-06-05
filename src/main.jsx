@@ -12,12 +12,16 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import { ToastProvider } from "./context/ToastContext";
 
+import { LoaderProvider } from "./context/LoaderContext";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <HashRouter>
       <CssBaseline />
       <ToastProvider>
-        <App />
+        <LoaderProvider>
+          <App />
+        </LoaderProvider>
       </ToastProvider>
     </HashRouter>
   </React.StrictMode>,
