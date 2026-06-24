@@ -19,6 +19,8 @@ const Employees = () => {
   const [search, setSearch] = useState("");
   const { showToast } = useToast();
   const [openEmployeeModal, setOpenEmployeeModal] = useState(false);
+  const [department, setDepartment] = useState("");
+  const [status, setStatus] = useState("");
 
   const [mode, setMode] = useState("add");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -134,8 +136,8 @@ const Employees = () => {
     }
   };
 
-  const filteredEmployees = (employees || []).filter((employee) =>
-    [
+  const filteredEmployees = (employees || []).filter((employee) => {
+    const matchesSearch = [
       employee.employeeId,
       employee.name,
       employee.email,
@@ -144,8 +146,18 @@ const Employees = () => {
     ]
       .join(" ")
       .toLowerCase()
-      .includes(search.toLowerCase()),
-  );
+      .includes(search.toLowerCase());
+
+    const matchesDepartment =
+      department === "" || employee.department === department;
+
+    const matchesStatus =
+      status === "" ||
+      (status === "Active" && employee.active) ||
+      (status === "Inactive" && !employee.active);
+
+    return matchesSearch && matchesDepartment && matchesStatus;
+  });
 
   return (
     <>
@@ -160,7 +172,14 @@ const Employees = () => {
 
       <EmployeeStats employees={employees} />
 
-      <EmployeeFilters search={search} setSearch={setSearch} />
+      <EmployeeFilters
+        search={search}
+        setSearch={setSearch}
+        department={department}
+        setDepartment={setDepartment}
+        status={status}
+        setStatus={setStatus}
+      />
 
       <EmployeeTable
         employees={filteredEmployees}

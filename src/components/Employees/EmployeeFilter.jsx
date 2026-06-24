@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 
 import {
   Paper,
@@ -7,7 +7,12 @@ import {
   MenuItem,
   Button,
   InputAdornment,
+  FormControl,
+  Select,
+  InputLabel
 } from "@mui/material";
+
+import { getDepartmentInfo } from "../../services/departmentService";
 
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import RestartAltRoundedIcon from "@mui/icons-material/RestartAltRounded";
@@ -20,6 +25,19 @@ const EmployeeFilters = ({
   status,
   setStatus,
 }) => {
+  const [departments, setDepartments] = useState([]);
+  useEffect(() => {
+    loadDepartments();
+  }, []);
+
+  const loadDepartments = async () => {
+    try {
+      const response = await getDepartmentInfo();
+      setDepartments(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleReset = () => {
     setSearch("");
     setDepartment("");
@@ -87,21 +105,20 @@ const EmployeeFilters = ({
         />
 
         {/* Department */}
-        <TextField
-          select
-          label="Department"
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
+        <FormControl
           sx={{
-            width: 180,
+            width: 220,
 
             "& .MuiOutlinedInput-root": {
               color: "#fff",
-
               borderRadius: "14px",
 
               "& fieldset": {
                 borderColor: "rgba(255,255,255,0.15)",
+              },
+
+              "&:hover fieldset": {
+                borderColor: "rgba(255,255,255,0.3)",
               },
             },
 
@@ -114,11 +131,22 @@ const EmployeeFilters = ({
             },
           }}
         >
-          <MenuItem value="">All Departments</MenuItem>
-          <MenuItem value="Engineering">Engineering</MenuItem>
-          <MenuItem value="HR">HR</MenuItem>
-          <MenuItem value="Finance">Finance</MenuItem>
-        </TextField>
+          <InputLabel>Department</InputLabel>
+
+          <Select
+            value={department}
+            label="Department"
+            onChange={(e) => setDepartment(e.target.value)}
+          >
+            <MenuItem value="">All Departments</MenuItem>
+
+            {departments.map((dept) => (
+              <MenuItem key={dept.departmentId} value={dept.departmentName}>
+                {dept.departmentName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         {/* Status */}
         <TextField
@@ -170,7 +198,7 @@ const EmployeeFilters = ({
 
             fontWeight: 600,
 
-            color:"#fff"
+            color: "#fff",
           }}
         >
           Reset

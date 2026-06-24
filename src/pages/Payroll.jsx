@@ -1338,7 +1338,7 @@ const Payroll = () => {
           sx={{
             border: dragActive ? "2px dashed #2563EB" : "2px dashed #CBD5E1",
             borderRadius: "22px",
-            py: 5,
+            py: 2,
             px: 3,
             textAlign: "center",
             cursor: "pointer",
@@ -1346,7 +1346,7 @@ const Payroll = () => {
             transition: "all 0.3s ease",
             mb: 4,
             background: "rgba(255,255,255,0.92)",
-            minHeight: "340px",
+            minHeight: "140px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -1370,7 +1370,7 @@ const Payroll = () => {
           />
           <FileUploadOutlinedIcon
             sx={{
-              fontSize: 70,
+              fontSize: 50,
 
               color: "#2563EB",
 
@@ -1380,7 +1380,7 @@ const Payroll = () => {
             }}
           />
           <Typography
-            sx={{ fontWeight: 700, fontSize: "32px", color: "#0F172A", mb: 1 }}
+            sx={{ fontWeight: 700, fontSize: "24px", color: "#0F172A", mb: 1 }}
           >
             Drag and Drop Payroll Excel here
           </Typography>
@@ -1395,7 +1395,7 @@ const Payroll = () => {
               fileInputRef.current?.click();
             }}
             sx={{
-              mt: 3,
+              mt: 2,
 
               background: "linear-gradient(90deg, #7C3AED 0%, #2563EB 100%)",
 

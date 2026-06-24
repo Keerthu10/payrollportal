@@ -134,19 +134,19 @@ const TopToolbar = () => {
       //   transition: "all 0.25s ease",
       // }}
       sx={{
-        background: "rgba(255,255,255,0.12)",
+        background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)", // dark navy
 
-        backdropFilter: "blur(14px)",
+        backdropFilter: "blur(20px)",
 
-        border: "1px solid rgba(255,255,255,0.15)",
+        border: "1px solid rgba(255,255,255,.08)",
 
-        borderRadius: "20px",
+        boxShadow: "0 8px 30px rgba(15,23,42,.15)",
 
         color: "#fff",
 
-        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        borderRadius: "20px",
 
-        height: "80px",
+        height: "72px",
 
         top: 20,
 
@@ -198,7 +198,7 @@ const TopToolbar = () => {
                 width: 90,
                 height: 50,
                 objectFit: "contain",
-                filter: "drop-shadow(0 0 6px rgba(255,255,255,0.6))",
+                filter: "drop-shadow(0 8px 16px rgba(109,93,251,.25))",
               }}
             />
 
@@ -207,7 +207,9 @@ const TopToolbar = () => {
               sx={{
                 fontSize: "20px",
                 fontWeight: 700,
-                color: "#fff",
+                background: "linear-gradient(90deg,#6D5DFB,#45D7FF)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
                 letterSpacing: "0.5px",
                 lineHeight: 1,
                 display: "flex",
@@ -231,8 +233,10 @@ const TopToolbar = () => {
               component={Link}
               to="/dashboard"
               sx={{
-                color: location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
-                fontWeight: location.pathname === "/dashboard" ? 700 : 500,
+                color:
+                  location.pathname === "/dashboard" ? "#6D5DFB" : "#64748B",
+
+                fontWeight: location.pathname === "/dashboard" ? 700 : 600,
                 fontSize: "17px",
                 position: "relative",
                 textDecoration: "none",

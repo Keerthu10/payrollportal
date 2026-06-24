@@ -80,38 +80,33 @@ const SignInView = () => {
     return valid;
   };
 
-  const handleLogin = async()=>{
-    if(!validateForm()){
+  const handleLogin = async () => {
+    if (!validateForm()) {
       showToast(
         "error",
         "Validation Error",
-        "Please fix the highlighted fields"
+        "Please fix the highlighted fields",
       );
       return;
     }
-    try{
+    try {
       const payload = {
         email,
         password,
-      }
+      };
       const response = await loginUser(payload);
-      console.log("Login Response:",response.data);
+      console.log("Login Response:", response.data);
 
-      localStorage.setItem("token",response.data?.token);
+      localStorage.setItem("token", response.data?.token);
 
-      showToast(
-        "success",
-        "Login Successful",
-        "Welcome back"
-      )
+      showToast("success", "Login Successful", "Welcome back");
       navigate("/dashboard");
-    } catch (error){
+    } catch (error) {
       console.log(error);
       showToast(
         "error",
         "Login Failed",
-        error?.response?.data?.message ||
-        "Invalid email or password",
+        error?.response?.data?.message || "Invalid email or password",
       );
     }
   };
@@ -119,43 +114,37 @@ const SignInView = () => {
   return (
     <AuthContent>
       {/* Header Section */}
-      <Box sx={{ textAlign: "center", mb: 4 }}>
+      <Box sx={{ mb: 3 }}>
         <Typography
-          variant="h4"
           sx={{
+            color: "#6D5DFB",
             fontWeight: 700,
-            background: "linear-gradient(to right, #0f172a, #2563eb)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
+            fontSize: 13,
+            letterSpacing: 1.5,
             mb: 1,
           }}
         >
-          PayRoll Pro
+          PAYROLL PORTAL
         </Typography>
 
         <Typography
-          variant="h6"
           sx={{
-            color: "text.secondary",
-            fontWeight: 500,
-            mb: 2,
+            fontSize: "30px",
+            fontWeight: 700,
+            color: "#0F172A",
+            mb: 0.5,
           }}
         >
-          Payroll Management Portal
+          SIGN IN
         </Typography>
-        <Divider sx={{ mb: 2 }}>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: 700,
-              color: "#0f3d91",
-            }}
-          >
-            By Cloute Technologies
-          </Typography>
-        </Divider>
-        <Typography variant="body1" color="text.secondary">
-          Welcome back! Please sign in to your account.
+
+        <Typography
+          sx={{
+            color: "#64748B",
+            fontSize: 15,
+          }}
+        >
+          Enter your credentials to continue
         </Typography>
       </Box>
 
@@ -178,11 +167,11 @@ const SignInView = () => {
         error={Boolean(errors.email)}
         helperText={errors.email}
         sx={{
-          mb: 4,
+          mb: 2,
 
           "& .MuiOutlinedInput-root": {
             borderRadius: "16px",
-            backgroundColor: "rgba(255,255,255,0.7)",
+            backgroundColor: "#F8FAFC",
             "& fieldset": {
               borderColor: errors.email
                 ? "#ef4444" // 🔴 red when invalid
@@ -192,12 +181,12 @@ const SignInView = () => {
             },
 
             "&:hover fieldset": {
-              borderColor: "#091b52ff",
+              borderColor: "#6D5DFB",
             },
 
             "&.Mui-focused fieldset": {
-              borderColor: "#091b52ff",
-              borderWidth: "2px",
+              borderColor: "#6D5DFB",
+              borderWidth: 2,
             },
           },
 
@@ -254,7 +243,7 @@ const SignInView = () => {
 
             "& .MuiOutlinedInput-root": {
               borderRadius: "16px",
-              backgroundColor: "rgba(255,255,255,0.7)",
+              backgroundColor: "#F8FAFC",
 
               "& .MuiInputBase-input": {
                 paddingRight: "50px",
@@ -269,12 +258,12 @@ const SignInView = () => {
               },
 
               "&:hover fieldset": {
-                borderColor: "#091b52ff",
+                borderColor: "#6D5DFB",
               },
 
               "&.Mui-focused fieldset": {
-                borderColor: "#091b52ff",
-                borderWidth: "2px",
+                borderColor: "#6D5DFB",
+                borderWidth: 2,
               },
             },
 
@@ -305,13 +294,27 @@ const SignInView = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          mb: 2,
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
         }}
       >
         <Typography
           variant="body2"
-          sx={{ cursor: "pointer", color: "primary.main" }}
+          sx={{
+            color: "#64748B",
+          }}
+        >
+          Remember me
+        </Typography>
+
+        <Typography
+          variant="body2"
+          sx={{
+            cursor: "pointer",
+            color: "#6D5DFB",
+            fontWeight: 600,
+          }}
           onClick={() => navigate("/forgot-password")}
         >
           Forgot password?
@@ -325,32 +328,64 @@ const SignInView = () => {
         variant="contained"
         onClick={handleLogin}
         sx={{
-          py: 1.8,
-          borderRadius: "14px",
-          mb: 2,
+          height: 58,
+          borderRadius: "18px",
 
-          background: "linear-gradient(to right, #0f172a, #1e3a8a)",
+          background:
+            "linear-gradient(90deg,#6D5DFB 0%, #4A3AFF 50%, #45D7FF 100%)",
 
           fontWeight: 700,
-          fontSize: "16px",
-
+          fontSize: "17px",
           textTransform: "none",
 
-          boxShadow: "0 8px 20px rgba(15,23,42,0.25)",
+          position: "relative",
+          overflow: "hidden",
 
-          transition: "all 0.3s ease",
+          boxShadow: "0 15px 35px rgba(74,58,255,.3)",
+
+          transition: "all .3s ease",
+
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: "-100%",
+            width: "100%",
+            height: "100%",
+            background:
+              "linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent)",
+            transition: "all .8s",
+          },
+
+          "&:hover::before": {
+            left: "100%",
+          },
 
           "&:hover": {
-            background: "linear-gradient(to right, #020617, #1d4ed8)",
+            background: "linear-gradient(90deg,#5B4CF5,#3B2CF8,#2AC5FF)",
 
-            transform: "translateY(-2px)",
+            transform: "translateY(-3px)",
 
-            boxShadow: "0 12px 24px rgba(15,23,42,0.35)",
+            boxShadow: "0 20px 45px rgba(74,58,255,.4)",
+          },
+
+          "&:active": {
+            transform: "translateY(-1px)",
           },
         }}
       >
-        LOGIN
+        Sign In
       </Button>
+      <Typography
+        align="center"
+        sx={{
+          mt: 2,
+          fontSize: 13,
+          color: "#94A3B8",
+        }}
+      >
+        Secure login powered by Cloute Technologies
+      </Typography>
 
       {/* Divider */}
       {/* <Divider sx={{ mb: 3 }}>
@@ -376,4 +411,3 @@ const SignInView = () => {
 };
 
 export default SignInView;
-

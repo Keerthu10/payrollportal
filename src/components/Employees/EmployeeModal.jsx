@@ -82,7 +82,7 @@ const EmployeeModal = ({
 
       setFormData((prev) => ({
         ...prev,
-        employeeId: response.data,
+        employeeId: response.data.nextEmployeeId,
       }));
     } catch (error) {
       console.log(error);
@@ -118,8 +118,11 @@ const EmployeeModal = ({
       });
     }
   }, [open, mode, employee]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    console.log(name, value);
 
     setFormData((prev) => ({
       ...prev,
@@ -369,8 +372,10 @@ const EmployeeModal = ({
             <Typography sx={labelStyle}>Corporate Email</Typography>
             <TextField
               fullWidth
+              placeholder="Enter employee email"
               name="email"
               value={formData.email}
+              onChange={handleChange}
               disabled={isViewMode}
               sx={fieldStyle}
               InputProps={{

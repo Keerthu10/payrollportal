@@ -170,8 +170,19 @@ const AdminLayout = () => {
         sx={{
           minHeight: "100vh",
 
-          background:
-            "linear-gradient(135deg, #1E3A8A 0%, #6D28D9 55%, #0E7490 100%)",
+          background: `
+radial-gradient(circle at top left,
+rgba(109,93,251,.06), transparent 30%),
+
+radial-gradient(circle at bottom right,
+rgba(69,215,255,.06), transparent 35%),
+
+linear-gradient(
+180deg,
+#FFFCF8 0%,
+#FFF9F3 55%,
+#FDF6EE 100%)
+`,
         }}
       >
         {/* TOP NAVBAR */}
