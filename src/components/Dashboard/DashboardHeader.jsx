@@ -7,12 +7,18 @@ import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import dayjs from "dayjs";
+import Business from "../../assets/Business.png";
+import StatsCards from "./StatsCards";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({
+  dashboardStats,
+  selectedMonth,
+  setSelectedMonth,
+}) => {
   const today = new Date();
 
   const hour = today.getHours();
@@ -32,44 +38,52 @@ const DashboardHeader = () => {
     year: "numeric",
   });
 
-  const [selectedMonth, setSelectedMonth] = useState(dayjs());
-
   return (
     <Box
       sx={{
-        background: "transparent",
-
-        border: "none",
-
-        borderRadius: "0",
-        boxShadow: "none",
-
-        p: 3,
-
-        mb: 1,
+        background: "#fff",
+        borderRadius: 6,
+        boxShadow: "0 8px 30px rgba(0,0,0,.08)",
+        p: 4,
       }}
     >
       {/* TOP SECTION */}
-      <Stack
-        direction={{
-          xs: "column",
-          lg: "row",
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 5,
         }}
-        justifyContent="space-between"
-        alignItems={{
-          xs: "flex-start",
-          lg: "center",
-        }}
-        spacing={2}
       >
-        {/* LEFT SIDE */}
-        <Box sx={{ flex: 1 }}>
+        {/* Left */}
+        <Box>
           <Typography
             sx={{
-              fontSize: "28px",
+              fontSize: 30,
               fontWeight: 700,
-              color: "#fff",
-              textShadow: "0 2px 6px rgba(0,0,0,0.25)",
+              color: "#0F172A",
+              mb: 1,
+            }}
+          >
+            {greeting}, Admin! 👋
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: 18,
+              color: "#64748B",
+            }}
+          >
+            Welcome to Payroll Portal
+          </Typography>
+        </Box>
+        {/* <Box sx={{ flex: 1 }}>
+          <Typography
+            sx={{
+              fontSize: 30,
+              fontWeight: 700,
+              color: "#0F172A",
               letterSpacing: "-0.5px",
               mb: 1,
             }}
@@ -79,23 +93,26 @@ const DashboardHeader = () => {
 
           <Typography
             sx={{
-              fontSize: "15px",
-              color: "rgba(255,255,255,0.85)",
+              fontSize: 18,
+              color: "#64748B",
               fontWeight: 500,
             }}
           >
             Hope you're having a productive day ✨
           </Typography>
-        </Box>
+        </Box> */}
 
-        {/* RIGHT SIDE */}
-        <Stack
-          direction="row"
-          spacing={1.5}
-          alignItems="center"
-          sx={{ ml: "auto" }}
-        >
-          {/* DATE BUTTON */}
+        {/* Right */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <Box
+            component="img"
+            src={Business}
+            sx={{
+              height: 100,
+              objectFit: "contain",
+            }}
+          />
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               views={["year", "month"]}
@@ -103,36 +120,25 @@ const DashboardHeader = () => {
               onChange={(newValue) => setSelectedMonth(newValue)}
               format="MMMM YYYY"
               sx={{
-                width: 200,
+                width: 180,
 
                 "& .MuiPickersInputBase-root": {
-                  background: "#FFFFFF !important",
+                  background: "#fff",
                   borderRadius: "16px",
-                  boxShadow: "0 6px 16px rgba(0,0,0,0.12)",
-
-                  transition: "all 0.2s ease",
-
-                  "&:hover": {
-                    transform: "translateY(-1px)",
-                    boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-                  },
-                },
-
-                "& .MuiPickersSectionList-root": {
-                  color: "#111827",
-                  fontWeight: 600,
-                  fontSize: "15px",
+                  boxShadow: "0 6px 16px rgba(0,0,0,.08)",
                 },
 
                 "& .MuiSvgIcon-root": {
-                  color: "#4338CA",
-                  fontSize: "22px",
+                  color: "#4F46E5",
                 },
               }}
             />
           </LocalizationProvider>
-        </Stack>
-      </Stack>
+        </Box>
+      </Box>
+
+      {/* BOTTOM SECTION */}
+      <StatsCards dashboardStats={dashboardStats} />
     </Box>
   );
 };

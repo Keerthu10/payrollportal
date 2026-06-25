@@ -39,7 +39,6 @@ import {
 import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import StatsCards from "../components/Dashboard/StatsCards";
 
-
 const Dashboard = () => {
   const [dashboardStats, setDashboardStats] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
@@ -50,7 +49,6 @@ const Dashboard = () => {
       successfulPayrolls: item.delivered,
       pendingPayrolls: item.pending,
     })) || [];
-
 
   const fetchDashboardStats = async () => {
     try {
@@ -73,18 +71,14 @@ const Dashboard = () => {
     <>
       <Box
         sx={{
-          position: "relative",
-
-          overflow: "hidden",
-
           p: 1,
-
-          zIndex: 1,
+          background: "#EEF4FA",
+          minHeight: "100vh",
         }}
       >
         {/* BLUR EFFECTS */}
 
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
 
@@ -92,22 +86,22 @@ const Dashboard = () => {
 
             pointerEvents: "none",
 
-            width: 400,
-            height: 400,
+            width: 300,
+            height: 300,
 
             borderRadius: "50%",
 
             background: "rgba(255,255,255,0.08)",
 
-            filter: "blur(80px)",
+            filter: "blur(120px)",
 
             top: -100,
 
             right: -100,
           }}
-        />
+        /> */}
 
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
 
@@ -128,17 +122,14 @@ const Dashboard = () => {
 
             left: -100,
           }}
-        />
+        /> */}
 
         {/* ================= HEADER ================= */}
         <DashboardHeader
+          dashboardStats={dashboardStats}
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}
         />
-
-        {/* ================= STATS CARDS ================= */}
-
-        <StatsCards dashboardStats={dashboardStats} />
 
         {/* ================= CHART SECTION ================= */}
 
@@ -147,19 +138,16 @@ const Dashboard = () => {
             display: "flex",
             gap: 3,
             mt: 3,
-            alignItems: "stretch",
+            alignItems: "flex-start",
           }}
         >
           <Box
             sx={{
               flex: 3,
               p: 4,
-              borderRadius: "28px",
-              background: "rgba(255,255,255,0.92)",
-              backdropFilter: "blur(12px)",
-              minHeight: "460px",
-              border: "1px solid rgba(255,255,255,0.18)",
-              boxShadow: "0 10px 30px rgba(15,23,42,0.12)",
+              borderRadius: 6,
+              background: "#fff",
+              boxShadow: "0 8px 30px rgba(0,0,0,.08)",
             }}
           >
             {/* TITLE */}
@@ -167,21 +155,21 @@ const Dashboard = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                mb: 4,
+                mb: 2,
               }}
             >
               <Typography
                 sx={{
                   fontWeight: 700,
                   color: "#0F172A",
-                  fontSize: "26px",
+                  fontSize: "18px",
                 }}
               >
                 Payroll Processing Trend
               </Typography>
             </Box>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient
@@ -230,12 +218,10 @@ const Dashboard = () => {
             sx={{
               flex: "1 1 28%",
               minWidth: 350,
-              p: 3,
-              borderRadius: "28px",
-              background: "rgba(255,255,255,0.92)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.18)",
-              boxShadow: "0 10px 30px rgba(15,23,42,0.12)",
+              height:380,
+              borderRadius: 6,
+              background: "#fff",
+              boxShadow: "0 8px 30px rgba(0,0,0,.08)",
             }}
           >
             <EmailStatusPie dashboardStats={dashboardStats} />

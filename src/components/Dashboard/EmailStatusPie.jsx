@@ -12,8 +12,8 @@ const Ring = ({ radius, progress, color, strokeWidth = 16 }) => {
     <>
       <circle
         r={normalizedRadius}
-        cx="160"
-        cy="160"
+        cx="110"
+        cy="110"
         fill="transparent"
         stroke="#ECECEC"
         strokeWidth={strokeWidth}
@@ -21,15 +21,15 @@ const Ring = ({ radius, progress, color, strokeWidth = 16 }) => {
 
       <circle
         r={normalizedRadius}
-        cx="160"
-        cy="160"
+        cx="110"
+        cy="110"
         fill="transparent"
         stroke={color}
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
-        transform="rotate(-90 160 160)"
+        transform="rotate(-90 110 110)"
       />
     </>
   );
@@ -49,15 +49,17 @@ const EmailStatusPie = ({ dashboardStats }) => {
   return (
     <Box
       sx={{
-        p: 4,
-        borderRadius: "28px",
-        background: "#fff",
+        p: 2,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Typography
         sx={{
-          fontSize: 26,
           fontWeight: 700,
+          color: "#0F172A",
+          fontSize: "18px",
           mb: 3,
         }}
       >
@@ -66,28 +68,29 @@ const EmailStatusPie = ({ dashboardStats }) => {
 
       <Box
         sx={{
+          flex: 1,
           display: "flex",
           justifyContent: "center",
         }}
       >
-        <svg width="320" height="320">
+        <svg width="220" height="220">
           <Ring
-            radius={110}
+            radius={75}
             progress={(delivered / total) * 100}
             color="#10B981"
           />
 
           <Ring
-            radius={85}
+            radius={55}
             progress={(pending / total) * 100}
             color="#FBBF24"
           />
 
-          <Ring radius={60} progress={(failed / total) * 100} color="#FF7A59" />
+          <Ring radius={35} progress={(failed / total) * 100} color="#FF7A59" />
 
           <text
-            x="160"
-            y="150"
+            x="110"
+            y="100"
             textAnchor="middle"
             fill="#64748B"
             fontSize="18"
@@ -97,11 +100,11 @@ const EmailStatusPie = ({ dashboardStats }) => {
           </text>
 
           <text
-            x="160"
-            y="190"
+            x="110"
+            y="135"
             textAnchor="middle"
             fill="#111827"
-            fontSize="34"
+            fontSize="26"
             fontWeight="700"
           >
             {total}
@@ -111,6 +114,7 @@ const EmailStatusPie = ({ dashboardStats }) => {
 
       <Box
         sx={{
+          mt:2,
           borderTop: "1px dashed #E5E7EB",
           pt: 3,
           display: "flex",
