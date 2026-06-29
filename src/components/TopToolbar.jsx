@@ -134,7 +134,15 @@ const TopToolbar = () => {
       //   transition: "all 0.25s ease",
       // }}
       sx={{
-        background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)", // dark navy
+        background: `
+linear-gradient(
+90deg,
+#15123F 0%,
+#28256E 40%,
+#4338CA 75%,
+#45D7FF 100%
+)
+`, // dark navy
 
         backdropFilter: "blur(20px)",
 
@@ -234,7 +242,7 @@ const TopToolbar = () => {
               to="/dashboard"
               sx={{
                 color:
-                  location.pathname === "/dashboard" ? "#6D5DFB" : "#64748B",
+                  location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
 
                 fontWeight: location.pathname === "/dashboard" ? 700 : 600,
                 fontSize: "17px",

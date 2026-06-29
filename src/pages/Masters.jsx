@@ -289,15 +289,18 @@ const Masters = () => {
 
             background:
               selectedMaster === "departments"
-                ? "rgba(124,58,237,0.25)"
-                : "rgba(255,255,255,0.05)",
+                ? "linear-gradient(135deg, #7C3AED 0%, #4F46E5 55%, #2563EB 100%)"
+                : "#F8FAFC",
+
+            color: selectedMaster === "departments" ? "#FFFFFF" : "#334155",
 
             border:
-              selectedMaster === "departments"
-                ? "1px solid #7C3AED"
-                : "1px solid rgba(255,255,255,0.08)",
+              selectedMaster === "departments" ? "none" : "2px solid #0b0b0bff",
 
-            color: "#fff",
+            boxShadow:
+              selectedMaster === "departments"
+                ? "0 8px 20px rgba(79,70,229,0.25)"
+                : "none",
 
             transition: "all 0.3s ease",
           }}
@@ -327,15 +330,20 @@ const Masters = () => {
 
             background:
               selectedMaster === "employmentTypes"
-                ? "rgba(124,58,237,0.25)"
-                : "rgba(255,255,255,0.05)",
+                ? "linear-gradient(135deg, #7C3AED 0%, #4F46E5 55%, #2563EB 100%)"
+                : "#FFFFFF",
+
+            color: selectedMaster === "employmentTypes" ? "#FFFFFF" : "#334155",
 
             border:
               selectedMaster === "employmentTypes"
-                ? "1px solid #7C3AED"
-                : "1px solid rgba(255,255,255,0.08)",
+                ? "none"
+                : "2px solid #0b0b0bff",
 
-            color: "#fff",
+            boxShadow:
+              selectedMaster === "employmentTypes"
+                ? "0 8px 20px rgba(79,70,229,0.25)"
+                : "none",
 
             transition: "all 0.3s ease",
           }}

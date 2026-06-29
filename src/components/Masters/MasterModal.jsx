@@ -90,6 +90,7 @@ const MasterModal = ({
       }
       subtitle="Master Configuration"
       maxWidth={600}
+      modalHeight="auto"
       actions={
         <Box
           sx={{

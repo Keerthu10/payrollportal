@@ -24,26 +24,21 @@ const EmployeeStats = ({ employees = [] }) => {
     {
       title: "Total Employees",
       value: totalEmployees,
-      subtitle: "Registered Employees",
       icon: <GroupsRoundedIcon sx={{ fontSize: 28 }} />,
-      background: "linear-gradient(135deg,#1E1B6D 0%, #2B256F 100%)",
     },
     {
       title: "Active Employees",
       value: activeEmployees,
-      subtitle: "Currently Working",
       icon: <CheckCircleRoundedIcon sx={{ fontSize: 28 }} />,
     },
     {
       title: "Inactive Employees",
       value: inactiveEmployees,
-      subtitle: "Inactive Records",
       icon: <CancelRoundedIcon sx={{ fontSize: 28 }} />,
     },
     {
       title: "New Employees",
       value: departments,
-      subtitle: "New Employees",
       icon: <ApartmentRoundedIcon sx={{ fontSize: 28 }} />,
     },
   ];
@@ -53,7 +48,7 @@ const EmployeeStats = ({ employees = [] }) => {
       sx={{
         display: "flex",
         gap: 3,
-        mb: 4,
+        mb: 3,
         width: "100%",
       }}
     >
@@ -119,7 +114,7 @@ const EmployeeStats = ({ employees = [] }) => {
                 {card.value}
               </Typography>
 
-              <Typography
+              {/* <Typography
                 sx={{
                   fontSize: 13,
                   color: "rgba(255,255,255,0.65)",
@@ -127,7 +122,7 @@ const EmployeeStats = ({ employees = [] }) => {
                 }}
               >
                 {card.subtitle}
-              </Typography>
+              </Typography> */}
             </Box>
 
             <Box

@@ -22,6 +22,7 @@ const GlobalModal = ({
   loading = false,
   maxWidth = 500,
   fullWidth = true,
+  modalHeight = "90vh",
   disableBackdropClick = false,
   errors = {},
   onFieldChange,
@@ -46,12 +47,13 @@ const GlobalModal = ({
 
     boxShadow: "0 25px 80px rgba(15,23,42,0.25)",
 
-    maxHeight: "90vh",
-
-    overflow: "hidden",
+    height: modalHeight,
+    maxHeight: modalHeight,
 
     display: "flex",
     flexDirection: "column",
+
+    overflow: "hidden",
 
     p: 0,
   };
@@ -80,7 +82,10 @@ const GlobalModal = ({
             background:
               "linear-gradient(90deg,#1E3A8A 0%,#2563EB 50%,#7C3AED 100%)",
             color: "#fff",
-            position: "relative",
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            flexShrink: 0,
           }}
         >
           <Typography
@@ -128,13 +133,13 @@ const GlobalModal = ({
         <Box
           id="modal-content"
           sx={{
-            flexGrow: 1,
+            flex: 1,
+            minHeight: 0,
             overflowY: "auto",
             overflowX: "hidden",
             px: 4,
             py: 4,
             background: "linear-gradient(180deg,#F8FAFF 0%,#F3F4FF 100%)",
-            "&.MuiTextField-root": { mb: 2 },
           }}
         >
           {React.Children.map(children, (child) => {
@@ -151,9 +156,12 @@ const GlobalModal = ({
           <Box
             sx={{
               px: 4,
-              py: 3,
+              py: 2.5,
               borderTop: "1px solid #E2E8F0",
-              background: "#F8FAFC",
+              background: "#FFFFFF",
+              flexShrink: 0,
+              display: "flex",
+              justifyContent: "flex-end",
             }}
           >
             <Stack direction="row" justifyContent="flex-end" spacing={2}>

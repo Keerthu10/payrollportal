@@ -291,7 +291,6 @@ const StatsCards = ({ dashboardStats }) => {
       title: "Email Failed",
       value:
         dashboardStats?.overall?.totalFailed +
-          dashboardStats?.overall?.totalPending +
           dashboardStats?.overall?.totalBounced ?? 0,
       subtitle: "Delivery Failed",
       icon: <CancelRoundedIcon sx={{ fontSize: 28 }} />,
@@ -300,14 +299,24 @@ const StatsCards = ({ dashboardStats }) => {
       shadowColor: "rgba(244,63,94,0.18)",
     },
     {
-      title: "Total Runs",
-      value: dashboardStats?.overall?.totalRuns ?? 0,
+      title: "Email Pending",
+      value: dashboardStats?.overall?.totalPending,
       subtitle: "Payroll Executions",
       icon: <ApartmentRoundedIcon sx={{ fontSize: 28 }} />,
       color: "#3B82F6",
       lightBg: "rgba(59,130,246,0.08)",
       shadowColor: "rgba(59,130,246,0.18)",
     },
+
+    // {
+    //   title: "Total Runs",
+    //   value: dashboardStats?.overall?.totalRuns ?? 0,
+    //   subtitle: "Payroll Executions",
+    //   icon: <ApartmentRoundedIcon sx={{ fontSize: 28 }} />,
+    //   color: "#3B82F6",
+    //   lightBg: "rgba(59,130,246,0.08)",
+    //   shadowColor: "rgba(59,130,246,0.18)",
+    // },
   ];
 
   return (

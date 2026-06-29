@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Paper,
@@ -7,11 +7,8 @@ import {
   MenuItem,
   Button,
   InputAdornment,
-  FormControl,
-  Select,
-  InputLabel
 } from "@mui/material";
-
+import { Dropdown } from "primereact/dropdown";
 import { getDepartmentInfo } from "../../services/departmentService";
 
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -105,7 +102,7 @@ const EmployeeFilters = ({
         />
 
         {/* Department */}
-        <FormControl
+        {/* <FormControl
           sx={{
             width: 220,
 
@@ -146,40 +143,41 @@ const EmployeeFilters = ({
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl> */}
+        <Box sx={{ width: 220 }}>
+          <Dropdown
+            className="department-dropdown"
+            value={department}
+            options={[{ departmentName: "All Departments" }, ...departments]}
+            optionLabel="departmentName"
+            optionValue="departmentName"
+            onChange={(e) => setDepartment(e.value)}
+            placeholder="Department"
+            filter
+            filterPlaceholder="Search Department..."
+            filterBy="departmentName"
+          />
+        </Box>
 
         {/* Status */}
-        <TextField
-          select
-          label="Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          sx={{
-            width: 180,
-
-            "& .MuiOutlinedInput-root": {
-              color: "#fff",
-
-              borderRadius: "14px",
-
-              "& fieldset": {
-                borderColor: "rgba(255,255,255,0.15)",
-              },
-            },
-
-            "& .MuiInputLabel-root": {
-              color: "#CBD5E1",
-            },
-
-            "& .MuiSvgIcon-root": {
-              color: "#fff",
-            },
-          }}
-        >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="Inactive">Inactive</MenuItem>
-        </TextField>
+        <Box sx={{ width: 180 }}>
+          <Dropdown
+            value={status}
+            options={[
+              { label: "All", value: "" },
+              { label: "Active", value: "Active" },
+              { label: "Inactive", value: "Inactive" },
+            ]}
+            optionLabel="label"
+            optionValue="value"
+            onChange={(e) => setStatus(e.value)}
+            placeholder="Status"
+            className="filter-"
+            filter
+            filterBy="label"
+            filterPlaceholder="Search Status..."
+          />
+        </Box>
 
         {/* Reset */}
         <Button

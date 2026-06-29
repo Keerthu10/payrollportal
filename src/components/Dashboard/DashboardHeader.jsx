@@ -6,7 +6,7 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import Business from "../../assets/Business.png";
 import StatsCards from "./StatsCards";
 
@@ -119,6 +119,8 @@ const DashboardHeader = ({
               value={selectedMonth}
               onChange={(newValue) => setSelectedMonth(newValue)}
               format="MMMM YYYY"
+              disableFuture
+              maxDate={dayjs()}
               sx={{
                 width: 180,
 

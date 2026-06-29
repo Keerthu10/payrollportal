@@ -141,15 +141,17 @@ const AuthLayout = ({ children }) => {
         position: "relative",
 
         background: `
-          linear-gradient(
-            135deg,
-            #15123F 0%,
-            #28256E 20%,
-            #4338CA 55%,
-            #5B4CF5 75%,
-            #45D7FF 100%
-          )
-        `,
+radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 35%),
+radial-gradient(circle at bottom right, rgba(56,189,248,.15), transparent 40%),
+linear-gradient(
+135deg,
+#15123F 0%,
+#262261 25%,
+#4338CA 55%,
+#5B4CF5 75%,
+#38BDF8 100%
+)
+`,
 
         // Top Left Glow
         "&::before": {
@@ -158,7 +160,7 @@ const AuthLayout = ({ children }) => {
           width: 700,
           height: 700,
           borderRadius: "50%",
-          background: "rgba(109,93,251,.35)",
+          background: "rgba(91,76,245,.30)",
           filter: "blur(150px)",
           top: -250,
           left: -250,
@@ -171,7 +173,7 @@ const AuthLayout = ({ children }) => {
           width: 650,
           height: 650,
           borderRadius: "50%",
-          background: "rgba(69,215,255,.25)",
+          background: "rgba(56,189,248,.18)",
           filter: "blur(140px)",
           bottom: -250,
           right: -250,
@@ -185,7 +187,7 @@ const AuthLayout = ({ children }) => {
           width: 400,
           height: 400,
           borderRadius: "50%",
-          background: "rgba(255,255,255,.08)",
+          background: "rgba(255,255,255,.12)",
           filter: "blur(120px)",
           top: "15%",
           left: "35%",
@@ -199,7 +201,7 @@ const AuthLayout = ({ children }) => {
           width: 300,
           height: 300,
           borderRadius: "50%",
-          background: "rgba(255,255,255,.05)",
+          background: "rgba(255,255,255,.08)",
           filter: "blur(100px)",
           bottom: "8%",
           left: "60%",
@@ -213,7 +215,7 @@ const AuthLayout = ({ children }) => {
           width: 250,
           height: 250,
           borderRadius: "50%",
-          background: "rgba(130,90,255,.3)",
+          background: "rgba(91,76,245,.22)",
           filter: "blur(90px)",
           top: "60%",
           left: "20%",

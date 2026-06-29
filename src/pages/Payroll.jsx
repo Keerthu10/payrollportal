@@ -570,6 +570,8 @@ const sampleHeaders = [
   "LOP Days",
   "Basic Salary",
   "HRA",
+  "Employment Type",
+  "IFSC Code",
   "Special Allowance",
   "Profession Tax",
   "Group Medical Insurance",
@@ -624,6 +626,14 @@ const Payroll = () => {
   const [processedCount, setProcessedCount] = useState(0);
 
   const fileInputRef = useRef(null);
+
+  const parseNumber = (value) => {
+    if (value === null || value === undefined || value === "") {
+      return 0;
+    }
+
+    return Number(String(value).replace(/,/g, "").trim()) || 0;
+  };
 
   // =========================
   // DOWNLOAD TEMPLATE
@@ -694,7 +704,7 @@ const Payroll = () => {
         errors.push(`Row ${row}: Email is required`);
       } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
         errors.push(`Row ${row}: Invalid Email`);
-      } else if(emails.has(email)){
+      } else if (emails.has(email)) {
         errors.push(`Row ${row}:Duplicate Email`);
       } else {
         emails.add(email);
@@ -754,11 +764,11 @@ const Payroll = () => {
       // UAN
       const uanNo = String(employee["UAN No"]).trim();
 
-      if(!uanNo){
+      if (!uanNo) {
         errors.push(`Row ${row}:UAN No is required`);
-      }else if(uanNumbers.has(uanNo)){
+      } else if (uanNumbers.has(uanNo)) {
         errors.push(`Row ${row}:Duplicate UAN No`);
-      } else{
+      } else {
         uanNumbers.add(uanNo);
       }
 
@@ -825,6 +835,11 @@ const Payroll = () => {
 
     if (!file) return;
 
+    setEmailSummary(null);
+    setFailedEmployeeIds([]);
+    setValidationErrors([]);
+    setExcelData([]);
+
     setLoading(true);
 
     setUploadedFileName(file.name);
@@ -874,7 +889,7 @@ const Payroll = () => {
         raw: false,
       });
 
-      const jsonData = allData.slice(1);
+      const jsonData = allData;
 
       if (jsonData.length === 0) {
         setValidationErrors(["No data rows found in uploaded file"]);
@@ -906,17 +921,17 @@ const Payroll = () => {
             formattedDOB = `${day}-${month}-${year}`;
           }
         }
-        const basic = Number(row["Basic Salary"]) || 0;
-        const hra = Number(row["HRA"]) || 0;
-        const specialAllowance = Number(row["Special Allowance"]) || 0;
+        const basic = parseNumber(row["Basic Salary"]);
+        const hra = parseNumber(row["HRA"]);
+        const specialAllowance = parseNumber(row["Special Allowance"]);
 
-        const professionTax = Number(row["Profession Tax"]) || 0;
-        const medicalInsurance = Number(row["Group Medical Insurance"]) || 0;
-        const pfEE = Number(row["PF EE CON"]) || 0;
-        const pfER = Number(row["PF ER CON"]) || 0;
-        const tds = Number(row["TDS"]) || 0;
-        const eduCess = Number(row["EDU Cess"]) || 0;
-        const otherDeductions = Number(row["Other Deductions"]) || 0;
+        const professionTax = parseNumber(row["Profession Tax"]);
+        const medicalInsurance = parseNumber(row["Group Medical Insurance"]);
+        const pfEE = parseNumber(row["PF EE CON"]);
+        const pfER = parseNumber(row["PF ER CON"]);
+        const tds = parseNumber(row["TDS"]);
+        const eduCess = parseNumber(row["EDU Cess"]);
+        const otherDeductions = parseNumber(row["Other Deductions"]);
 
         // CALCULATIONS
 
@@ -926,7 +941,6 @@ const Payroll = () => {
           professionTax +
           medicalInsurance +
           pfEE +
-          pfER +
           tds +
           eduCess +
           otherDeductions;
@@ -956,6 +970,8 @@ const Payroll = () => {
       console.log("Processed Payroll Data:", processedData);
 
       setLoading(false);
+
+      setOpenModal(true);
     };
   };
 
@@ -1096,32 +1112,50 @@ const Payroll = () => {
         uanNo: item["UAN No"],
         payPeriod: item["Pay Period"],
 
-        totalDays: Number(item["Total Days"]),
-        workingDays: Number(item["Working Days"]),
-        lopDays: Number(item["LOP Days"]),
+        totalDays: parseNumber(item["Total Days"]),
+        workingDays: parseNumber(item["Working Days"]),
+        lopDays: parseNumber(item["LOP Days"]),
 
-        basicSalary: Number(item["Basic Salary"]),
-        hra: Number(item["HRA"]),
-        specialAllowance: Number(item["Special Allowance"]),
+        basicSalary: parseNumber(item["Basic Salary"]),
+        hra: parseNumber(item["HRA"]),
+        employmentType: item["Employment Type"],
+        ifscCode: item["IFSC Code"],
+        specialAllowance: parseNumber(item["Special Allowance"]),
 
-        professionTax: Number(item["Profession Tax"]),
-        groupMedicalInsurance: Number(item["Group Medical Insurance"]),
-        pfEeCon: Number(item["PF EE CON"]),
-        pfErCon: Number(item["PF ER CON"]),
-        tds: Number(item["TDS"]),
-        eduCess: Number(item["EDU Cess"]),
-        otherDeductions: Number(item["Other Deductions"]),
+        professionTax: parseNumber(item["Profession Tax"]),
+        groupMedicalInsurance: parseNumber(item["Group Medical Insurance"]),
+        pfEeCon: parseNumber(item["PF EE CON"]),
+        pfErCon: parseNumber(item["PF ER CON"]),
+        tds: parseNumber(item["TDS"]),
+        eduCess: parseNumber(item["EDU Cess"]),
+        otherDeductions: parseNumber(item["Other Deductions"]),
+        emailVerified: true
       }));
+
+      let runId = null;
 
       for (let i = 0; i < employees.length; i++) {
         const employee = employees[i];
 
         try {
-          await generatePayrollEmails({
-            runId: null,
+          const payload = {
+            runId: runId,
             employees: [employee],
-          });
+          };
+
+          console.log("Request Payload:", payload);
+
+          const response = await generatePayrollEmails(payload);
+
+          console.log("Response:", response.data);
+
+          // Save runId returned from backend
+          if (response?.data?.data?.runId != null) {
+            runId = response.data.data.runId;
+          }
         } catch (error) {
+          console.error(error);
+
           failedEmployees.push(
             `${employee.employeeId} - ${employee.employeeName}`,
           );
@@ -1246,17 +1280,11 @@ const Payroll = () => {
         //   overflow: "hidden",
         // }}
         sx={{
-          background: "rgba(15,23,42,0.72)",
-
-          backdropFilter: "blur(18px)",
-
+          background: "linear-gradient(135deg, #241B67 0%, #302A7C 100%)",
           borderRadius: "32px",
-
           p: 5,
-
           border: "1px solid rgba(255,255,255,0.08)",
-
-          boxShadow: "0 20px 60px rgba(0,0,0,0.28)",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
         }}
       >
         {/* ========================= */}
@@ -1292,17 +1320,18 @@ const Payroll = () => {
             startIcon={<DownloadOutlinedIcon />}
             onClick={handleDownloadTemplate}
             sx={{
+              background: "linear-gradient(90deg, #7C3AED 0%, #2563EB 100%)",
+              boxShadow: "0 10px 25px rgba(37,99,235,0.28)",
               borderRadius: "14px",
               color: "#fff",
-              borderColor: "rgba(255,255,255,0.15)",
+              borderColor: "rgba(24, 23, 23, 0.15)",
               px: 3,
               py: 1.2,
               textTransform: "none",
               fontWeight: 700,
 
               "&:hover": {
-                borderColor: "#2563EB",
-                background: "rgba(37,99,235,0.08)",
+                background: "linear-gradient(90deg, #6D28D9 0%, #1D4ED8 100%)",
               },
             }}
           >
@@ -1325,9 +1354,11 @@ const Payroll = () => {
           onDrop={(e) => {
             e.preventDefault();
             setDragActive(false);
-            setOpenModal(true);
+
             const file = e.dataTransfer.files[0];
+
             if (!file) return;
+
             handleFileUpload({
               target: {
                 files: [file],
@@ -1362,11 +1393,8 @@ const Payroll = () => {
             ref={fileInputRef}
             hidden
             type="file"
-            accept=".xlsx,xls"
-            onChange={(e) => {
-              setOpenModal(true);
-              handleFileUpload(e);
-            }}
+            accept=".xlsx,.xls"
+            onChange={handleFileUpload}
           />
           <FileUploadOutlinedIcon
             sx={{
@@ -1491,7 +1519,7 @@ const Payroll = () => {
 
           <Typography
             sx={{
-              color: "#CBD5E1",
+              color: "#fff",
               fontSize: "16px",
               mb: 1,
             }}
@@ -1501,7 +1529,7 @@ const Payroll = () => {
 
           <Typography
             sx={{
-              color: "#CBD5E1",
+              color: "#fff",
               fontSize: "16px",
               mb: 1,
             }}
@@ -1511,7 +1539,7 @@ const Payroll = () => {
 
           <Typography
             sx={{
-              color: "#CBD5E1",
+              color: "#fff",
               fontSize: "16px",
               mb: 1,
             }}
@@ -1520,7 +1548,7 @@ const Payroll = () => {
           </Typography>
           <Typography
             sx={{
-              color: "#CBD5E1",
+              color: "#fff",
               fontSize: "16px",
               mb: 1,
             }}

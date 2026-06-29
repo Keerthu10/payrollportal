@@ -50,10 +50,12 @@ const Dashboard = () => {
       pendingPayrolls: item.pending,
     })) || [];
 
-  const fetchDashboardStats = async () => {
+  const fetchDashboardStats = async (month, year) => {
     try {
-      const response = await getDashboardStats();
+      const response = await getDashboardStats(month, year);
+
       console.log("Dashboard stats:", response.data);
+
       setDashboardStats(response.data);
     } catch (error) {
       console.log("Dashboard Stats Error:", error);
@@ -61,10 +63,22 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // Load dashboard initially
     fetchDashboardStats(
       selectedMonth.format("MM"),
       selectedMonth.format("YYYY"),
     );
+
+    // Auto refresh every 30 seconds
+    const interval = setInterval(() => {
+      fetchDashboardStats(
+        selectedMonth.format("MM"),
+        selectedMonth.format("YYYY"),
+      );
+    }, 30000); // 30000 ms = 30 seconds
+
+    // Clear interval when component unmounts
+    return () => clearInterval(interval);
   }, [selectedMonth]);
 
   return (

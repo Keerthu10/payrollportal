@@ -40,13 +40,13 @@ const AuthContent = ({ children }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 6,
+        gap: 10,
       }}
     >
       {/* LEFT SIDE */}
       <Box
         sx={{
-          width: "52%",
+          width: "48%",
           color: "#fff",
           pr: 4,
         }}
@@ -73,7 +73,7 @@ const AuthContent = ({ children }) => {
               letterSpacing: 4,
               fontWeight: 600,
               fontSize: 16,
-              color: "rgba(255,255,255,.75)",
+              color: "#E2E8F0",
             }}
           >
             CLOUTE TECHNOLOGIES
@@ -146,7 +146,7 @@ const AuthContent = ({ children }) => {
             <Typography
               sx={{
                 mt: 0.5,
-                color: "rgba(255,255,255,.7)",
+                color: "rgba(255,255,255,.82)",
                 fontSize: 15,
               }}
             >
@@ -169,7 +169,8 @@ const AuthContent = ({ children }) => {
               width: 48,
               height: 48,
               borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,.1)",
+              bgcolor: "rgba(255,255,255,.12)",
+              border: "1px solid rgba(255,255,255,.15)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -252,21 +253,21 @@ const AuthContent = ({ children }) => {
       {/* RIGHT SIDE CARD */}
       <Box
         sx={{
-          width: 500,
+          width: 520,
           position: "relative",
           overflow: "hidden",
 
-          background: "rgba(255,255,255,.94)",
+          background:"rgba(255,255,255,.96)",
           backdropFilter: "blur(20px)",
 
           border: "1px solid rgba(255,255,255,.2)",
 
-          borderRadius: "32px",
+          borderRadius: "28px",
 
           px: 7,
           py: 7,
 
-          boxShadow: "0 25px 60px rgba(15,23,42,.18)",
+          boxShadow: "0 30px 70px rgba(15,23,42,.18)",
 
           "&::before": {
             content: '""',
@@ -274,7 +275,7 @@ const AuthContent = ({ children }) => {
             width: 250,
             height: 250,
             borderRadius: "50%",
-            background: "rgba(69,215,255,.15)",
+            background:"rgba(56,189,248,.10)",
             filter: "blur(100px)",
             bottom: -100,
             right: -100,
@@ -286,7 +287,7 @@ const AuthContent = ({ children }) => {
             width: 180,
             height: 180,
             borderRadius: "50%",
-            background: "rgba(109,93,251,.12)",
+            background:"rgba(91,76,245,.10)",
             filter: "blur(80px)",
             top: -80,
             left: -80,

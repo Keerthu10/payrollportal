@@ -1,67 +1,7 @@
-import Chip from "@mui/material/Chip";
-import { Box } from "@mui/material";
+import React, { useState } from "react";
+import { Box, IconButton, Chip } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
-import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-
-const ActionMenu = ({ row, onView, onEdit, onDelete }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <>
-      <IconButton size="small" onClick={handleClick}>
-        <MoreVertRoundedIcon />
-      </IconButton>
-
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem
-          onClick={() => {
-            onView(row);
-            handleClose();
-          }}
-        >
-          <VisibilityRoundedIcon sx={{ mr: 1 }} />
-          View
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            onEdit(row);
-            handleClose();
-          }}
-        >
-          <EditRoundedIcon sx={{ mr: 1 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            onDelete(row);
-            handleClose();
-          }}
-        >
-          <DeleteRoundedIcon sx={{ mr: 1, color: "red" }} />
-          Delete
-        </MenuItem>
-      </Menu>
-    </>
-  );
-};
 
 export const employeeColumns = (onView, onEdit, onDelete) => [
   {
@@ -113,13 +53,13 @@ export const employeeColumns = (onView, onEdit, onDelete) => [
     flex: 1,
   },
   {
-    field: "status",
+    field: "active",
     headerName: "Status",
     flex: 1,
     renderCell: (params) => (
       <Chip
-        label={params.value || "Active"}
-        color={params.value === "Inactive" ? "error" : "success"}
+        label={params.row.active ? "Active" : "Inactive"}
+        color={params.row.active ? "success" : "error"}
         size="small"
       />
     ),
@@ -127,16 +67,26 @@ export const employeeColumns = (onView, onEdit, onDelete) => [
   {
     field: "actions",
     headerName: "Actions",
-    width: 100,
+    width: 120,
     sortable: false,
-
     renderCell: (params) => (
-      <ActionMenu
-        row={params.row}
-        onView={onView}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      />
+      <Box display="flex" gap={1}>
+        <IconButton
+          color="primary"
+          size="small"
+          onClick={() => onEdit(params.row)}
+        >
+          <EditRoundedIcon fontSize="small" />
+        </IconButton>
+
+        <IconButton
+          color="error"
+          size="small"
+          onClick={() => onDelete(params.row)}
+        >
+          <DeleteRoundedIcon fontSize="small" />
+        </IconButton>
+      </Box>
     ),
   },
 ];

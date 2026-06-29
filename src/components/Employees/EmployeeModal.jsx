@@ -14,6 +14,7 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import InputAdornment from "@mui/material/InputAdornment";
+import { Dropdown } from "primereact/dropdown";
 
 import GlobalModal from "../../ui/GlobalModal";
 import { getDepartmentInfo } from "../../services/departmentService";
@@ -28,7 +29,6 @@ const EmployeeModal = ({
   employee,
   handleResendVerification,
 }) => {
-  const isViewMode = mode === "view";
   const [errors, setErrors] = useState({});
   const [departments, setDepartments] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
@@ -36,14 +36,21 @@ const EmployeeModal = ({
     try {
       const response = await getDepartmentInfo();
 
+      console.log("Department Response:", response);
+      console.log("Department Data:", response.data);
+
       setDepartments(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
   const loadEmploymentTypes = async () => {
     try {
       const response = await getEmploymentTypeInfo();
+
+      console.log("Employment Response:", response);
+      console.log("Employment Data:", response.data);
 
       setEmploymentTypes(response.data);
     } catch (error) {
@@ -96,6 +103,7 @@ const EmployeeModal = ({
     }
 
     if (employee) {
+      console.log("Employee Edit Data:", employee);
       setFormData({
         employeeId: employee.employeeId,
         joinDate: employee.joinDate,
@@ -217,6 +225,7 @@ const EmployeeModal = ({
       phone: formData.phone,
       designation: formData.designation,
       department: formData.department,
+      employmentType: formData.employmentType,
       location: formData.location,
       joinDate: formData.joinDate,
       exitDate: "",
@@ -264,13 +273,7 @@ const EmployeeModal = ({
     <GlobalModal
       open={open}
       handleClose={handleModalClose}
-      title={
-        mode === "add"
-          ? "Add Employee"
-          : mode === "edit"
-            ? "Edit Employee"
-            : "View Employee"
-      }
+      title={mode === "add" ? "Add Employee" : "Edit Employee"}
       subtitle="Create and manage employee records"
       maxWidth={850}
       actions={
@@ -311,7 +314,7 @@ const EmployeeModal = ({
                 },
               }}
             >
-              Save Employee
+              {mode === "add" ? "Save Employee" : "Update Employee"}
             </Button>
           </Box>
         </>
@@ -347,7 +350,6 @@ const EmployeeModal = ({
               error={!!errors.joinDate}
               helperText={errors.joinDate}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -362,7 +364,6 @@ const EmployeeModal = ({
               error={!!errors.fullName}
               helperText={errors.fullName}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -376,7 +377,8 @@ const EmployeeModal = ({
               name="email"
               value={formData.email}
               onChange={handleChange}
-              disabled={isViewMode}
+              error={!!errors.email}
+              helperText={errors.email}
               sx={fieldStyle}
               InputProps={{
                 endAdornment: (
@@ -419,7 +421,6 @@ const EmployeeModal = ({
               error={!!errors.dob}
               helperText={errors.dob}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -451,7 +452,6 @@ const EmployeeModal = ({
                 }
               }}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -460,33 +460,40 @@ const EmployeeModal = ({
           <Grid size={{ xs: 12, md: 4 }}>
             <Typography sx={labelStyle}>Department</Typography>
 
-            <FormControl fullWidth error={!!errors.department}>
-              <Select
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                disabled={isViewMode}
-                displayEmpty
-                sx={{
-                  height: 52,
-                  borderRadius: "12px",
-                  backgroundColor: "#fff",
-                  color: formData.department ? "#000" : "#9CA3AF",
+            <Dropdown
+              value={formData.department}
+              options={departments}
+              optionLabel="departmentName"
+              optionValue="departmentName"
+              className={`modal-dropdown ${errors.department ? "p-invalid" : ""}`}
+              placeholder="Select Department"
+              filter
+              appendTo={document.body}
+              autoZIndex={true}
+              baseZIndex={10000}
+              panelStyle={{ zIndex: 99999 }}
+              style={{ width: "100%" }}
+              onChange={(e) =>
+                handleChange({
+                  target: {
+                    name: "department",
+                    value: e.value,
+                  },
+                })
+              }
+            />
+            {errors.department && (
+              <small
+                style={{
+                  color: "#d32f2f",
+                  display: "block",
+                  marginTop: "4px",
+                  fontSize: "12px",
                 }}
-                renderValue={(selected) => selected || "Select Department"}
               >
-                <MenuItem value="" disabled>
-                  Select Department
-                </MenuItem>
-
-                {departments.map((dept) => (
-                  <MenuItem key={dept.departmentId} value={dept.departmentName}>
-                    {dept.departmentName}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>{errors.department}</FormHelperText>
-            </FormControl>
+                {errors.department}
+              </small>
+            )}
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
@@ -500,7 +507,6 @@ const EmployeeModal = ({
               error={!!errors.designation}
               helperText={errors.designation}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -509,33 +515,36 @@ const EmployeeModal = ({
           <Grid size={{ xs: 12, md: 4 }}>
             <Typography sx={labelStyle}>Employment Type</Typography>
 
-            <FormControl fullWidth error={!!errors.employmentType}>
-              <Select
-                name="employmentType"
-                value={formData.employmentType}
-                onChange={handleChange}
-                displayEmpty
-                disabled={isViewMode}
-                sx={{
-                  height: 52,
-                  borderRadius: "12px",
-                  backgroundColor: "#fff",
-                  color: formData.employmentType ? "#000" : "#9CA3AF",
+            <Dropdown
+              value={formData.employmentType}
+              options={employmentTypes}
+              optionLabel="jobType"
+              optionValue="jobType"
+              className={`modal-dropdown ${errors.employmentType ? "p-invalid" : ""}`}
+              placeholder="Select Employment Type"
+              filter
+              appendTo={document.body}
+              onChange={(e) =>
+                handleChange({
+                  target: {
+                    name: "employmentType",
+                    value: e.value,
+                  },
+                })
+              }
+            />
+            {errors.employmentType && (
+              <small
+                style={{
+                  color: "#d32f2f",
+                  display: "block",
+                  marginTop: "4px",
+                  fontSize: "12px",
                 }}
-                renderValue={(selected) => selected || "Select Employment Type"}
               >
-                <MenuItem value="" disabled>
-                  Select Employment Type
-                </MenuItem>
-
-                {employmentTypes.map((type) => (
-                  <MenuItem key={type.jobTypeId} value={type.jobType}>
-                    {type.jobType}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>{errors.employmentType}</FormHelperText>
-            </FormControl>
+                {errors.employmentType}
+              </small>
+            )}
           </Grid>
 
           {/* Row 5 */}
@@ -551,7 +560,6 @@ const EmployeeModal = ({
               error={!!errors.location}
               helperText={errors.location}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
@@ -565,7 +573,6 @@ const EmployeeModal = ({
               error={!!errors.bankName}
               helperText={errors.bankName}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -580,7 +587,6 @@ const EmployeeModal = ({
               error={!!errors.bankAccountNo}
               helperText={errors.bankAccountNo}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -595,7 +601,6 @@ const EmployeeModal = ({
               error={!!errors.ifscCode}
               helperText={errors.ifscCode}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -610,7 +615,6 @@ const EmployeeModal = ({
               error={!!errors.panNo}
               helperText={errors.panNo}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
 
@@ -625,7 +629,6 @@ const EmployeeModal = ({
               error={!!errors.uanNo}
               helperText={errors.uanNo}
               sx={fieldStyle}
-              disabled={isViewMode}
             />
           </Grid>
         </Grid>

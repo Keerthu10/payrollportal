@@ -33,3 +33,7 @@ export const downloadEmployeeTemplate = () => {
 export const getNextEmployeeId = () => {
   return api.post("/ctpl/employee/next-employee-id");
 };
+
+export const deleteEmployee = (id)=>{
+  return api.post(`/ctpl/employee/toggle-status/${id}`);
+}
