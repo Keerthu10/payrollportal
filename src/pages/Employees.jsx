@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Button, Typography } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import * as XLSX from "xlsx";
+import {
+  Button,
+  Typography,
+  
+}from "@mui/material";
 import EmployeeHeader from "../components/Employees/EmployeeHeader";
 import EmployeeStats from "../components/Employees/EmployeeStats";
 import EmployeeFilters from "../components/Employees/EmployeeFilter";
@@ -16,8 +21,10 @@ import {
 } from "../services/employeeService";
 import GlobalModal from "../ui/GlobalModal";
 import { useToast } from "../context/ToastContext";
+import UploadEmployeeModal from "../components/Employees/UploadEmployeeModal";
 
 const Employees = () => {
+  const [openUploadModal, setOpenUploadModal] = useState(false);
   const [search, setSearch] = useState("");
   const { showToast } = useToast();
   const [openEmployeeModal, setOpenEmployeeModal] = useState(false);
@@ -30,6 +37,12 @@ const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  const fileInputRef = useRef(null);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [excelData, setExcelData] = useState([]);
+  const [validationErrors, setValidationErrors] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -75,6 +88,94 @@ const Employees = () => {
   useEffect(() => {
     fetchEmployees();
   }, [debouncedSearch, department, status]);
+
+  const validateEmployeeData = (data) => {
+    const errors = [];
+
+    const emails = new Set();
+
+    data.forEach((employee, index) => {
+      const row = index + 2;
+
+      if (!employee["Name"]) {
+        errors.push(`Row ${row}: Name is required`);
+      }
+
+      if (!employee["Email"]) {
+        errors.push(`Row ${row}: Email is required`);
+      }
+
+      if (employee["Email"] && emails.has(employee["Email"].toLowerCase())) {
+        errors.push(`Row ${row}: Duplicate Email`);
+      } else if (employee["Email"]) {
+        emails.add(employee["Email"].toLowerCase());
+      }
+
+      if (!employee["Phone"]) {
+        errors.push(`Row ${row}: Phone is required`);
+      }
+
+      if (!employee["Designation"]) {
+        errors.push(`Row ${row}: Designation is required`);
+      }
+
+      if (!employee["Employement Type"]) {
+        errors.push(`Row ${row}: Employment Type is required`);
+      }
+
+      // Department Removed
+      // UAN Optional
+    });
+
+    setValidationErrors(errors);
+  };
+
+  const handleUploadEmployee = (event) => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    setSelectedFile(file);
+    setUploadedFileName(file.name);
+    setLoading(true);
+
+    const reader = new FileReader();
+
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      try {
+        const workbook = XLSX.read(e.target.result, {
+          type: "array",
+        });
+
+        const sheetName = workbook.SheetNames[0];
+
+        const worksheet = workbook.Sheets[sheetName];
+
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+          defval: "",
+          raw: false,
+        });
+
+        setExcelData(jsonData);
+
+        validateEmployeeData(jsonData);
+
+        setLoading(false);
+
+        setOpenUploadModal(true);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        showToast("error", "Error", "Invalid Excel File");
+      }
+    };
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
 
   const handleAddEmployee = async (employeeData) => {
     try {
@@ -212,6 +313,7 @@ const Employees = () => {
           setOpenEmployeeModal(true);
         }}
         onDownloadTemplate={handleDownloadTemplate}
+        onUploadEmployee={handleUploadClick}
       />
 
       <EmployeeStats employees={employees} />
@@ -240,6 +342,24 @@ const Employees = () => {
         employee={selectedEmployee}
         handleResendVerification={handleResendVerification}
       />
+
+      <UploadEmployeeModal
+        open={openUploadModal}
+        handleClose={() => setOpenUploadModal(false)}
+        fetchEmployees={fetchEmployees}
+        uploadedFileName={uploadedFileName}
+        excelData={excelData}
+        validationErrors={validationErrors}
+      />
+
+      <input
+        hidden
+        ref={fileInputRef}
+        type="file"
+        accept=".xlsx,.xls"
+        onChange={handleUploadEmployee}
+      />
+
       <GlobalModal
         open={openDeleteModal}
         handleClose={() => setOpenDeleteModal(false)}

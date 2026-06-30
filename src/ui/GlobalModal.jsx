@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Button,
 } from "@mui/material";
-import { CloseTwoTone } from "@mui/icons-material";
+import { CloseTwoTone, Height } from "@mui/icons-material";
 
 const GlobalModal = ({
   open,
@@ -46,9 +46,8 @@ const GlobalModal = ({
     border: "1px solid #E2E8F0",
 
     boxShadow: "0 25px 80px rgba(15,23,42,0.25)",
-
-    height: modalHeight,
-    maxHeight: modalHeight,
+    height:"auto",
+    maxHeight: "90vh",
 
     display: "flex",
     flexDirection: "column",
