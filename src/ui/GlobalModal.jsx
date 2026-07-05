@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Modal,
   Box,
   Typography,
   Stack,
   IconButton,
-  useTheme,
-  useMediaQuery,
   CircularProgress,
   Button,
 } from "@mui/material";
-import { CloseTwoTone, Height } from "@mui/icons-material";
+import { CloseTwoTone } from "@mui/icons-material";
 
 const GlobalModal = ({
   open,
@@ -22,33 +20,70 @@ const GlobalModal = ({
   loading = false,
   maxWidth = 500,
   fullWidth = true,
-  modalHeight = "90vh",
   disableBackdropClick = false,
   errors = {},
   onFieldChange,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [open]);
 
   const style = {
     position: "absolute",
-    top: isMobile ? "0" : "50%",
-    left: isMobile ? "0" : "50%",
-    transform: isMobile ? "none" : "translate(-50%, -50%)",
+    top: {
+      xs: 0,
+      sm: "50%",
+    },
 
-    width: isMobile ? "100%" : fullWidth ? "90%" : maxWidth,
-    maxWidth,
+    left: {
+      xs: 0,
+      sm: "50%",
+    },
+
+    transform: {
+      xs: "none",
+      sm: "translate(-50%, -50%)",
+    },
+
+    width: {
+      xs: "100%",
+      sm: "95%",
+      md: fullWidth ? "90%" : `${maxWidth}px`,
+    },
+    maxWidth: maxWidth,
 
     background: "linear-gradient(135deg,#F5F3FF 0%,#EEF2FF 50%,#E0EAFF 100%)",
 
-    borderRadius: isMobile ? 0 : "24px",
+    borderRadius: {
+      xs: 0,
+      sm: "16px",
+      md: "24px",
+    },
 
     border: "1px solid #E2E8F0",
 
     boxShadow: "0 25px 80px rgba(15,23,42,0.25)",
-    height:"auto",
-    maxHeight: "90vh",
+    height: {
+      xs: "100vh",
+      sm: "auto",
+    },
 
+    maxHeight: {
+      xs: "100vh",
+      sm: "90vh",
+    },
     display: "flex",
     flexDirection: "column",
 
@@ -76,8 +111,17 @@ const GlobalModal = ({
         {/* Header */}
         <Box
           sx={{
-            px: 4,
-            py: 3,
+            px: {
+              xs: 2,
+              sm: 3,
+              md: 4,
+            },
+
+            py: {
+              xs: 2,
+              sm: 2.5,
+              md: 3,
+            },
             background:
               "linear-gradient(90deg,#1E3A8A 0%,#2563EB 50%,#7C3AED 100%)",
             color: "#fff",
@@ -88,9 +132,13 @@ const GlobalModal = ({
           }}
         >
           <Typography
-            variant="h5"
             sx={{
               fontWeight: 700,
+              fontSize: {
+                xs: "20px",
+                sm: "24px",
+                md: "28px",
+              },
             }}
           >
             {title}
@@ -101,7 +149,11 @@ const GlobalModal = ({
               sx={{
                 mt: 0.5,
                 opacity: 0.85,
-                fontSize: 14,
+                fontSize: {
+                  xs: 12,
+                  sm: 13,
+                  md: 14,
+                },
               }}
             >
               {subtitle}
@@ -112,8 +164,19 @@ const GlobalModal = ({
             onClick={handleClose}
             sx={{
               position: "absolute",
-              top: 16,
-              right: 16,
+              top: {
+                xs: 8,
+                md: 16,
+              },
+
+              right: {
+                xs: 8,
+                md: 16,
+              },
+              padding: {
+                xs: "6px",
+                md: "8px",
+              },
 
               color: "#fff",
 
@@ -131,13 +194,26 @@ const GlobalModal = ({
         {/* Content */}
         <Box
           id="modal-content"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
           sx={{
             flex: 1,
             minHeight: 0,
             overflowY: "auto",
             overflowX: "hidden",
-            px: 4,
-            py: 4,
+            WebkitOverflowScrolling: "touch",
+            overscrollBehavior: "contain",
+            px: {
+              xs: 2,
+              sm: 3,
+              md: 4,
+            },
+
+            py: {
+              xs: 2,
+              sm: 3,
+              md: 4,
+            },
             background: "linear-gradient(180deg,#F8FAFF 0%,#F3F4FF 100%)",
           }}
         >
@@ -154,8 +230,16 @@ const GlobalModal = ({
         {actions && (
           <Box
             sx={{
-              px: 4,
-              py: 2.5,
+              px: {
+                xs: 2,
+                sm: 3,
+                md: 4,
+              },
+
+              py: {
+                xs: 2,
+                md: 2.5,
+              },
               borderTop: "1px solid #E2E8F0",
               background: "#FFFFFF",
               flexShrink: 0,
@@ -163,14 +247,39 @@ const GlobalModal = ({
               justifyContent: "flex-end",
             }}
           >
-            <Stack direction="row" justifyContent="flex-end" spacing={2}>
+            <Stack
+              direction={{
+                xs: "column",
+                sm: "row",
+              }}
+              spacing={2}
+              justifyContent="flex-end"
+              alignItems="stretch"
+              sx={{
+                width: "100%",
+              }}
+            >
               {React.Children.map(actions, (action) =>
                 React.cloneElement(action, {
                   disabled: loading,
                 }),
               )}
 
-              {loading && <CircularProgress size={24} />}
+              {loading && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: {
+                      xs: "100%",
+                      sm: "auto",
+                    },
+                  }}
+                >
+                  <CircularProgress size={24} />
+                </Box>
+              )}
             </Stack>
           </Box>
         )}
@@ -195,10 +304,37 @@ export const GlobalDeleteModal = ({
       title={title}
       actions={
         <>
-          <Button variant="contained" onClick={onClose}>
+          <Button
+            variant="contained"
+            onClick={onClose}
+            sx={{
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
+              flex: {
+                xs: 1,
+                sm: "none",
+              },
+            }}
+          >
             Cancel
           </Button>
-          <Button variant="contained" color="error" onClick={onConfirm}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={onConfirm}
+            sx={{
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
+              flex: {
+                xs: 1,
+                sm: "none",
+              },
+            }}
+          >
             Delete
           </Button>
         </>
@@ -229,7 +365,17 @@ export const GlobalSessionTimeoutModal = ({
             color="error"
             onClick={onLogout}
             sx={{
-              minWidth: 110,
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
+              flex: {
+                xs: 1,
+                sm: "none",
+              },
+              minWidth: {
+                sm: 110,
+              },
               borderRadius: "10px",
             }}
           >
@@ -240,7 +386,17 @@ export const GlobalSessionTimeoutModal = ({
             variant="contained"
             onClick={onContinue}
             sx={{
-              minWidth: 170,
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
+              flex: {
+                xs: 1,
+                sm: "none",
+              },
+              minWidth: {
+                sm: 170,
+              },
               borderRadius: "10px",
               textTransform: "none",
               fontWeight: 600,

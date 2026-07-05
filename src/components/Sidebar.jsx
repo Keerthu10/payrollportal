@@ -348,16 +348,7 @@ import {
 
 import {
   DashboardOutlined,
-  GroupsOutlined,
   AccountBalanceWalletOutlined,
-  ReceiptLongOutlined,
-  AccessTimeOutlined,
-  EventNoteOutlined,
-  AssessmentOutlined,
-  TaskAltOutlined,
-  PaymentsOutlined,
-  AccountBalanceOutlined,
-  SettingsOutlined,
   LogoutOutlined,
 } from "@mui/icons-material";
 
@@ -394,13 +385,19 @@ const Sidebar = ({ open }) => {
 
     mb: 1,
 
-    py: 1.1,
+    py: {
+      xs: 1,
+      md: 1.1,
+    },
 
-    px: 1.5,
+    px: {
+      xs: 1,
+      md: 1.5,
+    },
 
     color: "#64748B",
 
-    transition: "0.2s ease",
+    transition: "width 0.25s ease, visibility 0.25s ease",
 
     "&:hover": {
       background: "#F3F4F6",
@@ -410,7 +407,10 @@ const Sidebar = ({ open }) => {
   const iconStyle = {
     color: "#64748B",
 
-    minWidth: "40px",
+    minWidth: {
+      xs: 36,
+      md: 40,
+    },
   };
 
   // LOGOUT
@@ -423,13 +423,27 @@ const Sidebar = ({ open }) => {
   return (
     <Box
       sx={{
-        width: open ? `${SIDEBAR_WIDTH}px` : `${COLLAPSED_WIDTH}px`,
+        width: {
+          xs: open ? "80%" : 0,
+          sm: open ? 260 : 0,
+          md: open ? SIDEBAR_WIDTH : COLLAPSED_WIDTH,
+        },
+
+        visibility: {
+          xs: open ? "visible" : "hidden",
+          md: "visible",
+        },
+
+        pointerEvents: {
+          xs: open ? "auto" : "none",
+          md: "auto",
+        },
 
         transition: "width 0.25s ease",
 
         overflowX: "hidden",
 
-        overflowY: "hidden",
+        overflowY: "auto",
 
         "&::-webkit-scrollbar": {
           display: "none",
@@ -441,7 +455,15 @@ const Sidebar = ({ open }) => {
 
         boxShadow: "4px 0 20px rgba(0,0,0,0.03)",
 
-        padding: "20px 14px",
+        px: {
+          xs: 1.5,
+          md: 2,
+        },
+
+        py: {
+          xs: 2,
+          md: 2.5,
+        },
 
         height: "100vh",
 
@@ -460,10 +482,20 @@ const Sidebar = ({ open }) => {
     >
       {/* LOGO */}
       {open && (
-        <Box sx={{ mb: 5 }}>
+        <Box
+          sx={{
+            mb: {
+              xs: 3,
+              md: 5,
+            },
+          }}
+        >
           <Typography
             sx={{
-              fontSize: "28px",
+              fontSize: {
+                xs: "22px",
+                md: "28px",
+              },
 
               fontWeight: 700,
 
@@ -477,7 +509,10 @@ const Sidebar = ({ open }) => {
             sx={{
               color: "#94A3B8",
 
-              fontSize: "13px",
+              fontSize: {
+                xs: "11px",
+                md: "13px",
+              },
 
               mt: 0.5,
             }}
@@ -493,7 +528,10 @@ const Sidebar = ({ open }) => {
           sx={{
             color: "#94A3B8",
 
-            fontSize: "12px",
+            fontSize: {
+              xs: "11px",
+              md: "12px",
+            },
 
             mb: 2,
 
@@ -733,8 +771,8 @@ const Sidebar = ({ open }) => {
       )} */}
 
       {/* <List disablePadding> */}
-        {/* SETTINGS */}
-        {/* <ListItemButton
+      {/* SETTINGS */}
+      {/* <ListItemButton
           component={Link}
           to="/settings"
           sx={{
@@ -752,7 +790,15 @@ const Sidebar = ({ open }) => {
       {/* </List> */}
 
       {/* LOGOUT */}
-      <Box sx={{ mt: "auto", pt: 3 }}>
+      <Box
+        sx={{
+          mt: "auto",
+          pt: {
+            xs: 2,
+            md: 3,
+          },
+        }}
+      >
         <Divider sx={{ mb: 2 }} />
 
         <ListItemButton
@@ -760,9 +806,15 @@ const Sidebar = ({ open }) => {
           sx={{
             borderRadius: "14px",
 
-            py: 1.1,
+            py: {
+              xs: 1,
+              md: 1.1,
+            },
 
-            px: 1.5,
+            px: {
+              xs: 1,
+              md: 1.5,
+            },
 
             color: "#EF4444",
 
@@ -775,7 +827,10 @@ const Sidebar = ({ open }) => {
             sx={{
               color: "#EF4444",
 
-              minWidth: "40px",
+              minWidth: {
+                xs: 36,
+                md: 40,
+              },
             }}
           >
             <LogoutOutlined />

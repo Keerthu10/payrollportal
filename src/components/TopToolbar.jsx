@@ -134,33 +134,44 @@ const TopToolbar = () => {
       //   transition: "all 0.25s ease",
       // }}
       sx={{
-        background: `
-linear-gradient(
-90deg,
-#15123F 0%,
-#28256E 40%,
-#4338CA 75%,
-#45D7FF 100%
-)
-`, // dark navy
+        background: `linear-gradient(
+    90deg,
+    #15123F 0%,
+    #28256E 40%,
+    #4338CA 75%,
+    #45D7FF 100%
+  )`,
 
         backdropFilter: "blur(20px)",
-
         border: "1px solid rgba(255,255,255,.08)",
-
         boxShadow: "0 8px 30px rgba(15,23,42,.15)",
 
         color: "#fff",
 
-        borderRadius: "20px",
+        borderRadius: {
+          xs: 0,
+          md: "20px",
+        },
 
-        height: "72px",
+        height: {
+          xs: 60,
+          md: 72,
+        },
 
-        top: 20,
+        top: {
+          xs: 0,
+          md: 20,
+        },
 
-        left: 20,
+        left: {
+          xs: 0,
+          md: 20,
+        },
 
-        right: 20,
+        right: {
+          xs: 0,
+          md: 20,
+        },
 
         width: "auto",
 
@@ -177,7 +188,10 @@ linear-gradient(
 
           height: "100%",
 
-          px: 4,
+          px: {
+            xs: 2,
+            md: 4,
+          },
         }}
       >
         {/* LEFT SIDE */}
@@ -193,7 +207,10 @@ linear-gradient(
 
           <Stack
             direction="row"
-            spacing={3}
+            spacing={{
+              xs: 1.5,
+              md: 3,
+            }}
             alignItems="center"
             sx={{ height: "100%" }}
           >
@@ -203,8 +220,16 @@ linear-gradient(
               src={CloudeLogo}
               alt="Company Logo"
               sx={{
-                width: 90,
-                height: 50,
+                width: {
+                  xs: 60,
+                  md: 90,
+                },
+
+                height: {
+                  xs: 36,
+                  md: 50,
+                },
+
                 objectFit: "contain",
                 filter: "drop-shadow(0 8px 16px rgba(109,93,251,.25))",
               }}
@@ -213,7 +238,10 @@ linear-gradient(
             {/* TITLE */}
             <Typography
               sx={{
-                fontSize: "20px",
+                fontSize: {
+                  xs: "15px",
+                  md: "20px",
+                },
                 fontWeight: 700,
                 background: "linear-gradient(90deg,#6D5DFB,#45D7FF)",
                 WebkitBackgroundClip: "text",
@@ -229,9 +257,17 @@ linear-gradient(
           </Stack>
           <Stack
             direction="row"
-            spacing={5}
+            spacing={{
+              md: 4,
+              lg: 5,
+            }}
             alignItems="center"
             sx={{
+              display: {
+                xs: "none",
+                md: "flex",
+              },
+
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
@@ -241,11 +277,13 @@ linear-gradient(
               component={Link}
               to="/dashboard"
               sx={{
-                color:
-                  location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
+                color: location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
 
                 fontWeight: location.pathname === "/dashboard" ? 700 : 600,
-                fontSize: "17px",
+                fontSize: {
+                  md: "15px",
+                  lg: "17px",
+                },
                 position: "relative",
                 textDecoration: "none",
                 "&::after": location.pathname === "/dashboard" && {
@@ -268,7 +306,10 @@ linear-gradient(
               sx={{
                 color: location.pathname === "/payroll" ? "#fff" : "#E2E8F0",
                 fontWeight: location.pathname === "/payroll" ? 700 : 500,
-                fontSize: "17px",
+                fontSize: {
+                  md: "15px",
+                  lg: "17px",
+                },
                 textDecoration: "none",
                 position: "relative",
                 "&::after": location.pathname === "/payroll" && {
@@ -291,7 +332,10 @@ linear-gradient(
               sx={{
                 color: location.pathname === "/employees" ? "#fff" : "#E2E8F0",
                 fontWeight: location.pathname === "/employees" ? 700 : 500,
-                fontSize: "17px",
+                fontSize: {
+                  md: "15px",
+                  lg: "17px",
+                },
                 textDecoration: "none",
                 position: "relative",
                 "&::after": location.pathname === "/employees" && {
@@ -314,7 +358,10 @@ linear-gradient(
               sx={{
                 color: location.pathname === "/masters" ? "#fff" : "#E2E8F0",
                 fontWeight: location.pathname === "/masters" ? 700 : 500,
-                fontSize: "17px",
+                fontSize: {
+                  md: "15px",
+                  lg: "17px",
+                },
                 textDecoration: "none",
                 position: "relative",
                 "&::after": location.pathname === "/masters" && {
@@ -335,7 +382,14 @@ linear-gradient(
         </Box>
 
         {/* RIGHT SIDE */}
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={{
+            xs: 1,
+            md: 2,
+          }}
+          alignItems="center"
+        >
           <ProfilePopover />
         </Stack>
       </Toolbar>

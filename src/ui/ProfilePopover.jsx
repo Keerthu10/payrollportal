@@ -176,9 +176,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const ProfilePopover = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -219,8 +217,20 @@ const ProfilePopover = () => {
       >
         <Avatar
           sx={{
-            width: 46,
-            height: 46,
+            width: {
+              xs: 40,
+              md: 46,
+            },
+
+            height: {
+              xs: 40,
+              md: 46,
+            },
+
+            fontSize: {
+              xs: "18px",
+              md: "20px",
+            },
 
             background:
               "linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(49,46,129,0.92) 100%)",
@@ -228,8 +238,6 @@ const ProfilePopover = () => {
             color: "#fff",
 
             fontWeight: 700,
-
-            fontSize: "20px",
 
             border: "1px solid rgba(255,255,255,0.12)",
 
@@ -281,7 +289,11 @@ const ProfilePopover = () => {
             sx: {
               mt: 1.8,
 
-              width: 280,
+              width: {
+                xs: 250,
+                sm: 270,
+                md: 280,
+              },
 
               borderRadius: "22px",
 
@@ -309,13 +321,19 @@ const ProfilePopover = () => {
         {/* HEADER */}
         <Box
           sx={{
-            p: 2.5,
+            p: {
+              xs: 2,
+              md: 2.5,
+            },
           }}
         >
           <Typography
             sx={{
               fontWeight: 700,
-              fontSize: "18px",
+              fontSize: {
+                xs: "16px",
+                md: "18px",
+              },
             }}
           >
             Keerthana
@@ -323,7 +341,10 @@ const ProfilePopover = () => {
 
           <Typography
             sx={{
-              fontSize: "14px",
+              fontSize: {
+                xs: "13px",
+                md: "14px",
+              },
               color: "#CBD5E1",
             }}
           >
@@ -409,8 +430,15 @@ const ProfilePopover = () => {
         <MenuItem
           onClick={handleLogout}
           sx={{
-            py: 1.5,
-            px: 2,
+            py: {
+              xs: 1.2,
+              md: 1.5,
+            },
+
+            px: {
+              xs: 1.5,
+              md: 2,
+            },
 
             mx: 1,
             my: 1,
@@ -431,7 +459,14 @@ const ProfilePopover = () => {
             },
           }}
         >
-          <LogoutOutlinedIcon />
+          <LogoutOutlinedIcon
+            sx={{
+              fontSize: {
+                xs: 20,
+                md: 24,
+              },
+            }}
+          />
           Logout
         </MenuItem>
       </Menu>

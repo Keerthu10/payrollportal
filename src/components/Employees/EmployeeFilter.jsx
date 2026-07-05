@@ -9,7 +9,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
-import { getDepartmentInfo } from "../../services/departmentService";
+import { getDesignationInfo } from "../../services/designationService";
 
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import RestartAltRoundedIcon from "@mui/icons-material/RestartAltRounded";
@@ -17,27 +17,27 @@ import RestartAltRoundedIcon from "@mui/icons-material/RestartAltRounded";
 const EmployeeFilters = ({
   search,
   setSearch,
-  department,
-  setDepartment,
+  designation,
+  setDesignation,
   status,
   setStatus,
 }) => {
-  const [departments, setDepartments] = useState([]);
+  const [designations, setDesignations] = useState([]);
   useEffect(() => {
-    loadDepartments();
+    loadDesignation();
   }, []);
 
-  const loadDepartments = async () => {
+  const loadDesignation = async () => {
     try {
-      const response = await getDepartmentInfo();
-      setDepartments(response.data);
+      const response = await getDesignationInfo();
+      setDesignations(response.data);
     } catch (error) {
       console.log(error);
     }
   };
   const handleReset = () => {
     setSearch("");
-    setDepartment("");
+    setDesignation("");
     setStatus("");
   };
 
@@ -146,16 +146,16 @@ const EmployeeFilters = ({
         </FormControl> */}
         <Box sx={{ width: 220 }}>
           <Dropdown
-            className="department-dropdown"
-            value={department}
-            options={[{ departmentName: "All Departments" }, ...departments]}
-            optionLabel="departmentName"
-            optionValue="departmentName"
-            onChange={(e) => setDepartment(e.value)}
-            placeholder="Department"
+            className="designation-dropdown"
+            value={designation}
+            options={[{ designationName: "All Designation" }, ...designations]}
+            optionLabel="designationName"
+            optionValue="designationName"
+            onChange={(e) => setDesignation(e.value)}
+            placeholder="Designation"
             filter
-            filterPlaceholder="Search Department..."
-            filterBy="departmentName"
+            filterPlaceholder="Search Designation..."
+            filterBy="designationName"
           />
         </Box>
 

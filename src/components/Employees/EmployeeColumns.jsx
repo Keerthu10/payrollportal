@@ -38,11 +38,6 @@ export const employeeColumns = (onView, onEdit, onDelete) => [
     flex: 1.5,
   },
   {
-    field: "department",
-    headerName: "Department",
-    flex: 1.2,
-  },
-  {
     field: "location",
     headerName: "Location",
     flex: 1,

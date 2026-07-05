@@ -17,7 +17,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Dropdown } from "primereact/dropdown";
 
 import GlobalModal from "../../ui/GlobalModal";
-import { getDepartmentInfo } from "../../services/departmentService";
+import { getDesignationInfo } from "../../services/designationService";
 import { getEmploymentTypeInfo } from "../../services/EmploymentType";
 import { getNextEmployeeId } from "../../services/employeeService";
 
@@ -30,16 +30,16 @@ const EmployeeModal = ({
   handleResendVerification,
 }) => {
   const [errors, setErrors] = useState({});
-  const [departments, setDepartments] = useState([]);
+  const [designations, setDesignations] = useState([]);
   const [employmentTypes, setEmploymentTypes] = useState([]);
-  const loadDepartments = async () => {
+  const loadDesignations = async () => {
     try {
-      const response = await getDepartmentInfo();
+      const response = await getDesignationInfo();
 
-      console.log("Department Response:", response);
-      console.log("Department Data:", response.data);
+      console.log("Designation Response:", response);
+      console.log("Designation Data:", response.data);
 
-      setDepartments(response.data);
+      setDesignations(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +58,7 @@ const EmployeeModal = ({
     }
   };
   useEffect(() => {
-    loadDepartments();
+    loadDesignations();
     loadEmploymentTypes();
   }, []);
 
@@ -69,7 +69,6 @@ const EmployeeModal = ({
     fullName: "",
     email: "",
     phone: "",
-    department: "",
     designation: "",
     employmentType: "",
     location: "",
@@ -110,7 +109,6 @@ const EmployeeModal = ({
         fullName: employee.name,
         email: employee.email,
         phone: employee.phone,
-        department: employee.department,
         designation: employee.designation,
         employmentType: employee.employmentType || "",
         reportingManager: employee.reportingManager || "",
@@ -166,11 +164,7 @@ const EmployeeModal = ({
       tempErrors.dob = "Date of Birth is required";
     }
 
-    if (!formData.department) {
-      tempErrors.department = "Department is required";
-    }
-
-    if (!formData.designation.trim()) {
+    if (!formData.designation) {
       tempErrors.designation = "Designation is required";
     }
 
@@ -224,7 +218,6 @@ const EmployeeModal = ({
       dateOfBirth: formData.dob,
       phone: formData.phone,
       designation: formData.designation,
-      department: formData.department,
       employmentType: formData.employmentType,
       location: formData.location,
       joinDate: formData.joinDate,
@@ -458,15 +451,15 @@ const EmployeeModal = ({
           {/* Row 3 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Department</Typography>
+            <Typography sx={labelStyle}>Designation</Typography>
 
             <Dropdown
-              value={formData.department}
-              options={departments}
-              optionLabel="departmentName"
-              optionValue="departmentName"
-              className={`modal-dropdown ${errors.department ? "p-invalid" : ""}`}
-              placeholder="Select Department"
+              value={formData.designation}
+              options={designations}
+              optionLabel="designationName"
+              optionValue="designationName"
+              className={`modal-dropdown ${errors.designation ? "p-invalid" : ""}`}
+              placeholder="Select Designation"
               filter
               appendTo={document.body}
               autoZIndex={true}
@@ -476,13 +469,13 @@ const EmployeeModal = ({
               onChange={(e) =>
                 handleChange({
                   target: {
-                    name: "department",
+                    name: "designation",
                     value: e.value,
                   },
                 })
               }
             />
-            {errors.department && (
+            {errors.designation && (
               <small
                 style={{
                   color: "#d32f2f",
@@ -491,12 +484,12 @@ const EmployeeModal = ({
                   fontSize: "12px",
                 }}
               >
-                {errors.department}
+                {errors.designation}
               </small>
             )}
           </Grid>
 
-          <Grid size={{ xs: 12, md: 4 }}>
+          {/* <Grid size={{ xs: 12, md: 4 }}>
             <Typography sx={labelStyle}>Designation</Typography>
             <TextField
               fullWidth
@@ -508,7 +501,7 @@ const EmployeeModal = ({
               helperText={errors.designation}
               sx={fieldStyle}
             />
-          </Grid>
+          </Grid> */}
 
           {/* Row 4 */}
 

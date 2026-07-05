@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import {
-  createDepartment,
-  getAllDepartments,
-  updateDepartment,
-  getDepartmentById,
-  deleteDepartment,
-} from "../services/departmentService";
+  createDesignation,
+  getAllDesignation,
+  updateDesignation,
+  getDesignationById,
+  deleteDesignation,
+} from "../services/designationService";
 import {
   createEmploymentType,
   getEmploymentTypeById,
@@ -14,43 +14,47 @@ import {
   updateEmploymentType,
   deleteEmploymentType,
 } from "../services/EmploymentType";
+import GlobalModal from "../ui/GlobalModal";
 import { useToast } from "../context/ToastContext";
 import MasterModal from "../components/Masters/MasterModal";
 import MasterTable from "../components/Masters/MasterTable";
-import { departmentColumns } from "../components/Masters/DepartmentColumn";
+import { designationColumns } from "../components/Masters/DesignationColumn";
 import { employmentTypeColumns } from "../components/Masters/EmploymentTypeColumn";
 import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
 import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
 
 const Masters = () => {
   const { showToast } = useToast();
-  const [selectedMaster, setSelectedMaster] = useState("departments");
+  const [selectedMaster, setSelectedMaster] = useState("designation");
 
   const [openModal, setOpenModal] = useState(false);
 
   const [selectedRecord, setSelectedRecord] = useState(null);
 
-  const [departmentRows, setDepartmentRows] = useState([]);
+  const [designationRows, setDesignationRows] = useState([]);
 
   const [employmentTypeRows, setEmploymentTypeRows] = useState([]);
 
-  const loadDepartments = async () => {
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteRecord, setDeleteRecord] = useState(null);
+
+  const loadDesignations = async () => {
     try {
-      const response = await getAllDepartments();
+      const response = await getAllDesignation();
 
-      console.log("Department API Response:", response);
-      console.log("Department Data:", response.data);
+      console.log("Designation API Response:", response);
+      console.log("Designation Data:", response.data);
 
-      setDepartmentRows(
+      setDesignationRows(
         response.data.map((item) => ({
-          id: item.departmentId,
-          departmentId: item.departmentId,
-          departmentName: item.departmentName,
+          id: item.designationId,
+          desigantionId: item.designationId,
+          designationName: item.designationName,
           status: item.status ? "Active" : "Inactive",
         })),
       );
     } catch (error) {
-      console.error("Department Error:", error);
+      console.error("Designation Error:", error);
     }
   };
 
@@ -72,57 +76,59 @@ const Masters = () => {
   };
 
   useEffect(() => {
-    loadDepartments();
+    loadDesignations();
     loadEmploymentTypes();
   }, []);
 
   const title =
-    selectedMaster === "departments"
-      ? "Department Master"
+    selectedMaster === "designation"
+      ? "Designation Master"
       : "Employment Type Master";
 
   const subtitle =
-    selectedMaster === "departments"
-      ? "Manage and maintain department records"
+    selectedMaster === "designation"
+      ? "Manage and maintain designation records"
       : "Manage and maintain employment types";
 
   const buttonText =
-    selectedMaster === "departments" ? "Add Department" : "Add Employment Type";
+    selectedMaster === "designation"
+      ? "Add Designation"
+      : "Add Employment Type";
 
   const handleSave = async (data) => {
     try {
-      if (selectedMaster === "departments") {
+      if (selectedMaster === "designation") {
         // Duplicate validation
 
-        const isDuplicateDepartment = departmentRows.some(
+        const isDuplicateDesignation = designationRows.some(
           (item) =>
-            item.departmentName?.trim().toLowerCase() ===
+            item.designationName?.trim().toLowerCase() ===
               data.name?.trim().toLowerCase() &&
-            item.departmentId !== selectedRecord?.departmentId,
+            item.designationId !== selectedRecord?.designationId,
         );
 
-        if (isDuplicateDepartment) {
-          showToast("error", "Error", "Department already exists");
+        if (isDuplicateDesignation) {
+          showToast("error", "Error", "Designation already exists");
           return;
         }
 
         if (selectedRecord) {
-          await updateDepartment({
-            departmentId: selectedRecord.departmentId,
-            departmentName: data.name,
+          await updateDesignation({
+            designationId: selectedRecord.designationId,
+            designationName: data.name,
             status: data.status === "Active",
           });
 
-          showToast("success", "Success", "Department updated successfully");
+          showToast("success", "Success", "Designation updated successfully");
         } else {
-          await createDepartment({
-            departmentName: data.name,
+          await createDesignation({
+            designationName: data.name,
           });
 
-          showToast("success", "Success", "Department created successfully");
+          showToast("success", "Success", "Designation created successfully");
         }
 
-        await loadDepartments();
+        await loadDesignation();
       } else {
         // Employment Type duplicate validation
 
@@ -180,10 +186,10 @@ const Masters = () => {
 
   const handleEdit = async (row) => {
     try {
-      if (selectedMaster === "departments") {
+      if (selectedMaster === "designation") {
         setSelectedRecord({
-          departmentId: row.departmentId,
-          departmentName: row.departmentName,
+          designationId: row.designationId,
+          designationName: row.designationName,
           status: row.status,
         });
       } else {
@@ -200,35 +206,69 @@ const Masters = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  // const handleDelete = async (id) => {
+  //   try {
+  //     if (selectedMaster === "departments") {
+  //       const row = departmentRows.find((item) => item.id === id);
+
+  //       if (!row) return;
+
+  //       await updateDepartment({
+  //         departmentId: row.departmentId || row.id,
+  //         departmentName: row.departmentName,
+  //         status: false,
+  //       });
+
+  //       await loadDepartments();
+  //     } else {
+  //       const row = employmentTypeRows.find((item) => item.id === id);
+
+  //       if (!row) return;
+
+  //       await updateEmploymentType({
+  //         jobTypeId: row.jobTypeId,
+  //         jobType: row.employmentType,
+  //         status: false,
+  //       });
+
+  //       await loadEmploymentTypes();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deactivating record:", error);
+  //   }
+  // };
+
+  const handleDelete = (id) => {
+    setDeleteRecord(id);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
     try {
-      if (selectedMaster === "departments") {
-        const row = departmentRows.find((item) => item.id === id);
+      if (selectedMaster === "designation") {
+        await deleteDesignation(deleteRecord);
 
-        if (!row) return;
+        await loadDesignation();
 
-        await updateDepartment({
-          departmentId: row.departmentId || row.id,
-          departmentName: row.departmentName,
-          status: false,
-        });
-
-        await loadDepartments();
+        showToast("success", "Success", "Designation deleted successfully");
       } else {
-        const row = employmentTypeRows.find((item) => item.id === id);
-
-        if (!row) return;
-
-        await updateEmploymentType({
-          jobTypeId: row.jobTypeId,
-          jobType: row.employmentType,
-          status: false,
-        });
+        await deleteEmploymentType(deleteRecord);
 
         await loadEmploymentTypes();
+
+        showToast("success", "Success", "Employment Type deleted successfully");
       }
+
+      setDeleteModalOpen(false);
+      setDeleteRecord(null);
     } catch (error) {
-      console.error("Error deactivating record:", error);
+      console.error("Error deleting record:", error);
+      console.error(error.response);
+
+      showToast("error", "Error", "Failed to delete record");
+
+      setDeleteModalOpen(false);
+      setDeleteRecord(null);
     }
   };
 
@@ -262,7 +302,7 @@ const Masters = () => {
             opacity: 0.9,
           }}
         >
-          Configure departments, employment types, and business rules
+          Configure designation, employment types, and business rules
         </Typography>
       </Box>
 
@@ -277,7 +317,7 @@ const Masters = () => {
         }}
       >
         <Box
-          onClick={() => setSelectedMaster("departments")}
+          onClick={() => setSelectedMaster("designation")}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -288,17 +328,17 @@ const Masters = () => {
             cursor: "pointer",
 
             background:
-              selectedMaster === "departments"
+              selectedMaster === "designation"
                 ? "linear-gradient(135deg, #7C3AED 0%, #4F46E5 55%, #2563EB 100%)"
                 : "#F8FAFC",
 
-            color: selectedMaster === "departments" ? "#FFFFFF" : "#334155",
+            color: selectedMaster === "designation" ? "#FFFFFF" : "#334155",
 
             border:
-              selectedMaster === "departments" ? "none" : "2px solid #0b0b0bff",
+              selectedMaster === "designation" ? "none" : "2px solid #0b0b0bff",
 
             boxShadow:
-              selectedMaster === "departments"
+              selectedMaster === "designation"
                 ? "0 8px 20px rgba(79,70,229,0.25)"
                 : "none",
 
@@ -313,7 +353,7 @@ const Masters = () => {
               fontWeight: 600,
             }}
           >
-            Departments
+            Designation
           </Typography>
         </Box>
 
@@ -365,18 +405,18 @@ const Masters = () => {
 
       <MasterTable
         title={
-          selectedMaster === "departments"
-            ? "Department Master"
+          selectedMaster === "designation"
+            ? "Designation Master"
             : "Employment Type Master"
         }
         subtitle={
-          selectedMaster === "departments"
-            ? "Manage and maintain department records"
+          selectedMaster === "designation"
+            ? "Manage and maintain designation records"
             : "Manage and maintain employment types"
         }
         buttonText={
-          selectedMaster === "departments"
-            ? "Add Department"
+          selectedMaster === "designation"
+            ? "Add Designation"
             : "Add Employment Type"
         }
         onAddClick={() => {
@@ -384,11 +424,13 @@ const Masters = () => {
           setOpenModal(true);
         }}
         rows={
-          selectedMaster === "departments" ? departmentRows : employmentTypeRows
+          selectedMaster === "designation"
+            ? designationRows
+            : employmentTypeRows
         }
         columns={
-          selectedMaster === "departments"
-            ? departmentColumns(handleEdit, handleDelete)
+          selectedMaster === "designation"
+            ? designationColumns(handleEdit, handleDelete)
             : employmentTypeColumns(handleEdit, handleDelete)
         }
       />
@@ -400,11 +442,63 @@ const Masters = () => {
         }}
         record={selectedRecord}
         mode={
-          selectedMaster === "departments" ? "department" : "employmentType"
+          selectedMaster === "designation" ? "designation" : "employmentType"
         }
         onSave={handleSave}
         showToast={showToast}
       />
+      <GlobalModal
+        open={deleteModalOpen}
+        handleClose={() => {
+          setDeleteModalOpen(false);
+          setDeleteRecord(null);
+        }}
+        title="Delete Confirmation"
+      >
+        <Typography sx={{ mb: 3, fontWeight: 700 }}>
+          Are you sure you want to delete this{" "}
+          {selectedMaster === "designation" ? "Designation" : "Employment Type"}
+          ?
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: 2.5,
+            mt: 5,
+          }}
+        >
+          <Button
+            variant="outlined"
+            sx={{
+              minWidth: 110,
+              borderRadius: "8px",
+              textTransform: "none",
+            }}
+            onClick={() => {
+              setDeleteModalOpen(false);
+              setDeleteRecord(null);
+            }}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="contained"
+            color="error"
+            sx={{
+              minWidth: 110,
+              borderRadius: "8px",
+              textTransform: "none",
+            }}
+            onClick={confirmDelete}
+          >
+            Delete
+          </Button>
+        </Box>
+      </GlobalModal>
     </Box>
   );
 };

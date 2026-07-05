@@ -14,7 +14,7 @@ const MasterModal = ({
   open,
   handleClose,
   onSave,
-  mode = "department", // department | employmentType
+  mode = "designation",
   record = null,
   showToast,
 }) => {
@@ -28,7 +28,7 @@ const MasterModal = ({
   useEffect(() => {
     if (record) {
       setFormData({
-        name: record.departmentName || record.employmentType || "",
+        name: record.designationName || record.employmentType || "",
         status: record.status || "Active",
       });
     } else {
@@ -51,8 +51,8 @@ const MasterModal = ({
       showToast(
         "error",
         "Validation Error",
-        mode === "department"
-          ? "Department Name is required"
+        mode === "designation"
+          ? "Designation Name is required"
           : "Employment Type is required",
       );
       return;
@@ -85,8 +85,8 @@ const MasterModal = ({
       handleClose={handleClose}
       title={
         record
-          ? `Edit ${mode === "department" ? "Department" : "Employment Type"}`
-          : `Add ${mode === "department" ? "Department" : "Employment Type"}`
+          ? `Edit ${mode === "designation" ? "Designation" : "Employment Type"}`
+          : `Add ${mode === "designation" ? "Designation" : "Employment Type"}`
       }
       subtitle="Master Configuration"
       maxWidth={600}
@@ -138,7 +138,7 @@ const MasterModal = ({
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography sx={labelStyle}>
-            {mode === "department" ? "Department Name" : "Employment Type"}
+            {mode === "designation" ? "Designation Name" : "Employment Type"}
           </Typography>
 
           <TextField
@@ -147,8 +147,8 @@ const MasterModal = ({
             value={formData.name}
             onChange={handleChange}
             placeholder={
-              mode === "department"
-                ? "Enter Department Name"
+              mode === "designation"
+                ? "Enter Designation Name"
                 : "Enter Employment Type"
             }
             sx={fieldStyle}
