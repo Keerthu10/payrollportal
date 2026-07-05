@@ -194,6 +194,8 @@ const TopToolbar = () => {
         })}
       </List>
     </Box>
+  );
+
   return (
     <>
       {/* Mobile Drawer */}
