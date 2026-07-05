@@ -51,8 +51,10 @@ const DashboardHeader = ({
       <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
+          gap: { xs: 3, md: 0 },
           mb: 5,
         }}
       >
@@ -60,7 +62,7 @@ const DashboardHeader = ({
         <Box>
           <Typography
             sx={{
-              fontSize: 30,
+              fontSize: { xs: 22, md: 30 },
               fontWeight: 700,
               color: "#0F172A",
               mb: 1,
@@ -108,8 +110,9 @@ const DashboardHeader = ({
             component="img"
             src={Business}
             sx={{
-              height: 100,
+              height: { xs: 60, md: 100 },
               objectFit: "contain",
+              display: { xs: "none", sm: "block" },
             }}
           />
 

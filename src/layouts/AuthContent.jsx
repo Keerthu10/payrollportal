@@ -34,21 +34,23 @@ const AuthContent = ({ children }) => {
   return (
     <Box
       sx={{
-        width: "90%",
+        width: { xs: "95%", sm: "90%" },
         maxWidth: "1250px",
-        minHeight: "720px",
+        minHeight: { xs: "auto", md: "720px" },
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
-        gap: 10,
+        justifyContent: { xs: "center", md: "space-between" },
+        gap: { xs: 0, md: 10 },
+        py: { xs: 4, md: 0 },
       }}
     >
-      {/* LEFT SIDE */}
+      {/* LEFT SIDE — hidden on mobile */}
       <Box
         sx={{
           width: "48%",
           color: "#fff",
           pr: 4,
+          display: { xs: "none", md: "block" },
         }}
       >
         <Box
@@ -253,7 +255,7 @@ const AuthContent = ({ children }) => {
       {/* RIGHT SIDE CARD */}
       <Box
         sx={{
-          width: 520,
+          width: { xs: "100%", sm: 480, md: 520 },
           position: "relative",
           overflow: "hidden",
 
@@ -262,10 +264,10 @@ const AuthContent = ({ children }) => {
 
           border: "1px solid rgba(255,255,255,.2)",
 
-          borderRadius: "28px",
+          borderRadius: { xs: "20px", md: "28px" },
 
-          px: 7,
-          py: 7,
+          px: { xs: 3, sm: 5, md: 7 },
+          py: { xs: 4, sm: 5, md: 7 },
 
           boxShadow: "0 30px 70px rgba(15,23,42,.18)",
 

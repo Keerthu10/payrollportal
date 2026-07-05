@@ -322,8 +322,13 @@ const StatsCards = ({ dashboardStats }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        gap: 3,
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "repeat(2, 1fr)",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(4, 1fr)",
+        },
+        gap: { xs: 2, md: 3 },
         mb: 4,
         width: "100%",
       }}
@@ -333,9 +338,9 @@ const StatsCards = ({ dashboardStats }) => {
           key={index}
           elevation={0}
           sx={{
-            flex: 1,
-            p: 3,
-            height: 150,
+            p: { xs: 2, md: 3 },
+            height: { xs: "auto", md: 150 },
+            minHeight: { xs: 120, md: "auto" },
             borderRadius: "24px",
 
             background: "#FFFFFF",

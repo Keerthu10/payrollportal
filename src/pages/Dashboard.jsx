@@ -150,6 +150,7 @@ const Dashboard = () => {
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", md: "row" },
             gap: 3,
             mt: 3,
             alignItems: "flex-start",
@@ -231,8 +232,8 @@ const Dashboard = () => {
           <Box
             sx={{
               flex: "1 1 28%",
-              minWidth: 350,
-              height:380,
+              minWidth: { xs: "100%", md: 350 },
+              height: 380,
               borderRadius: 6,
               background: "#fff",
               boxShadow: "0 8px 30px rgba(0,0,0,.08)",

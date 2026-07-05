@@ -96,20 +96,121 @@
 
 // export default TopToolbar;
 
-import React from "react";
+import React, { useState } from "react";
 
-import { AppBar, Toolbar, Box, Stack, Avatar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Stack,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+  Divider,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation } from "react-router-dom";
 import ProfilePopover from "../ui/ProfilePopover";
 import CloudeLogo from "../assets/cloude.png";
 
 const TopToolbar = () => {
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
+  const navLinks = [
+    { label: "DASHBOARD", to: "/dashboard" },
+    { label: "PAYROLL", to: "/payroll" },
+    { label: "EMPLOYEES", to: "/employees" },
+    { label: "MASTERS", to: "/masters" },
+  ];
+
+  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
+
+  /* ── Mobile Drawer ── */
+  const mobileDrawer = (
+    <Box
+      sx={{
+        width: 260,
+        height: "100%",
+        background: "linear-gradient(180deg,#15123F 0%,#4338CA 100%)",
+        display: "flex",
+        flexDirection: "column",
+        pt: 2,
+        pb: 4,
+        px: 2,
+      }}
+    >
+      {/* Drawer header */}
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>
+        <Box
+          component="img"
+          src={CloudeLogo}
+          alt="Logo"
+          sx={{ width: 56, height: 32, objectFit: "contain" }}
+        />
+        <IconButton onClick={handleDrawerToggle} sx={{ color: "#fff" }}>
+          <CloseIcon />
+        </IconButton>
+      </Box>
+
+      <Divider sx={{ borderColor: "rgba(255,255,255,.15)", mb: 2 }} />
+
+      {/* Nav links */}
+      <List disablePadding>
+        {navLinks.map((link) => {
+          const active = location.pathname === link.to;
+          return (
+            <ListItemButton
+              key={link.to}
+              component={Link}
+              to={link.to}
+              onClick={handleDrawerToggle}
+              sx={{
+                borderRadius: "12px",
+                mb: 1,
+                px: 2,
+                py: 1.2,
+                background: active ? "rgba(255,255,255,.15)" : "transparent",
+                "&:hover": { background: "rgba(255,255,255,.10)" },
+              }}
+            >
+              <ListItemText
+                primary={link.label}
+                primaryTypographyProps={{
+                  sx: {
+                    color: active ? "#fff" : "#C7D2FE",
+                    fontWeight: active ? 700 : 500,
+                    fontSize: 14,
+                    letterSpacing: "0.5px",
+                  },
+                }}
+              />
+            </ListItemButton>
+          );
+        })}
+      </List>
+    </Box>
   return (
-    <AppBar
-      position="fixed"
-      elevation={0}
+    <>
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{ display: { xs: "block", md: "none" } }}
+        PaperProps={{ sx: { border: "none" } }}
+      >
+        {mobileDrawer}
+      </Drawer>
+
+      <AppBar
+        position="fixed"
+        elevation={0}
       // sx={{
       //   background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)",
       //   borderBottom: "1px solid #1F2937",
@@ -203,7 +304,18 @@ const TopToolbar = () => {
             position: "relative",
           }}
         >
-          {/* LOGO */}
+          {/* Hamburger — mobile only */}
+          <IconButton
+            onClick={handleDrawerToggle}
+            sx={{
+              color: "#fff",
+              display: { xs: "flex", md: "none" },
+              mr: 1,
+            }}
+            aria-label="open mobile navigation"
+          >
+            <MenuIcon />
+          </IconButton>
 
           <Stack
             direction="row"
@@ -394,6 +506,7 @@ const TopToolbar = () => {
         </Stack>
       </Toolbar>
     </AppBar>
+    </>
   );
 };
 

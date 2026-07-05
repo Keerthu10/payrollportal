@@ -198,11 +198,11 @@ linear-gradient(
 
         <Box
           sx={{
-            px: 4,
+            px: { xs: 1.5, sm: 2, md: 4 },
 
-            py: 4,
+            py: { xs: 2, md: 4 },
 
-            pt: "120px",
+            pt: { xs: "80px", md: "120px" },
           }}
         >
           <Outlet />
