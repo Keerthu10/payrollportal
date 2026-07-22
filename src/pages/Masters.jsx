@@ -48,7 +48,7 @@ const Masters = () => {
       setDesignationRows(
         response.data.map((item) => ({
           id: item.designationId,
-          desigantionId: item.designationId,
+          designationId: item.designationId,
           designationName: item.designationName,
           status: item.status ? "Active" : "Inactive",
         })),
@@ -128,7 +128,7 @@ const Masters = () => {
           showToast("success", "Success", "Designation created successfully");
         }
 
-        await loadDesignation();
+        await loadDesignations();
       } else {
         // Employment Type duplicate validation
 
@@ -178,8 +178,9 @@ const Masters = () => {
       console.error(error);
 
       showToast(
-        error?.response?.data?.message || "Something went wrong",
         "error",
+        "Error",
+        error?.response?.data?.message || "Something went wrong",
       );
     }
   };
@@ -248,7 +249,7 @@ const Masters = () => {
       if (selectedMaster === "designation") {
         await deleteDesignation(deleteRecord);
 
-        await loadDesignation();
+        await loadDesignations();
 
         showToast("success", "Success", "Designation deleted successfully");
       } else {

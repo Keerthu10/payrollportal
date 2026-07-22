@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Box, Typography, Stack, Button } from "@mui/material";
+import { Box, Typography, Stack, Button, Tooltip } from "@mui/material";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
@@ -13,11 +13,14 @@ import StatsCards from "./StatsCards";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 
 const DashboardHeader = ({
   dashboardStats,
   selectedMonth,
   setSelectedMonth,
+  onCardClick,
+  onRefresh,
 }) => {
   const today = new Date();
 
@@ -37,6 +40,14 @@ const DashboardHeader = ({
     day: "numeric",
     year: "numeric",
   });
+
+  const [spinning, setSpinning] = useState(false);
+
+  const handleRefreshClick = () => {
+    setSpinning(true);
+    onRefresh();
+    setTimeout(() => setSpinning(false), 600);
+  };
 
   return (
     <Box
@@ -116,6 +127,34 @@ const DashboardHeader = ({
             }}
           />
 
+          <Tooltip title="Refresh">
+            <Button
+              variant="outlined"
+              onClick={handleRefreshClick}
+              sx={{
+                minWidth: 0,
+                width: 56,
+                height: 56,
+                borderRadius: "16px",
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,.12)",
+                boxShadow: "0 6px 16px rgba(0,0,0,.08)",
+                "&:hover": {
+                  background: "#F5F3FF",
+                  boxShadow: "0 6px 16px rgba(0,0,0,.12)",
+                },
+              }}
+            >
+              <RefreshRoundedIcon
+                sx={{
+                  color: "#4F46E5",
+                  transition: "transform 0.6s ease",
+                  transform: spinning ? "rotate(360deg)" : "rotate(0deg)",
+                }}
+              />
+            </Button>
+          </Tooltip>
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               views={["year", "month"]}
@@ -143,7 +182,7 @@ const DashboardHeader = ({
       </Box>
 
       {/* BOTTOM SECTION */}
-      <StatsCards dashboardStats={dashboardStats} />
+      <StatsCards dashboardStats={dashboardStats} onCardClick={onCardClick} />
     </Box>
   );
 };

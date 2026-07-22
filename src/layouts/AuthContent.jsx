@@ -105,7 +105,7 @@ const AuthContent = ({ children }) => {
             mb: 6,
           }}
         >
-          Manage payroll, employees, salary disbursements and reports
+          Manage employees, payroll, salary disbursements and reports
           efficiently in one place.
         </Typography>
 

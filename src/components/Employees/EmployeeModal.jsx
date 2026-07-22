@@ -31,7 +31,7 @@ const EmployeeModal = ({
 }) => {
   const [errors, setErrors] = useState({});
   const [designations, setDesignations] = useState([]);
-  const [employmentTypes, setEmploymentTypes] = useState([]);
+  const [employmentTypes, setemploymentTypes] = useState([]);
   const loadDesignations = async () => {
     try {
       const response = await getDesignationInfo();
@@ -45,21 +45,21 @@ const EmployeeModal = ({
     }
   };
 
-  const loadEmploymentTypes = async () => {
+  const loademploymentTypes = async () => {
     try {
       const response = await getEmploymentTypeInfo();
 
-      console.log("Employment Response:", response);
-      console.log("Employment Data:", response.data);
+      console.log("Employement Response:", response);
+      console.log("Employement Data:", response.data);
 
-      setEmploymentTypes(response.data);
+      setemploymentTypes(response.data);
     } catch (error) {
       console.error(error);
     }
   };
   useEffect(() => {
     loadDesignations();
-    loadEmploymentTypes();
+    loademploymentTypes();
   }, []);
 
   const getInitialFormData = () => ({
@@ -113,7 +113,7 @@ const EmployeeModal = ({
         employmentType: employee.employmentType || "",
         reportingManager: employee.reportingManager || "",
         location: employee.location,
-        status: employee.status,
+        status:employee.active?"Active":"Inactive",
 
         dob: employee.dateOfBirth || "",
         bankName: employee.bankName || "",
@@ -169,7 +169,7 @@ const EmployeeModal = ({
     }
 
     if (!formData.employmentType) {
-      tempErrors.employmentType = "Employment Type is required";
+      tempErrors.employmentType = "Employement Type is required";
     }
 
     if (!formData.location.trim()) {
@@ -227,6 +227,7 @@ const EmployeeModal = ({
       ifscCode: formData.ifscCode,
       panNo: formData.panNo,
       uanNo: formData.uanNo,
+      active: formData.status === "Active",
     };
 
     onSave(payload);
@@ -261,6 +262,11 @@ const EmployeeModal = ({
     setFormData(getInitialFormData());
     handleClose();
   };
+
+  const statusOptions = [
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" },
+  ];
 
   return (
     <GlobalModal
@@ -506,7 +512,7 @@ const EmployeeModal = ({
           {/* Row 4 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Employment Type</Typography>
+            <Typography sx={labelStyle}>Employement Type</Typography>
 
             <Dropdown
               value={formData.employmentType}
@@ -514,7 +520,7 @@ const EmployeeModal = ({
               optionLabel="jobType"
               optionValue="jobType"
               className={`modal-dropdown ${errors.employmentType ? "p-invalid" : ""}`}
-              placeholder="Select Employment Type"
+              placeholder="Select Employement Type"
               filter
               appendTo={document.body}
               onChange={(e) =>
@@ -624,6 +630,30 @@ const EmployeeModal = ({
               sx={fieldStyle}
             />
           </Grid>
+          {mode === "edit" && (
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Typography sx={labelStyle}>Status</Typography>
+
+              <Dropdown
+                value={formData.status}
+                options={statusOptions}
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select Status"
+                className="modal-dropdown"
+                style={{ width: "100%" }}
+                appendTo={document.body}
+                onChange={(e) =>
+                  handleChange({
+                    target: {
+                      name: "status",
+                      value: e.value,
+                    },
+                  })
+                }
+              />
+            </Grid>
+          )}
         </Grid>
       </Box>
     </GlobalModal>

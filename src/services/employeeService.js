@@ -34,6 +34,19 @@ export const getNextEmployeeId = () => {
   return api.post("/ctpl/employee/next-employee-id");
 };
 
-export const deleteEmployee = (id)=>{
+export const deleteEmployee = (id) => {
   return api.post(`/ctpl/employee/toggle-status/${id}`);
-}
+};
+
+export const bulkUploadEmployees = (formData) => {
+  return api.post("/ctpl/employee/bulk-upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const getEmployeeHistory = (payload) => {
+  console.log("Service Payload:", payload);
+  return api.post("/ctpl/payroll/employee-history", payload);
+};

@@ -8,6 +8,10 @@ const Table = ({
   loading = false,
   height = 600,
   onRowClick,
+  paginationMode = "client",
+  rowCount,
+  paginationModel,
+  onPaginationModelChange,
 }) => {
   return (
     <Box sx={{ height: 450, width: "100%" }}>
@@ -18,13 +22,15 @@ const Table = ({
         pageSizeOptions={[10, 25, 50, 100]}
         disableRowSelectionOnClick
         onRowClick={onRowClick}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
+        paginationMode={paginationMode}
+        rowCount={paginationMode === "server" ? rowCount : undefined}
+        paginationModel={paginationModel}
+        onPaginationModelChange={onPaginationModelChange}
+        {...(paginationMode !== "server" && {
+          initialState: {
+            pagination: { paginationModel: { pageSize: 10 } },
           },
-        }}
+        })}
         slots={{
           toolbar: GridToolbar,
           noRowsOverlay: () => (

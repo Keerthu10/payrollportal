@@ -6,7 +6,18 @@ import Table from "../../ui/Table";
 
 import { employeeColumns } from "./EmployeeColumns";
 
-const EmployeeTable = ({ employees, loading, onView, onEdit, onDelete }) => {
+const EmployeeTable = ({
+  employees,
+  loading,
+  onView,
+  onEdit,
+  onDelete,
+  onActivate,
+  onResendVerification,
+  rowCount,
+  paginationModel,
+  onPaginationModelChange,
+}) => {
   return (
     <Paper
       elevation={0}
@@ -25,9 +36,13 @@ const EmployeeTable = ({ employees, loading, onView, onEdit, onDelete }) => {
     >
       <Table
         rows={employees}
-        columns={employeeColumns(onView, onEdit, onDelete)}
+        columns={employeeColumns(onView, onEdit, onDelete, onActivate,onResendVerification)}
         loading={loading}
         height={650}
+        paginationMode="server"
+        rowCount={rowCount}
+        paginationModel={paginationModel}
+        onPaginationModelChange={onPaginationModelChange}
       />
     </Paper>
   );

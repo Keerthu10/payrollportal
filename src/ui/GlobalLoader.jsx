@@ -5,9 +5,10 @@ const GlobalLoader = ({ open }) => {
     <Backdrop
       open={open}
       sx={{
-        zIndex: 9999,
-        background: "rgba(15,23,42,0.65)",
+        zIndex: (theme) => theme.zIndex.modal + 1,
+        background: "rgba(15,23,42,0.70)",
         backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)", // Safari support
         flexDirection: "column",
         gap: 2,
       }}
@@ -24,7 +25,8 @@ const GlobalLoader = ({ open }) => {
         sx={{
           color: "#fff",
           fontWeight: 600,
-          fontSize: "18px",
+          fontSize: 18,
+          letterSpacing: 0.5,
         }}
       >
         Loading...

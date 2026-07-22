@@ -48,13 +48,12 @@ const MasterModal = ({
 
   const handleSubmit = () => {
     if (!formData.name.trim()) {
-      showToast(
-        "error",
-        "Validation Error",
+      const message =
         mode === "designation"
           ? "Designation Name is required"
-          : "Employment Type is required",
-      );
+          : "Employement Type is required";
+
+      showToast("error", "Validation Error", message);
       return;
     }
 
@@ -85,8 +84,8 @@ const MasterModal = ({
       handleClose={handleClose}
       title={
         record
-          ? `Edit ${mode === "designation" ? "Designation" : "Employment Type"}`
-          : `Add ${mode === "designation" ? "Designation" : "Employment Type"}`
+          ? `Edit ${mode === "designation" ? "Designation" : "Employement Type"}`
+          : `Add ${mode === "designation" ? "Designation" : "Employement Type"}`
       }
       subtitle="Master Configuration"
       maxWidth={600}
@@ -138,7 +137,7 @@ const MasterModal = ({
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography sx={labelStyle}>
-            {mode === "designation" ? "Designation Name" : "Employment Type"}
+            {mode === "designation" ? "Designation Name" : "Employement Type"}
           </Typography>
 
           <TextField
@@ -149,7 +148,7 @@ const MasterModal = ({
             placeholder={
               mode === "designation"
                 ? "Enter Designation Name"
-                : "Enter Employment Type"
+                : "Enter Employement Type"
             }
             sx={fieldStyle}
           />

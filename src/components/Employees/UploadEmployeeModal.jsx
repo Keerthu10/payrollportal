@@ -15,7 +15,6 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-
 import GlobalModal from "../../ui/GlobalModal";
 
 const UploadEmployeeModal = ({
@@ -23,8 +22,9 @@ const UploadEmployeeModal = ({
   handleClose,
   uploadedFileName,
   excelData,
-  validationErrors,
   loading,
+  onImportEmployees,
+  importing,
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -43,21 +43,30 @@ const UploadEmployeeModal = ({
     "PAN No",
     "UAN No",
   ];
+
+  const formatDate = (value) => {
+    if (!value) return "-";
+
+    // If already DD-MM-YYYY, keep it as it is
+    if (/^\d{2}-\d{2}-\d{4}$/.test(value)) {
+      return value;
+    }
+
+    // Handle formats like 3/15/95 or 8/20/94
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+      return value;
+    }
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
   return (
     <>
-      <Backdrop
-        open={loading}
-        sx={{
-          zIndex: 9999,
-          color: "#fff",
-          flexDirection: "column",
-        }}
-      >
-        <CircularProgress color="inherit" />
-
-        <Typography sx={{ mt: 2 }}>Reading Employee Excel...</Typography>
-      </Backdrop>
-
       <GlobalModal
         open={open}
         handleClose={handleClose}
@@ -71,7 +80,13 @@ const UploadEmployeeModal = ({
               Cancel
             </Button>
 
-            <Button variant="contained">Import Employees</Button>
+            <Button
+              variant="contained"
+              onClick={onImportEmployees}
+              disabled={excelData.length === 0 || importing}
+            >
+              {importing ? "Importing..." : "Import Employees"}
+            </Button>
           </>
         }
       >
@@ -87,23 +102,19 @@ const UploadEmployeeModal = ({
           </Typography>
         )}
 
-        {validationErrors.length > 0 && (
-          <Box
-            sx={{
-              background: "#FEF2F2",
-              border: "1px solid #FCA5A5",
-              borderRadius: "12px",
-              p: 2,
-              mb: 3,
-            }}
-          >
-            {validationErrors.map((error, index) => (
-              <Typography key={index} color="error" sx={{ mb: 1 }}>
-                • {error}
-              </Typography>
-            ))}
-          </Box>
-        )}
+        {/* <Box
+          sx={{
+            background: "#FEF2F2",
+            border: "1px solid #FCA5A5",
+            borderRadius: "12px",
+            p: 2,
+            mb: 3,
+          }}
+        >
+          <Typography key={index} color="error" sx={{ mb: 1 }}>
+            • {error}
+          </Typography>
+        </Box> */}
 
         {excelData.length > 0 && (
           <>
@@ -111,9 +122,10 @@ const UploadEmployeeModal = ({
               component={Paper}
               sx={{
                 borderRadius: "20px",
-                overflow: "hidden",
                 border: "1px solid #1F2937",
                 background: "#111827",
+                maxHeight: 500,
+                overflow: "auto",
                 mb: 2,
               }}
             >
@@ -140,6 +152,56 @@ const UploadEmployeeModal = ({
                   },
                 }}
               >
+                {/* <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        background: "#111827",
+                        color: "#fff",
+                        fontWeight: 700,
+                      }}
+                    >
+                      S.No
+                    </TableCell>
+                    {previewHeaders.map((header) => (
+                      <TableCell
+                        key={header}
+                        sx={{
+                          color: "#E5E7EB",
+                        }}
+                      >
+                        {header === "Date of Birth (DD-MM-YYYY)" ||
+                        header === "Join Date (DD-MM-YYYY)"
+                          ? formatDate(row[header])
+                          : row[header] || "-"}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {excelData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell sx={{ color: "#E5E7EB" }}>
+                          {page * rowsPerPage + index + 1}
+                        </TableCell>
+
+                        {previewHeaders.map((header) => (
+                          <TableCell
+                            key={header}
+                            sx={{
+                              color: "#E5E7EB",
+                            }}
+                          >
+                            {row[header] || "-"}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                </TableBody> */}
+
                 <TableHead>
                   <TableRow>
                     <TableCell
@@ -151,6 +213,7 @@ const UploadEmployeeModal = ({
                     >
                       S.No
                     </TableCell>
+
                     {previewHeaders.map((header) => (
                       <TableCell
                         key={header}
@@ -183,7 +246,10 @@ const UploadEmployeeModal = ({
                               color: "#E5E7EB",
                             }}
                           >
-                            {row[header] || "-"}
+                            {header === "Date of Birth (DD-MM-YYYY)" ||
+                            header === "Join Date (DD-MM-YYYY)"
+                              ? formatDate(row[header])
+                              : row[header] || "-"}
                           </TableCell>
                         ))}
                       </TableRow>

@@ -6,39 +6,34 @@ import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
+import VerifiedUserRoundedIcon from "@mui/icons-material/VerifiedUserRounded";
 
-const EmployeeStats = ({ employees = [] }) => {
-  const totalEmployees = employees.length;
-
-  const activeEmployees = employees.filter(
-    (emp) => emp.status === "Active",
-  ).length;
-
-  const inactiveEmployees = employees.filter(
-    (emp) => emp.status === "Inactive",
-  ).length;
-
-  const departments = new Set(employees.map((emp) => emp.department)).size;
-
+const EmployeeStats = ({ stats, onCardClick }) => {
   const statsCards = [
     {
       title: "Total Employees",
-      value: totalEmployees,
+      value: stats?.totalEmployees ?? 0,
       icon: <GroupsRoundedIcon sx={{ fontSize: 28 }} />,
     },
     {
       title: "Active Employees",
-      value: activeEmployees,
+      value: stats?.activeEmployees ?? 0,
       icon: <CheckCircleRoundedIcon sx={{ fontSize: 28 }} />,
     },
     {
       title: "Inactive Employees",
-      value: inactiveEmployees,
+      value: stats?.inactiveEmployees ?? 0,
       icon: <CancelRoundedIcon sx={{ fontSize: 28 }} />,
     },
     {
+      title: "Unverified Employees",
+      value: stats?.unverifiedEmployees ?? 0,
+      icon: <VerifiedUserRoundedIcon sx={{ fontSize: 28 }} />,
+      type: "unverified",
+    },
+    {
       title: "New Employees",
-      value: departments,
+      value: stats?.newEmployees ?? 0,
       icon: <ApartmentRoundedIcon sx={{ fontSize: 28 }} />,
     },
   ];
@@ -55,6 +50,7 @@ const EmployeeStats = ({ employees = [] }) => {
       {statsCards.map((card, index) => (
         <Paper
           key={index}
+          onClick={() => onCardClick(card.type)}
           elevation={0}
           sx={{
             flex: 1,

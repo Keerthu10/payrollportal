@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Box, IconButton, Chip } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import MarkEmailReadRoundedIcon from "@mui/icons-material/MarkEmailReadRounded";
+import MarkEmailUnreadRoundedIcon from "@mui/icons-material/MarkEmailUnreadRounded";
 
-export const employeeColumns = (onView, onEdit, onDelete) => [
+export const employeeColumns = (onView, onEdit, onDelete, onResendVerification) => [
   {
     field: "sno",
     headerName: "S.No",
@@ -60,12 +64,39 @@ export const employeeColumns = (onView, onEdit, onDelete) => [
     ),
   },
   {
+    field: "verified",
+    headerName: "Email Verified",
+    flex: 1.3,
+    renderCell: (params) =>
+      params.row.verified ? (
+        <Chip
+          icon={<MarkEmailReadRoundedIcon fontSize="small" />}
+          label="Verified"
+          color="success"
+          size="small"
+        />
+      ) : (
+        <IconButton
+          size="small"
+          color="warning"
+          title="Resend verification email"
+          onClick={() => onResendVerification(params.row)}
+        >
+          <MarkEmailUnreadRoundedIcon fontSize="small" />
+          <Box component="span" sx={{ fontSize: "12px", ml: 0.5 }}>
+            Resend
+          </Box>
+        </IconButton>
+      ),
+  },
+  {
     field: "actions",
     headerName: "Actions",
     width: 120,
     sortable: false,
     renderCell: (params) => (
       <Box display="flex" gap={1}>
+        {/* Edit */}
         <IconButton
           color="primary"
           size="small"
@@ -74,13 +105,16 @@ export const employeeColumns = (onView, onEdit, onDelete) => [
           <EditRoundedIcon fontSize="small" />
         </IconButton>
 
-        <IconButton
-          color="error"
-          size="small"
-          onClick={() => onDelete(params.row)}
-        >
-          <DeleteRoundedIcon fontSize="small" />
-        </IconButton>
+        {/* Show Delete only for Active employees */}
+        {params.row.active && (
+          <IconButton
+            color="error"
+            size="small"
+            onClick={() => onDelete(params.row)}
+          >
+            <DeleteRoundedIcon fontSize="small" />
+          </IconButton>
+        )}
       </Box>
     ),
   },

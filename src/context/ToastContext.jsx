@@ -23,7 +23,7 @@ export const ToastProvider = ({ children }) => {
     <ToastContext.Provider value={{ showToast }}>
       {children}
       {/* ✅ PrimeReact Toast container */}
-      <Toast ref={toastRef} />
+      <Toast ref={toastRef} baseZIndex={9999} />
     </ToastContext.Provider>
   );
 };

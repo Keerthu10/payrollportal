@@ -1,517 +1,3 @@
-// import React, { useRef, useState } from "react";
-
-// import * as XLSX from "xlsx";
-
-// import { Box, Typography, Button, Paper, Stack } from "@mui/material";
-
-// import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
-
-// import GlobalModal from "../ui/GlobalModal";
-
-// import Table from "../ui/Table";
-
-// const Payroll = () => {
-//   const fileInputRef = useRef(null);
-
-//   const [openModal, setOpenModal] = useState(false);
-
-//   const [openSubmitModal, setOpenSubmitModal] = useState(false);
-//   const [submitting, setSubmitting] = useState(false);
-//   const [modalStep, setModalStep] = useState("preview");
-
-//   const [previewData, setPreviewData] = useState([]);
-
-//   const [columns, setColumns] = useState([]);
-
-//   const [fileName, setFileName] = useState("");
-
-//   const confirmPayrollSubmit = async () => {
-//     try {
-//       setSubmitting(true);
-//       console.log("Final Payroll Data:", previewData);
-//       alert("Payroll Submitted Successfully");
-//       setOpenSubmitModal(false);
-//       setOpenModal(false);
-//     } catch (error) {
-//       console.error(error);
-//       alert("Payroll Submission Failed");
-//     } finally {
-//       setSubmitting(false);
-//     }
-//   };
-
-//   // =========================================
-//   // HANDLE EXCEL FILE
-//   // =========================================
-
-//   const handleFile = (event) => {
-//     const file = event.target.files[0];
-
-//     if (!file) return;
-
-//     // FILE TYPE VALIDATION
-//     const allowedTypes = [
-//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-//       "application/vnd.ms-excel",
-//     ];
-
-//     if (!allowedTypes.includes(file.type)) {
-//       alert("Only Excel files are allowed");
-//       return;
-//     }
-
-//     // FILE SIZE VALIDATION
-//     if (file.size > 2 * 1024 * 1024) {
-//       alert("File size should be less than 2MB");
-//       return;
-//     }
-
-//     setFileName(file.name);
-
-//     const reader = new FileReader();
-
-//     reader.onload = (e) => {
-//       const data = e.target.result;
-
-//       // READ WORKBOOK
-//       const workbook = XLSX.read(data, {
-//         type: "binary",
-//       });
-
-//       // GET FIRST SHEET
-//       const sheetName = workbook.SheetNames[0];
-
-//       const worksheet = workbook.Sheets[sheetName];
-
-//       // CONVERT TO JSON
-//       const rawData = XLSX.utils.sheet_to_json(worksheet, {
-//         raw: false,
-//         defval: 0,
-//       });
-
-//       const excelData = rawData.map((row) => {
-//         const normalizedRow = {};
-
-//         Object.keys(row).forEach((key) => {
-//           normalizedRow[key.trim().toUpperCase()] = row[key];
-//         });
-
-//         return normalizedRow;
-//       });
-
-//       // =========================================
-//       // COMPUTE PAYROLL
-//       // =========================================
-
-//       const processedData = excelData.map((row, index) => {
-//         const parseValue = (value) => {
-//           return Number(
-//             String(value || 0)
-//               .replace(/,/g, "")
-//               .trim(),
-//           );
-//         };
-
-//         const basic = parseValue(row["BASIC SALARY"]);
-
-//         const hra = parseValue(row["HRA"]);
-
-//         const specialAllowance = parseValue(row["SPECIAL ALLOWANCE"]);
-
-//         const professionTax = parseValue(row["PROFESSION TAX"]);
-
-//         const medicalInsurance = parseValue(row["GROUP MEDICAL INSURANCE"]);
-
-//         const pf = parseValue(row["PF EE CON"]);
-
-//         const tds = parseValue(row["TDS"]);
-
-//         const eduCess = parseValue(row["EDU CESS"]);
-
-//         const otherDeductions = parseValue(row["OTHER DEDUCTIONS"]);
-
-//         // CALCULATIONS
-//         const grossPay = basic + hra + specialAllowance;
-
-//         const deductions =
-//           professionTax +
-//           medicalInsurance +
-//           pf +
-//           tds +
-//           eduCess +
-//           otherDeductions;
-
-//         const netPay = grossPay - deductions;
-
-//         return {
-//           id: index + 1,
-
-//           ...row,
-
-//           GROSSPAY: grossPay,
-
-//           DEDUCTIONS: deductions,
-
-//           NETPAY: netPay,
-//         };
-//       });
-//       // =========================================
-//       // DYNAMIC COLUMNS
-//       // =========================================
-
-//       const dynamicColumns =
-//         processedData.length > 0
-//           ? Object.keys(processedData[0]).map((key) => ({
-//               field: key,
-
-//               header: key.toUpperCase(),
-//             }))
-//           : [];
-
-//       // SAVE DATA
-//       console.log(processedData);
-//       setPreviewData(processedData);
-
-//       setColumns(dynamicColumns);
-
-//       // OPEN MODAL
-//       setOpenModal(true);
-//     };
-
-//     reader.readAsBinaryString(file);
-//   };
-
-//   return (
-//     <Box>
-//       {/* =========================================
-//           PAGE HEADER
-//       ========================================= */}
-
-//       <Box sx={{ mb: 4 }}>
-//         <Typography variant="h3" fontWeight={700}>
-//           Payroll Dashboard
-//         </Typography>
-
-//         <Typography
-//           sx={{
-//             color: "#64748B",
-//             mt: 1,
-//           }}
-//         >
-//           Upload and process employee payroll
-//         </Typography>
-//       </Box>
-
-//       {/* =========================================
-//           UPLOAD CARD
-//       ========================================= */}
-
-//       <Paper
-//         elevation={0}
-//         sx={{
-//           p: 5,
-
-//           borderRadius: "28px",
-
-//           background: "linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)",
-
-//           border: "1px solid #dbeafe",
-//         }}
-//       >
-//         <Stack spacing={3} justifyContent="center" alignItems="center">
-//           <UploadFileRoundedIcon
-//             sx={{
-//               fontSize: 90,
-
-//               color: "#2563eb",
-//             }}
-//           />
-
-//           <Typography variant="h4" fontWeight={700}>
-//             Upload Payroll Excel
-//           </Typography>
-
-//           <Typography
-//             sx={{
-//               color: "#64748B",
-//             }}
-//           >
-//             Upload employee payroll Excel template
-//           </Typography>
-
-//           {/* UPLOAD BUTTON */}
-
-//           <Button
-//             variant="contained"
-//             size="large"
-//             onClick={() => fileInputRef.current.click()}
-//             sx={{
-//               borderRadius: "14px",
-
-//               px: 5,
-
-//               py: 1.5,
-
-//               textTransform: "none",
-
-//               fontWeight: 600,
-
-//               fontSize: "16px",
-//             }}
-//           >
-//             Upload Excel
-//           </Button>
-
-//           {/* HIDDEN FILE INPUT */}
-
-//           <input
-//             hidden
-//             type="file"
-//             accept=".xlsx,.xls"
-//             ref={fileInputRef}
-//             onChange={handleFile}
-//           />
-
-//           {/* FILE NAME */}
-
-//           {fileName && (
-//             <Typography
-//               sx={{
-//                 fontWeight: 600,
-
-//                 color: "#0f172a",
-//               }}
-//             >
-//               Uploaded File: {fileName}
-//             </Typography>
-//           )}
-//         </Stack>
-//       </Paper>
-
-//       {/* =========================================
-//           PAYROLL PREVIEW MODAL
-//       ========================================= */}
-
-//       <GlobalModal
-//         open={openModal}
-//         handleClose={() => setOpenModal(false)}
-//         title={
-//           modalStep === "preview"
-//             ? "Payroll Preview"
-//             : "Confirm Payroll Submission"
-//         }
-//         subtitle={
-//           modalStep === "preview"
-//             ? "Validate and process employee payroll"
-//             : "Please verify payroll details before final submission"
-//         }
-//         maxWidth={modalStep === "preview" ? 1400 : 500}
-//         fullWidth={modalStep === "preview"}
-//         actions={
-//           modalStep === "preview" ? (
-//             <>
-//               <Button
-//                 variant="outlined"
-//                 sx={{
-//                   borderRadius: "12px",
-//                   textTransform: "none",
-//                   fontWeight: 600,
-//                 }}
-//               >
-//                 Validate Payroll
-//               </Button>
-
-//               <Button
-//                 variant="contained"
-//                 onClick={() => setModalStep("confirm")}
-//                 sx={{
-//                   borderRadius: "12px",
-//                   textTransform: "none",
-//                   fontWeight: 600,
-//                 }}
-//               >
-//                 Process Payroll
-//               </Button>
-//             </>
-//           ) : (
-//             <>
-//               <Button
-//                 variant="outlined"
-//                 onClick={() => setModalStep("preview")}
-//                 sx={{
-//                   borderRadius: "12px",
-//                   textTransform: "none",
-//                   fontWeight: 600,
-//                 }}
-//               >
-//                 Back
-//               </Button>
-
-//               <Button
-//                 variant="contained"
-//                 color="primary"
-//                 onClick={confirmPayrollSubmit}
-//                 sx={{
-//                   borderRadius: "12px",
-//                   textTransform: "none",
-//                   fontWeight: 700,
-//                   px: 3,
-//                   py: 1.2,
-//                   minWidth: "140px",
-//                 }}
-//               >
-//                 Confirm Submit
-//               </Button>
-//             </>
-//           )
-//         }
-//       >
-//         {modalStep === "preview" ? (
-//           <Box>
-//             <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>
-//               Excel Preview
-//             </Typography>
-
-//             <Table
-//               value={previewData}
-//               columns={columns}
-//               enablePagination={true}
-//               pagination={{
-//                 first: 0,
-//                 size: 10,
-//               }}
-//               totalRecords={previewData.length}
-//               dataKey="id"
-//             />
-//           </Box>
-//         ) : (
-//           <Box>
-//             <Box
-//               sx={{
-//                 background: "#f8fafc",
-//                 border: "1px solid #e2e8f0",
-//                 borderRadius: "16px",
-//                 p: 3,
-//                 mb: 3,
-//               }}
-//             >
-//               <Typography
-//                 variant="h6"
-//                 sx={{
-//                   fontWeight: 700,
-//                   mb: 1,
-//                   color: "#0f172a",
-//                 }}
-//               >
-//                 Final Payroll Confirmation
-//               </Typography>
-
-//               <Typography
-//                 sx={{
-//                   color: "#64748b",
-//                   lineHeight: 1.7,
-//                   fontSize: "15px",
-//                 }}
-//               >
-//                 You are about to finalize payroll processing for all employees.
-//               </Typography>
-//             </Box>
-
-//             <Stack spacing={2}>
-//               <Box
-//                 sx={{
-//                   display: "flex",
-//                   justifyContent: "space-between",
-//                   alignItems: "center",
-//                   background: "#eff6ff",
-//                   p: 2,
-//                   borderRadius: "12px",
-//                 }}
-//               >
-//                 <Typography fontWeight={600}>Total Employees</Typography>
-
-//                 <Typography fontWeight={700} color="primary">
-//                   {previewData.length}
-//                 </Typography>
-//               </Box>
-
-//               <Box
-//                 sx={{
-//                   background: "#eff6ff",
-//                   border: "1px solid #fee0bfff",
-//                   borderRadius: "12px",
-//                   p: 2,
-//                 }}
-//               >
-//                 <Typography
-//                   sx={{
-//                     color: "#1d4ed8",
-//                     fontWeight: 600,
-//                     fontSize: "14px",
-//                     lineHeight: 1.7,
-//                   }}
-//                 >
-//                   Payroll reports and payslip emails will be generated
-//                   automatically for all employees after confirmation.
-//                 </Typography>
-//               </Box>
-//             </Stack>
-//           </Box>
-//         )}
-//       </GlobalModal>
-//       {/* <GlobalModal
-//         open={openSubmitModal}
-//         handleClose={() => setOpenSubmitModal(false)}
-//         title="Confirm Payroll Submission"
-//         subtitle="Please Verify payroll details before final Submission"
-//         loading={submitting}
-//         disableBackdropClick={submitting}
-//         actions={
-//           <>
-//             <Button
-//               variant="outlined"
-//               onClick={() => setOpenSubmitModal(false)}
-//               sx={{
-//                 borderRadius: "12px",
-//                 textTransform: "none",
-//                 fontWeight: 600,
-//               }}
-//             >
-//               Cancel
-//             </Button>
-//             <Button
-//               variant="contained"
-//               color="primary"
-//               onClick={confirmPayrollSubmit}
-//               sx={{
-//                 borderRadius: "12px",
-//                 textTransform: "none",
-//                 fontWeight: 600,
-//               }}
-//             >
-//               Confirm Submit
-//             </Button>
-//           </>
-//         }
-//       >
-//         <Box>
-//           <Typography variant="body1" sx={{ mb: 2 }}>
-//             Are you sure want to process this payroll?
-//           </Typography>
-//           <Typography color="text.secondary">
-//             Once Submitted,Payroll cannot be edited
-//           </Typography>
-//           <Typography sx={{ mt: 2, fontWeight: 600 }}>
-//             Total Employees: {previewData.length}
-//           </Typography>
-//         </Box>
-//       </GlobalModal> */}
-//     </Box>
-//   );
-// };
-
-// export default Payroll;
-
 import React, { useState, useRef } from "react";
 
 import {
@@ -575,8 +61,7 @@ const sampleHeaders = [
   "Special Allowance",
   "Profession Tax",
   "Group Medical Insurance",
-  "PF EE CON",
-  "PF ER CON",
+  "PF",
   "TDS",
   "EDU Cess",
   "Other Deductions",
@@ -610,6 +95,8 @@ const Payroll = () => {
   const [uploadedFileName, setUploadedFileName] = useState("");
 
   const [templateHeaders, setTemplateHeaders] = useState([]);
+
+  const [isInvalidFile, setIsInvalidFile] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -649,11 +136,24 @@ const Payroll = () => {
 
       const url = window.URL.createObjectURL(blob);
 
+      // Extract filename from Content-Disposition header sent by backend
+      let fileName = "Payroll_Template.xlsx"; // fallback
+      const disposition = response.headers["content-disposition"];
+
+      if (disposition) {
+        const match = disposition.match(
+          /filename\*?=(?:UTF-8'')?["']?([^"';\n]+)/i,
+        );
+        if (match && match[1]) {
+          fileName = decodeURIComponent(match[1]);
+        }
+      }
+
       const link = document.createElement("a");
 
       link.href = url;
 
-      link.setAttribute("download", "Payroll_Template.xlsx");
+      link.setAttribute("download", fileName);
 
       document.body.appendChild(link);
 
@@ -665,7 +165,11 @@ const Payroll = () => {
     } catch (error) {
       console.log(error);
 
-      showToast("error", "Download Failed", "Unable to download template");
+      showToast(
+        "error",
+        "Download Failed",
+        error?.response?.data?.message || "Unable to download template",
+      );
     }
   };
 
@@ -741,14 +245,19 @@ const Payroll = () => {
       }
 
       // ACCOUNT NUMBER
-      const bankAccounts = String(employee["Bank Account No"]).trim();
+      const bankAccountNo = String(employee["Bank Account No"] ?? "")
+        .replace(/,/g, "")
+        .replace(/\s|-/g, "")
+        .trim();
 
-      if (!bankAccounts) {
-        errors.push(`Row ${row}: Account Number Required`);
-      } else if (bankAccount.has(bankAccounts)) {
-        errors.push(`Row ${row}: Duplicate Bank Account No`);
+      if (!bankAccountNo) {
+        errors.push(`Row ${row}: Bank Account Number is required`);
+      } else if (!/^\d{9,18}$/.test(bankAccountNo)) {
+        errors.push(`Row ${row}: Invalid Bank Account Number`);
+      } else if (bankAccount.has(bankAccountNo)) {
+        errors.push(`Row ${row}: Duplicate Bank Account Number`);
       } else {
-        bankAccount.add(bankAccounts);
+        bankAccount.add(bankAccountNo);
       }
 
       // PAN
@@ -806,11 +315,8 @@ const Payroll = () => {
       if (Number(employee["Group Medical Insurance"]) < 0) {
         errors.push(`Row ${row}: Invalid Group Medical Insurance`);
       }
-      if (Number(employee["PF EE CON"]) < 0) {
+      if (Number(employee["PF"]) < 0) {
         errors.push(`Row ${row}: Invalid PF EE Contribution`);
-      }
-      if (Number(employee["PF ER CON"]) < 0) {
-        errors.push(`Row ${row}: Invalid PF ER Contribution`);
       }
       if (Number(employee["TDS"]) < 0) {
         errors.push(`Row ${row}: Invalid TDS`);
@@ -837,6 +343,7 @@ const Payroll = () => {
 
     setEmailSummary(null);
     setFailedEmployeeIds([]);
+    setIsInvalidFile(false);
     setValidationErrors([]);
     setExcelData([]);
 
@@ -878,7 +385,21 @@ const Payroll = () => {
       );
 
       if (missingHeaders.length > 0) {
-        setValidationErrors([`Missing columns: ${missingHeaders.join(", ")}`]);
+        setIsInvalidFile(true);
+        showToast(
+          "error",
+          "Invalid Payroll Template",
+          "Please upload a valid Payroll_Template.xlsx.",
+        );
+
+        setValidationErrors([
+          "The uploaded file doesn't match the Payroll Template.",
+          "",
+          "Missing Columns:",
+          ...missingHeaders,
+        ]);
+
+        setExcelData([]);
 
         setLoading(false);
         return;
@@ -892,15 +413,12 @@ const Payroll = () => {
       const jsonData = allData;
 
       if (jsonData.length === 0) {
+        setIsInvalidFile(true);
         setValidationErrors(["No data rows found in uploaded file"]);
         setExcelData([]);
         setLoading(false);
         return;
       }
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
 
       // =========================
       // PROCESS DATA
@@ -927,8 +445,7 @@ const Payroll = () => {
 
         const professionTax = parseNumber(row["Profession Tax"]);
         const medicalInsurance = parseNumber(row["Group Medical Insurance"]);
-        const pfEE = parseNumber(row["PF EE CON"]);
-        const pfER = parseNumber(row["PF ER CON"]);
+        const pf = parseNumber(row["PF"]);
         const tds = parseNumber(row["TDS"]);
         const eduCess = parseNumber(row["EDU Cess"]);
         const otherDeductions = parseNumber(row["Other Deductions"]);
@@ -940,7 +457,7 @@ const Payroll = () => {
         const deductions =
           professionTax +
           medicalInsurance +
-          pfEE +
+          pf +
           tds +
           eduCess +
           otherDeductions;
@@ -967,11 +484,13 @@ const Payroll = () => {
 
       validatePayrollData(processedData);
 
-      console.log("Processed Payroll Data:", processedData);
-
-      setLoading(false);
+      setIsInvalidFile(false);
 
       setOpenModal(true);
+
+      requestAnimationFrame(() => {
+        setLoading(false);
+      });
     };
   };
 
@@ -1124,12 +643,11 @@ const Payroll = () => {
 
         professionTax: parseNumber(item["Profession Tax"]),
         groupMedicalInsurance: parseNumber(item["Group Medical Insurance"]),
-        pfEeCon: parseNumber(item["PF EE CON"]),
-        pfErCon: parseNumber(item["PF ER CON"]),
+        pf: parseNumber(item["PF"]),
         tds: parseNumber(item["TDS"]),
         eduCess: parseNumber(item["EDU Cess"]),
         otherDeductions: parseNumber(item["Other Deductions"]),
-        emailVerified: true
+        emailVerified: true,
       }));
 
       let runId = null;
@@ -1214,6 +732,24 @@ const Payroll = () => {
     setPage(0);
     setRowsPerPage(10);
     setDragActive(false);
+    setIsInvalidFile(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setUploadedFileName("");
+    setExcelData([]);
+    setValidationErrors([]);
+    setTemplateHeaders([]);
+    setEmailSummary(null);
+    setFailedEmployeeIds([]);
+    setPage(0);
+    setIsInvalidFile(false);
+    setLoading(false);
+    setDragActive(false);
+
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -1448,27 +984,32 @@ const Payroll = () => {
           >
             Upload Payroll Sheet
           </Button>
-          {uploadedFileName && (
+          {/* {uploadedFileName && (
             <Box
               sx={{
                 mt: 3,
                 px: 2,
                 py: 1.5,
                 borderRadius: "14px",
-                background: "rgba(37,99,235,0.08)",
-                border: "1px solid rgba(37,99,235,0.18)",
-                display: "inline-flex",
+                background:
+                  validationErrors.length > 0
+                    ? "#FEE2E2"
+                    : "rgba(37,99,235,0.08)",
+                border:
+                  validationErrors.length > 0
+                    ? "1px solid #EF4444"
+                    : "1px solid rgba(37,99,235,0.18)",
+                display: "flex",
+                justifyContent: "space-between",
                 alignItems: "center",
-                gap: 1.2,
+                width: "420px",
               }}
             >
-              <DescriptionOutlinedIcon
-                sx={{
-                  color: "#2563EB",
-                  fontSize: 22,
-                }}
-              />
-
+              <Box display="flex" alignItems="center">
+                <DescriptionOutlinedIcon
+                  color={validationErrors.length > 0 ? "error" : "primary"}
+                />
+              </Box>
               <Typography
                 sx={{
                   color: "#0F172A",
@@ -1478,7 +1019,111 @@ const Payroll = () => {
               >
                 {uploadedFileName}
               </Typography>
+              <IconButton
+                color="error"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveFile();
+                }}
+              >
+                <HighlightOffOutlinedIcon />
+              </IconButton>
             </Box>
+          )} */}
+          {uploadedFileName && !loading && !openModal && (
+            <>
+              <Box
+                sx={{
+                  mt: 3,
+                  px: 2,
+                  py: 1.5,
+                  borderRadius: "14px",
+                  background: isInvalidFile
+                    ? "#FEE2E2"
+                    : "rgba(37,99,235,0.08)",
+                  border: isInvalidFile
+                    ? "1px solid #EF4444"
+                    : "1px solid rgba(37,99,235,0.18)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "420px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <DescriptionOutlinedIcon
+                    color={isInvalidFile ? "error" : "primary"}
+                  />
+
+                  <Typography
+                    sx={{
+                      color: "#0F172A",
+                      fontWeight: 600,
+                      fontSize: "15px",
+                    }}
+                  >
+                    {uploadedFileName}
+                  </Typography>
+                </Box>
+
+                <IconButton
+                  color="error"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveFile();
+                  }}
+                >
+                  <HighlightOffOutlinedIcon />
+                </IconButton>
+              </Box>
+
+              {/* Show this only if validation failed */}
+              {isInvalidFile && (
+                <Box
+                  sx={{
+                    width: "420px",
+                    mt: 2,
+                    p: 2,
+                    borderRadius: 2,
+                    background: "#FEF2F2",
+                    border: "1px solid #FCA5A5",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#B91C1C",
+                      fontWeight: 700,
+                      mb: 1,
+                    }}
+                  >
+                    Invalid Payroll Template
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      color: "#7F1D1D",
+                      fontSize: "14px",
+                      textAlign: "center",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    This file doesn't match the required payroll template.
+                    <br />
+                    Please remove this file and upload a valid{" "}
+                    <strong>Payroll_Template.xlsx</strong>.
+                    <br />
+                    If needed, use the <strong>"Download Template"</strong>{" "}
+                    button above.
+                  </Typography>
+                </Box>
+              )}
+            </>
           )}
         </Box>
         <Box

@@ -299,14 +299,6 @@ const SignInView = () => {
           mb: 3,
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            color: "#64748B",
-          }}
-        >
-          Remember me
-        </Typography>
 
         <Typography
           variant="body2"

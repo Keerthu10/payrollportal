@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as XLSX from "xlsx";
-import {
-  Button,
-  Typography,
-  
-}from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import EmployeeHeader from "../components/Employees/EmployeeHeader";
 import EmployeeStats from "../components/Employees/EmployeeStats";
 import EmployeeFilters from "../components/Employees/EmployeeFilter";
@@ -19,9 +15,12 @@ import {
   getEmployeeById,
   downloadEmployeeTemplate,
 } from "../services/employeeService";
+import { getDashboardEmployeeStats } from "../services/dashboard";
 import GlobalModal from "../ui/GlobalModal";
 import { useToast } from "../context/ToastContext";
 import UploadEmployeeModal from "../components/Employees/UploadEmployeeModal";
+import { bulkUploadEmployees } from "../services/employeeService";
+import dayjs from "dayjs";
 
 const Employees = () => {
   const [openUploadModal, setOpenUploadModal] = useState(false);
@@ -38,11 +37,23 @@ const Employees = () => {
   const [loading, setLoading] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalElements, setTotalElements] = useState(0);
+
   const fileInputRef = useRef(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [excelData, setExcelData] = useState([]);
-  const [validationErrors, setValidationErrors] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [importing, setImporting] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
+
+  const [stats, setStats] = useState({
+    totalEmployees: 0,
+    activeEmployees: 0,
+    inactiveEmployees: 0,
+    newEmployees: 0,
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,8 +72,8 @@ const Employees = () => {
         department: department || "",
         verified: true,
         search: debouncedSearch,
-        page: 0,
-        size: 10,
+        page,
+        size: rowsPerPage,
       };
 
       if (status !== "") {
@@ -78,6 +89,7 @@ const Employees = () => {
       console.log("Response:", response.data.content);
 
       setEmployees(response.data.content || []);
+      setTotalElements(response.data.totalElements || 0);
     } catch (err) {
       console.log(err);
     } finally {
@@ -87,48 +99,61 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmployees();
-  }, [debouncedSearch, department, status]);
+  }, [debouncedSearch, department, status, page, rowsPerPage]);
 
-  const validateEmployeeData = (data) => {
-    const errors = [];
+  // const validateEmployeeData = (data) => {
+  //   const errors = [];
 
-    const emails = new Set();
+  //   const emails = new Set();
 
-    data.forEach((employee, index) => {
-      const row = index + 2;
+  //   data.forEach((employee, index) => {
+  //     const row = index + 2;
 
-      if (!employee["Name"]) {
-        errors.push(`Row ${row}: Name is required`);
-      }
+  //     if (!employee["Name"]) {
+  //       errors.push(`Row ${row}: Name is required`);
+  //     }
 
-      if (!employee["Email"]) {
-        errors.push(`Row ${row}: Email is required`);
-      }
+  //     if (!employee["Email"]) {
+  //       errors.push(`Row ${row}: Email is required`);
+  //     }
 
-      if (employee["Email"] && emails.has(employee["Email"].toLowerCase())) {
-        errors.push(`Row ${row}: Duplicate Email`);
-      } else if (employee["Email"]) {
-        emails.add(employee["Email"].toLowerCase());
-      }
+  //     if (employee["Email"] && emails.has(employee["Email"].toLowerCase())) {
+  //       errors.push(`Row ${row}: Duplicate Email`);
+  //     } else if (employee["Email"]) {
+  //       emails.add(employee["Email"].toLowerCase());
+  //     }
 
-      if (!employee["Phone"]) {
-        errors.push(`Row ${row}: Phone is required`);
-      }
+  //     if (!employee["Phone"]) {
+  //       errors.push(`Row ${row}: Phone is required`);
+  //     }
 
-      if (!employee["Designation"]) {
-        errors.push(`Row ${row}: Designation is required`);
-      }
+  //     if (!employee["Designation"]) {
+  //       errors.push(`Row ${row}: Designation is required`);
+  //     }
 
-      if (!employee["Employement Type"]) {
-        errors.push(`Row ${row}: Employment Type is required`);
-      }
+  //     if (!employee["Employement Type"]) {
+  //       errors.push(`Row ${row}: Employment Type is required`);
+  //     }
 
-      // Department Removed
-      // UAN Optional
-    });
+  //     // Department Removed
+  //     // UAN Optional
+  //   });
 
-    setValidationErrors(errors);
+  //   setValidationErrors(errors);
+  // };
+
+  const fetchEmployeeStats = async () => {
+    try {
+      const response = await getDashboardEmployeeStats();
+      setStats(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    fetchEmployeeStats();
+  }, []);
 
   const handleUploadEmployee = (event) => {
     const file = event.target.files[0];
@@ -137,7 +162,6 @@ const Employees = () => {
 
     setSelectedFile(file);
     setUploadedFileName(file.name);
-    setLoading(true);
 
     const reader = new FileReader();
 
@@ -160,14 +184,11 @@ const Employees = () => {
 
         setExcelData(jsonData);
 
-        validateEmployeeData(jsonData);
-
-        setLoading(false);
+        // validateEmployeeData(jsonData);
 
         setOpenUploadModal(true);
       } catch (error) {
         console.log(error);
-        setLoading(false);
         showToast("error", "Error", "Invalid Excel File");
       }
     };
@@ -188,6 +209,7 @@ const Employees = () => {
       }
 
       fetchEmployees(); // refresh table
+      fetchEmployeeStats();
 
       setOpenEmployeeModal(false);
       setSelectedEmployee(null);
@@ -240,6 +262,7 @@ const Employees = () => {
       setMode("add");
 
       fetchEmployees();
+      fetchEmployeeStats();
     } catch (error) {
       console.log(error);
       showToast("error", "Error", "Failed to delete employee");
@@ -250,10 +273,26 @@ const Employees = () => {
     try {
       await resendVerificationEmail({
         employeeId: selectedEmployee.id,
-        email: selectedEmployee.email,
       });
 
       showToast("success", "Success", "Verification email sent successfully");
+    } catch (error) {
+      console.log(error);
+      showToast("error", "Error", "Failed to send verification email");
+    }
+  };
+
+  const handleResendVerificationForRow = async (employee) => {
+    try {
+      await resendVerificationEmail({
+        employeeId: employee.id,
+      });
+
+      showToast(
+        "success",
+        "Success",
+        `Verification email sent to ${employee.name}`,
+      );
     } catch (error) {
       console.log(error);
       showToast("error", "Error", "Failed to send verification email");
@@ -266,9 +305,22 @@ const Employees = () => {
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
 
+      // Extract filename from Content-Disposition header sent by backend
+      let fileName = "Employee_Template.xlsx"; // fallback
+      const disposition = response.headers["content-disposition"];
+
+      if (disposition) {
+        const match = disposition.match(
+          /filename\*?=(?:UTF-8'')?["']?([^"';\n]+)/i,
+        );
+        if (match && match[1]) {
+          fileName = decodeURIComponent(match[1]);
+        }
+      }
+
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "Employee_Template.xlsx");
+      link.setAttribute("download", fileName);
 
       document.body.appendChild(link);
       link.click();
@@ -278,6 +330,56 @@ const Employees = () => {
     } catch (error) {
       console.log(error);
       showToast("error", "Error", "Failed to download template");
+    }
+  };
+
+  const handleImportEmployees = async () => {
+    if (!selectedFile) {
+      showToast("error", "Error", "Please select an Excel file.");
+      return;
+    }
+
+    try {
+      setImporting(true);
+
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      console.log("FormData File:", formData.get("file"));
+
+      const response = await bulkUploadEmployees(formData);
+
+      const { successCount, failureCount } = response.data;
+
+      if (failureCount > 0) {
+        showToast(
+          "error",
+          "Import Failed",
+          `${failureCount} employee(s) could not be imported. Please check the validation errors.`,
+        );
+      } else {
+        showToast(
+          "success",
+          "Import Successful",
+          `${successCount} employee(s) imported successfully.`,
+        );
+      }
+
+      setOpenUploadModal(false);
+      setUploadedFileName("");
+      setExcelData([]);
+      setSelectedFile(null);
+
+      fetchEmployees();
+      fetchEmployeeStats();
+    } catch (error) {
+      showToast(
+        "error",
+        "Error",
+        error.response?.data?.message || "Employee import failed.",
+      );
+    } finally {
+      setImporting(false);
     }
   };
 
@@ -316,7 +418,7 @@ const Employees = () => {
         onUploadEmployee={handleUploadClick}
       />
 
-      <EmployeeStats employees={employees} />
+      <EmployeeStats stats={stats} />
 
       <EmployeeFilters
         search={search}
@@ -332,6 +434,13 @@ const Employees = () => {
         loading={loading}
         onEdit={handleEditEmployee}
         onDelete={handleDeleteEmployee}
+        onResendVerification={handleResendVerificationForRow}
+        rowCount={totalElements}
+        paginationModel={{ page, pageSize: rowsPerPage }}
+        onPaginationModelChange={(model) => {
+          setPage(model.page);
+          setRowsPerPage(model.pageSize);
+        }}
       />
 
       <EmployeeModal
@@ -346,10 +455,11 @@ const Employees = () => {
       <UploadEmployeeModal
         open={openUploadModal}
         handleClose={() => setOpenUploadModal(false)}
-        fetchEmployees={fetchEmployees}
         uploadedFileName={uploadedFileName}
         excelData={excelData}
-        validationErrors={validationErrors}
+        loading={loading}
+        importing={importing}
+        onImportEmployees={handleImportEmployees}
       />
 
       <input
