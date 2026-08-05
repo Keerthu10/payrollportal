@@ -818,7 +818,11 @@ const Payroll = () => {
         sx={{
           background: "linear-gradient(135deg, #241B67 0%, #302A7C 100%)",
           borderRadius: "32px",
-          p: 5,
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 5,
+          },
           border: "1px solid rgba(255,255,255,0.08)",
           boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
         }}
@@ -828,9 +832,16 @@ const Payroll = () => {
         {/* ========================= */}
 
         <Stack
-          direction="row"
+          direction={{
+            xs: "column",
+            sm: "row",
+          }}
+          alignItems={{
+            xs: "stretch",
+            sm: "center",
+          }}
+          spacing={2}
           justifyContent="space-between"
-          alignItems="center"
           sx={{
             width: "100%",
             mb: 5,
@@ -841,7 +852,11 @@ const Payroll = () => {
             <Typography
               sx={{
                 color: "#fff",
-                fontSize: "28px",
+                fontSize: {
+                  xs: 22,
+                  sm: 24,
+                  md: 28,
+                },
                 fontWeight: 700,
               }}
             >
@@ -861,7 +876,10 @@ const Payroll = () => {
               borderRadius: "14px",
               color: "#fff",
               borderColor: "rgba(24, 23, 23, 0.15)",
-              px: 3,
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
               py: 1.2,
               textTransform: "none",
               fontWeight: 700,
@@ -913,7 +931,10 @@ const Payroll = () => {
             transition: "all 0.3s ease",
             mb: 4,
             background: "rgba(255,255,255,0.92)",
-            minHeight: "140px",
+            minHeight: {
+              xs: 120,
+              sm: 140,
+            },
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -944,11 +965,28 @@ const Payroll = () => {
             }}
           />
           <Typography
-            sx={{ fontWeight: 700, fontSize: "24px", color: "#0F172A", mb: 1 }}
+            sx={{
+              fontWeight: 700,
+              fontSize: {
+                xs: 18,
+                sm: 22,
+                md: 24,
+              },
+              color: "#0F172A",
+              mb: 1,
+            }}
           >
             Drag and Drop Payroll Excel here
           </Typography>
-          <Typography sx={{ color: "#64748B", fontSize: "16px" }}>
+          <Typography
+            sx={{
+              color: "#64748B",
+              fontSize: {
+                xs: 14,
+                sm: 16,
+              },
+            }}
+          >
             or Click to browse .xlsx file
           </Typography>
           <Button
@@ -1047,7 +1085,10 @@ const Payroll = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  width: "420px",
+                  width: {
+                    xs: "100%",
+                    sm: 420,
+                  },
                 }}
               >
                 <Box
@@ -1087,7 +1128,10 @@ const Payroll = () => {
               {isInvalidFile && (
                 <Box
                   sx={{
-                    width: "420px",
+                    width: {
+                      xs: "100%",
+                      sm: 420,
+                    },
                     mt: 2,
                     p: 2,
                     borderRadius: 2,
@@ -1155,7 +1199,11 @@ const Payroll = () => {
               sx={{
                 color: "#fff",
                 fontWeight: 700,
-                fontSize: "22px",
+                fontSize: {
+                  xs: 18,
+                  sm: 20,
+                  md: 22,
+                },
               }}
             >
               Payroll Upload Guidelines
@@ -1165,7 +1213,10 @@ const Payroll = () => {
           <Typography
             sx={{
               color: "#fff",
-              fontSize: "16px",
+              fontSize: {
+                xs: 14,
+                sm: 16,
+              },
               mb: 1,
             }}
           >
@@ -1175,7 +1226,10 @@ const Payroll = () => {
           <Typography
             sx={{
               color: "#fff",
-              fontSize: "16px",
+              fontSize: {
+                xs: 14,
+                sm: 16,
+              },
               mb: 1,
             }}
           >
@@ -1185,7 +1239,10 @@ const Payroll = () => {
           <Typography
             sx={{
               color: "#fff",
-              fontSize: "16px",
+              fontSize: {
+                xs: 14,
+                sm: 16,
+              },
               mb: 1,
             }}
           >
@@ -1194,7 +1251,10 @@ const Payroll = () => {
           <Typography
             sx={{
               color: "#fff",
-              fontSize: "16px",
+              fontSize: {
+                xs: 14,
+                sm: 16,
+              },
               mb: 1,
             }}
           >
@@ -1274,14 +1334,21 @@ const Payroll = () => {
                 <PreviewOutlinedIcon
                   sx={{
                     color: "#32353bff",
-                    fontSize: 30,
+                    fontSize: {
+                      xs: 24,
+                      sm: 30,
+                    },
                   }}
                 />
 
                 <Typography
                   sx={{
                     fontWeight: 700,
-                    fontSize: "24px",
+                    fontSize: {
+                      xs: 18,
+                      sm: 22,
+                      md: 24,
+                    },
                   }}
                 >
                   Preview Payroll Sheet
@@ -1301,7 +1368,14 @@ const Payroll = () => {
                   },
                 }}
               >
-                <HighlightOffOutlinedIcon sx={{ fontSize: "30px" }} />
+                <HighlightOffOutlinedIcon
+                  sx={{
+                    fontSize: {
+                      xs: 24,
+                      sm: 30,
+                    },
+                  }}
+                />
               </IconButton>
             </Box>
           </DialogTitle>
@@ -1406,7 +1480,10 @@ const Payroll = () => {
                     sx={{
                       color: "#FCA5A5",
                       mb: 1,
-                      fontSize: "14px",
+                      fontSize: {
+                        xs: 13,
+                        sm: 14,
+                      },
                     }}
                   >
                     • {error}
@@ -1431,7 +1508,10 @@ const Payroll = () => {
                   sx={{
                     color: "#FCA5A5",
                     fontWeight: 700,
-                    fontSize: "20px",
+                    fontSize: {
+                      xs: 16,
+                      sm: 20,
+                    },
                     mb: 2,
                   }}
                 >
@@ -1442,6 +1522,10 @@ const Payroll = () => {
                   sx={{
                     color: "#fff",
                     mb: 2,
+                    fontSize: {
+                      xs: 14,
+                      sm: 16,
+                    },
                   }}
                 >
                   Emails Sent:
@@ -1454,6 +1538,10 @@ const Payroll = () => {
                     sx={{
                       color: "#FCA5A5",
                       mb: 1,
+                      fontSize: {
+                        xs: 13,
+                        sm: 14,
+                      },
                     }}
                   >
                     • {employee}

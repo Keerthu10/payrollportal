@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 
 import { Box, Typography, Stack, Button, Tooltip } from "@mui/material";
-
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
-import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
-import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import dayjs, { Dayjs } from "dayjs";
 import Business from "../../assets/Business.png";
 import StatsCards from "./StatsCards";
@@ -53,9 +48,19 @@ const DashboardHeader = ({
     <Box
       sx={{
         background: "#fff",
-        borderRadius: 6,
+
+        borderRadius: {
+          xs: 3,
+          md: 6,
+        },
+
         boxShadow: "0 8px 30px rgba(0,0,0,.08)",
-        p: 4,
+
+        p: {
+          xs: 2,
+          sm: 3,
+          md: 4,
+        },
       }}
     >
       {/* TOP SECTION */}
@@ -65,15 +70,19 @@ const DashboardHeader = ({
           flexDirection: { xs: "column", md: "row" },
           justifyContent: "space-between",
           alignItems: { xs: "flex-start", md: "center" },
-          gap: { xs: 3, md: 0 },
-          mb: 5,
+          gap: { xs: 2, md: 0 },
+          width: "100%",
+          mb: {
+            xs: 3,
+            md: 5,
+          },
         }}
       >
         {/* Left */}
         <Box>
           <Typography
             sx={{
-              fontSize: { xs: 22, md: 30 },
+              fontSize: { xs: 22, sm: 26, md: 30 },
               fontWeight: 700,
               color: "#0F172A",
               mb: 1,
@@ -84,7 +93,11 @@ const DashboardHeader = ({
 
           <Typography
             sx={{
-              fontSize: 18,
+              fontSize: {
+                xs: 15,
+                sm: 16,
+                md: 18,
+              },
               color: "#64748B",
             }}
           >
@@ -116,12 +129,36 @@ const DashboardHeader = ({
         </Box> */}
 
         {/* Right */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+
+            alignItems: "center",
+
+            justifyContent: {
+              xs: "space-between",
+              md: "flex-end",
+            },
+
+            flexWrap: "wrap",
+
+            width: {
+              xs: "100%",
+              md: "auto",
+            },
+
+            gap: {
+              xs: 2,
+              sm: 3,
+              md: 4,
+            },
+          }}
+        >
           <Box
             component="img"
             src={Business}
             sx={{
-              height: { xs: 60, md: 100 },
+              height: { sm: 70, md: 100 },
               objectFit: "contain",
               display: { xs: "none", sm: "block" },
             }}
@@ -133,8 +170,15 @@ const DashboardHeader = ({
               onClick={handleRefreshClick}
               sx={{
                 minWidth: 0,
-                width: 56,
-                height: 56,
+                width: {
+                  xs: 48,
+                  sm: 56,
+                },
+
+                height: {
+                  xs: 48,
+                  sm: 56,
+                },
                 borderRadius: "16px",
                 background: "#fff",
                 border: "1px solid rgba(0,0,0,.12)",
@@ -159,12 +203,20 @@ const DashboardHeader = ({
             <DatePicker
               views={["year", "month"]}
               value={selectedMonth}
-              onChange={(newValue) => setSelectedMonth(newValue)}
+              onChange={(newValue) => {
+                if (newValue) {
+                  setSelectedMonth(newValue);
+                }
+              }}
               format="MMMM YYYY"
               disableFuture
               maxDate={dayjs()}
               sx={{
-                width: 180,
+                width: {
+                  xs: "100%",
+                  sm: 200,
+                  md: 180,
+                },
 
                 "& .MuiPickersInputBase-root": {
                   background: "#fff",

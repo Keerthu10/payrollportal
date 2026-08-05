@@ -112,25 +112,61 @@ const RunPayroll = () => {
     {
       title: "Employees",
       value: summary.employees,
-      icon: <GroupsRoundedIcon />,
+      icon: (
+        <GroupsRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#2563eb",
     },
     {
       title: "Valid Rows",
       value: summary.validRows,
-      icon: <CheckCircleRoundedIcon />,
+      icon: (
+        <CheckCircleRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#16a34a",
     },
     {
       title: "Invalid Rows",
       value: summary.invalidRows,
-      icon: <ErrorOutlineRoundedIcon />,
+      icon: (
+        <ErrorOutlineRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#dc2626",
     },
     {
       title: "Total Payout",
       value: `₹${summary.totalPayout.toLocaleString()}`,
-      icon: <CurrencyRupeeRoundedIcon />,
+      icon: (
+        <CurrencyRupeeRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#9333ea",
     },
   ];
@@ -139,7 +175,16 @@ const RunPayroll = () => {
     <Box>
       {/* HEADER */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h3" fontWeight={700}>
+        <Typography
+          sx={{
+            fontSize: {
+              xs: 28,
+              sm: 36,
+              md: 48,
+            },
+            fontWeight: 700,
+          }}
+        >
           Run Payroll
         </Typography>
 
@@ -157,9 +202,16 @@ const RunPayroll = () => {
       <Paper
         elevation={0}
         sx={{
-          p: 5,
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 5,
+          },
 
-          borderRadius: "28px",
+          borderRadius: {
+            xs: 3,
+            md: 4,
+          },
 
           background: "linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)",
 
@@ -173,11 +225,18 @@ const RunPayroll = () => {
           onDrop={handleDrop}
           onClick={() => fileInputRef.current.click()}
           sx={{
-            minHeight: 300,
+            minHeight: {
+              xs: 220,
+              sm: 260,
+              md: 300,
+            },
 
             border: "2px dashed #2563eb",
 
-            borderRadius: "24px",
+            borderRadius: {
+              xs: 3,
+              md: 4,
+            },
 
             display: "flex",
 
@@ -195,16 +254,21 @@ const RunPayroll = () => {
 
             backgroundColor: "#ffffff",
 
-            "&:hover": {
-              backgroundColor: "#f8fbff",
-
-              borderColor: "#1d4ed8",
+            "@media (hover: hover)": {
+              "&:hover": {
+                backgroundColor: "#f8fbff",
+                borderColor: "#1d4ed8",
+              },
             },
           }}
         >
           <UploadFileRoundedIcon
             sx={{
-              fontSize: 90,
+              fontSize: {
+                xs: 60,
+                sm: 72,
+                md: 90,
+              },
 
               color: "#2563eb",
 
@@ -212,7 +276,17 @@ const RunPayroll = () => {
             }}
           />
 
-          <Typography variant="h4" fontWeight={700}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontSize: {
+                xs: 22,
+                sm: 28,
+                md: 34,
+              },
+              fontWeight: 700,
+            }}
+          >
             Drag & Drop Excel File
           </Typography>
 
@@ -234,7 +308,10 @@ const RunPayroll = () => {
             sx={{
               borderRadius: "14px",
 
-              px: 5,
+              px: {
+                xs: 3,
+                sm: 5,
+              },
 
               py: 1.5,
 
@@ -248,7 +325,13 @@ const RunPayroll = () => {
             Browse File
           </Button>
 
-          <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            flexWrap="wrap"
+            justifyContent="center"
+            sx={{ mt: 3 }}
+          >
             <Chip label=".xlsx" />
 
             <Chip label=".xls" />
@@ -285,11 +368,14 @@ const RunPayroll = () => {
       {previewData.length > 0 && (
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {summaryCards.map((card, index) => (
-            <Grid item xs={12} sm={6} lg={3} key={index}>
+            <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
               <Paper
                 elevation={0}
                 sx={{
-                  p: 3,
+                  p: {
+                    xs: 2,
+                    sm: 3,
+                  },
 
                   borderRadius: "24px",
 
@@ -323,9 +409,15 @@ const RunPayroll = () => {
 
                   <Box
                     sx={{
-                      width: 56,
+                      width: {
+                        xs: 46,
+                        sm: 56,
+                      },
 
-                      height: 56,
+                      height: {
+                        xs: 46,
+                        sm: 56,
+                      },
 
                       borderRadius: "16px",
 
@@ -354,7 +446,10 @@ const RunPayroll = () => {
         <Paper
           elevation={0}
           sx={{
-            borderRadius: "28px",
+            borderRadius: {
+              xs: 3,
+              md: 4,
+            },
 
             overflow: "hidden",
 
@@ -377,7 +472,11 @@ const RunPayroll = () => {
             </Typography>
           </Box>
 
-          <TableContainer>
+          <TableContainer
+            sx={{
+              overflowX: "auto",
+            }}
+          >
             <Table>
               <TableHead>
                 <TableRow>
@@ -386,7 +485,7 @@ const RunPayroll = () => {
                       key={key}
                       sx={{
                         fontWeight: 700,
-
+                        whiteSpace: "nowrap",
                         backgroundColor: "#f8fafc",
                       }}
                     >
@@ -400,7 +499,14 @@ const RunPayroll = () => {
                 {previewData.slice(0, 8).map((row, index) => (
                   <TableRow key={index}>
                     {Object.values(row).map((value, i) => (
-                      <TableCell key={i}>{value}</TableCell>
+                      <TableCell
+                        key={i}
+                        sx={{
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {value}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))}
@@ -412,11 +518,21 @@ const RunPayroll = () => {
 
       {/* ACTION BUTTONS */}
       {previewData.length > 0 && (
-        <Stack direction="row" spacing={2}>
+        <Stack
+          direction={{
+            xs: "column",
+            sm: "row",
+          }}
+          spacing={2}
+        >
           <Button
             variant="outlined"
             size="large"
             sx={{
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
               borderRadius: "14px",
 
               px: 4,
@@ -433,12 +549,13 @@ const RunPayroll = () => {
             variant="contained"
             size="large"
             sx={{
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
               borderRadius: "14px",
-
               px: 4,
-
               textTransform: "none",
-
               fontWeight: 600,
             }}
           >

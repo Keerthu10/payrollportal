@@ -544,7 +544,14 @@ const Sidebar = ({ open }) => {
         </Typography>
       )}
 
-      <List disablePadding sx={{ mb: 4 }}>
+      <List
+        disablePadding
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {/* DASHBOARD */}
         <ListItemButton
           component={Link}
@@ -559,7 +566,17 @@ const Sidebar = ({ open }) => {
             <DashboardOutlined />
           </ListItemIcon>
 
-          {open && <ListItemText primary="Dashboard" />}
+          {open && (
+            <ListItemText
+              primary="Dashboard"
+              primaryTypographyProps={{
+                sx: {
+                  color: "#FFFFFF",
+                  fontWeight: 500,
+                },
+              }}
+            />
+          )}
         </ListItemButton>
 
         {/* EMPLOYEES
@@ -793,10 +810,8 @@ const Sidebar = ({ open }) => {
       <Box
         sx={{
           mt: "auto",
-          pt: {
-            xs: 2,
-            md: 3,
-          },
+          pt: 2,
+          pb: 2,
         }}
       >
         <Divider sx={{ mb: 2 }} />
@@ -805,19 +820,15 @@ const Sidebar = ({ open }) => {
           onClick={handleLogout}
           sx={{
             borderRadius: "14px",
-
             py: {
               xs: 1,
               md: 1.1,
             },
-
             px: {
               xs: 1,
               md: 1.5,
             },
-
             color: "#EF4444",
-
             "&:hover": {
               background: "#FEF2F2",
             },
@@ -826,7 +837,6 @@ const Sidebar = ({ open }) => {
           <ListItemIcon
             sx={{
               color: "#EF4444",
-
               minWidth: {
                 xs: 36,
                 md: 40,

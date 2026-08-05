@@ -134,7 +134,10 @@ const TopToolbar = () => {
   const mobileDrawer = (
     <Box
       sx={{
-        width: 260,
+        width: {
+          xs: 260,
+          sm: 280,
+        },
         height: "100%",
         background: "linear-gradient(180deg,#15123F 0%,#4338CA 100%)",
         display: "flex",
@@ -145,7 +148,14 @@ const TopToolbar = () => {
       }}
     >
       {/* Drawer header */}
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+        }}
+      >
         <Box
           component="img"
           src={CloudeLogo}
@@ -205,7 +215,20 @@ const TopToolbar = () => {
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
         sx={{ display: { xs: "block", md: "none" } }}
-        PaperProps={{ sx: { border: "none" } }}
+        PaperProps={{
+          sx: {
+            border: "none",
+
+            width: {
+              xs: 260,
+              sm: 280,
+            },
+
+            paddingTop: "env(safe-area-inset-top)",
+
+            paddingBottom: "env(safe-area-inset-bottom)",
+          },
+        }}
       >
         {mobileDrawer}
       </Drawer>
@@ -213,31 +236,31 @@ const TopToolbar = () => {
       <AppBar
         position="fixed"
         elevation={0}
-      // sx={{
-      //   background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)",
-      //   borderBottom: "1px solid #1F2937",
-      //   backdropFilter: "blur(10px)",
+        // sx={{
+        //   background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)",
+        //   borderBottom: "1px solid #1F2937",
+        //   backdropFilter: "blur(10px)",
 
-      //   color: "#111827",
+        //   color: "#111827",
 
-      //   zIndex: 1200,
+        //   zIndex: 1200,
 
-      //   height: "68px",
+        //   height: "68px",
 
-      //   justifyContent: "center",
+        //   justifyContent: "center",
 
-      //   boxShadow: "none",
+        //   boxShadow: "none",
 
-      //   left: open ? `${SIDEBAR_WIDTH}px` : `${COLLAPSED_WIDTH}px`,
+        //   left: open ? `${SIDEBAR_WIDTH}px` : `${COLLAPSED_WIDTH}px`,
 
-      //   width: open
-      //     ? `calc(100% - ${SIDEBAR_WIDTH}px)`
-      //     : `calc(100% - ${COLLAPSED_WIDTH}px)`,
+        //   width: open
+        //     ? `calc(100% - ${SIDEBAR_WIDTH}px)`
+        //     : `calc(100% - ${COLLAPSED_WIDTH}px)`,
 
-      //   transition: "all 0.25s ease",
-      // }}
-      sx={{
-        background: `linear-gradient(
+        //   transition: "all 0.25s ease",
+        // }}
+        sx={{
+          background: `linear-gradient(
     90deg,
     #15123F 0%,
     #28256E 40%,
@@ -245,269 +268,306 @@ const TopToolbar = () => {
     #45D7FF 100%
   )`,
 
-        backdropFilter: "blur(20px)",
-        border: "1px solid rgba(255,255,255,.08)",
-        boxShadow: "0 8px 30px rgba(15,23,42,.15)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,.08)",
+          boxShadow: "0 8px 30px rgba(15,23,42,.15)",
 
-        color: "#fff",
+          color: "#fff",
 
-        borderRadius: {
-          xs: 0,
-          md: "20px",
-        },
-
-        height: {
-          xs: 60,
-          md: 72,
-        },
-
-        top: {
-          xs: 0,
-          md: 20,
-        },
-
-        left: {
-          xs: 0,
-          md: 20,
-        },
-
-        right: {
-          xs: 0,
-          md: 20,
-        },
-
-        width: "auto",
-
-        zIndex: 1200,
-      }}
-    >
-      <Toolbar
-        sx={{
-          display: "flex",
-
-          justifyContent: "space-between",
-
-          alignItems: "center",
-
-          height: "100%",
-
-          px: {
-            xs: 2,
-            md: 4,
+          borderRadius: {
+            xs: 0,
+            md: "20px",
           },
+
+          minHeight: {
+            xs: 60,
+            sm: 64,
+            md: 72,
+          },
+
+          top: {
+            xs: 0,
+            md: 20,
+          },
+
+          left: {
+            xs: 0,
+            md: 20,
+          },
+
+          right: {
+            xs: 0,
+            md: 20,
+          },
+
+          width: {
+            xs: "100%",
+            md: "auto",
+          },
+
+          overflowX: "hidden",
+
+          paddingTop: "env(safe-area-inset-top)",
+
+          zIndex: 1200,
         }}
       >
-        {/* LEFT SIDE */}
-        <Box
+        <Toolbar
           sx={{
             display: "flex",
+
+            justifyContent: "space-between",
+
             alignItems: "center",
-            width: "100%",
-            position: "relative",
-          }}
-        >
-          {/* Hamburger — mobile only */}
-          <IconButton
-            onClick={handleDrawerToggle}
-            sx={{
-              color: "#fff",
-              display: { xs: "flex", md: "none" },
-              mr: 1,
-            }}
-            aria-label="open mobile navigation"
-          >
-            <MenuIcon />
-          </IconButton>
 
-          <Stack
-            direction="row"
-            spacing={{
+            minHeight: {
+              xs: 60,
+              sm: 64,
+              md: 72,
+            },
+
+            px: {
               xs: 1.5,
-              md: 3,
+              sm: 2,
+              md: 4,
+            },
+          }}
+        >
+          {/* LEFT SIDE */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              position: "relative",
             }}
-            alignItems="center"
-            sx={{ height: "100%" }}
           >
-            {/* LOGO */}
-            <Box
-              component="img"
-              src={CloudeLogo}
-              alt="Company Logo"
+            {/* Hamburger — mobile only */}
+            <IconButton
+              onClick={handleDrawerToggle}
+              aria-label="open navigation"
               sx={{
-                width: {
-                  xs: 60,
-                  md: 90,
-                },
+                display: { xs: "flex", md: "none" },
+                color: "#fff",
+                mr: 1,
 
-                height: {
-                  xs: 36,
-                  md: 50,
-                },
+                width: 48,
+                height: 48,
 
-                objectFit: "contain",
-                filter: "drop-shadow(0 8px 16px rgba(109,93,251,.25))",
-              }}
-            />
+                borderRadius: 2,
 
-            {/* TITLE */}
-            <Typography
-              sx={{
-                fontSize: {
-                  xs: "15px",
-                  md: "20px",
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,.08)",
                 },
-                fontWeight: 700,
-                background: "linear-gradient(90deg,#6D5DFB,#45D7FF)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                letterSpacing: "0.5px",
-                lineHeight: 1,
-                display: "flex",
-                alignItems: "center",
               }}
             >
-              PAYROLL PORTAL
-            </Typography>
-          </Stack>
+              <MenuIcon />
+            </IconButton>
+
+            <Stack
+              direction="row"
+              spacing={{
+                xs: 1.5,
+                md: 3,
+              }}
+              alignItems="center"
+              sx={{ height: "100%" }}
+            >
+              {/* LOGO */}
+              <Box
+                component="img"
+                src={CloudeLogo}
+                alt="Company Logo"
+                sx={{
+                  width: {
+                    xs: 48,
+                    sm: 60,
+                    md: 90,
+                  },
+
+                  height: {
+                    xs: 28,
+                    sm: 36,
+                    md: 50,
+                  },
+
+                  objectFit: "contain",
+
+                  filter: "drop-shadow(0 8px 16px rgba(109,93,251,.25))",
+                }}
+              />
+
+              {/* TITLE */}
+              <Typography
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "flex",
+                  },
+
+                  fontSize: {
+                    sm: 15,
+                    md: 20,
+                  },
+
+                  fontWeight: 700,
+
+                  background: "linear-gradient(90deg,#6D5DFB,#45D7FF)",
+
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+
+                  letterSpacing: ".5px",
+
+                  lineHeight: 1,
+
+                  alignItems: "center",
+                }}
+              >
+                PAYROLL PORTAL
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={{
+                md: 4,
+                lg: 5,
+              }}
+              alignItems="center"
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
+              <Typography
+                component={Link}
+                to="/dashboard"
+                sx={{
+                  color:
+                    location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
+
+                  fontWeight: location.pathname === "/dashboard" ? 700 : 600,
+                  fontSize: {
+                    md: "15px",
+                    lg: "17px",
+                  },
+                  position: "relative",
+                  textDecoration: "none",
+                  "&::after": location.pathname === "/dashboard" && {
+                    content: '""',
+                    position: "absolute",
+                    bottom: -4,
+                    left: 0,
+                    width: "100%",
+                    height: "2px",
+                    backgroundColor: "#fff",
+                    borderRadius: "2px",
+                  },
+                }}
+              >
+                DASHBOARD
+              </Typography>
+              <Typography
+                component={Link}
+                to="/payroll"
+                sx={{
+                  color: location.pathname === "/payroll" ? "#fff" : "#E2E8F0",
+                  fontWeight: location.pathname === "/payroll" ? 700 : 500,
+                  fontSize: {
+                    md: "15px",
+                    lg: "17px",
+                  },
+                  textDecoration: "none",
+                  position: "relative",
+                  "&::after": location.pathname === "/payroll" && {
+                    content: '""',
+                    position: "absolute",
+                    bottom: -4,
+                    left: 0,
+                    width: "100%",
+                    height: "2px",
+                    backgroundColor: "#fff",
+                    borderRadius: "2px",
+                  },
+                }}
+              >
+                PAYROLL
+              </Typography>
+              <Typography
+                component={Link}
+                to="/employees"
+                sx={{
+                  color:
+                    location.pathname === "/employees" ? "#fff" : "#E2E8F0",
+                  fontWeight: location.pathname === "/employees" ? 700 : 500,
+                  fontSize: {
+                    md: "15px",
+                    lg: "17px",
+                  },
+                  textDecoration: "none",
+                  position: "relative",
+                  "&::after": location.pathname === "/employees" && {
+                    content: '""',
+                    position: "absolute",
+                    bottom: -4,
+                    left: 0,
+                    width: "100%",
+                    height: "2px",
+                    backgroundColor: "#fff",
+                    borderRadius: "2px",
+                  },
+                }}
+              >
+                EMPLOYEES
+              </Typography>
+              <Typography
+                component={Link}
+                to="/masters"
+                sx={{
+                  color: location.pathname === "/masters" ? "#fff" : "#E2E8F0",
+                  fontWeight: location.pathname === "/masters" ? 700 : 500,
+                  fontSize: {
+                    md: "15px",
+                    lg: "17px",
+                  },
+                  textDecoration: "none",
+                  position: "relative",
+                  "&::after": location.pathname === "/masters" && {
+                    content: '""',
+                    position: "absolute",
+                    bottom: -4,
+                    left: 0,
+                    width: "100%",
+                    height: "2px",
+                    backgroundColor: "#fff",
+                    borderRadius: "2px",
+                  },
+                }}
+              >
+                MASTERS
+              </Typography>
+            </Stack>
+          </Box>
+
+          {/* RIGHT SIDE */}
           <Stack
             direction="row"
             spacing={{
-              md: 4,
-              lg: 5,
+              xs: 1,
+              md: 2,
             }}
             alignItems="center"
-            sx={{
-              display: {
-                xs: "none",
-                md: "flex",
-              },
-
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
           >
-            <Typography
-              component={Link}
-              to="/dashboard"
-              sx={{
-                color: location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
-
-                fontWeight: location.pathname === "/dashboard" ? 700 : 600,
-                fontSize: {
-                  md: "15px",
-                  lg: "17px",
-                },
-                position: "relative",
-                textDecoration: "none",
-                "&::after": location.pathname === "/dashboard" && {
-                  content: '""',
-                  position: "absolute",
-                  bottom: -4,
-                  left: 0,
-                  width: "100%",
-                  height: "2px",
-                  backgroundColor: "#fff",
-                  borderRadius: "2px",
-                },
-              }}
-            >
-              DASHBOARD
-            </Typography>
-            <Typography
-              component={Link}
-              to="/payroll"
-              sx={{
-                color: location.pathname === "/payroll" ? "#fff" : "#E2E8F0",
-                fontWeight: location.pathname === "/payroll" ? 700 : 500,
-                fontSize: {
-                  md: "15px",
-                  lg: "17px",
-                },
-                textDecoration: "none",
-                position: "relative",
-                "&::after": location.pathname === "/payroll" && {
-                  content: '""',
-                  position: "absolute",
-                  bottom: -4,
-                  left: 0,
-                  width: "100%",
-                  height: "2px",
-                  backgroundColor: "#fff",
-                  borderRadius: "2px",
-                },
-              }}
-            >
-              PAYROLL
-            </Typography>
-            <Typography
-              component={Link}
-              to="/employees"
-              sx={{
-                color: location.pathname === "/employees" ? "#fff" : "#E2E8F0",
-                fontWeight: location.pathname === "/employees" ? 700 : 500,
-                fontSize: {
-                  md: "15px",
-                  lg: "17px",
-                },
-                textDecoration: "none",
-                position: "relative",
-                "&::after": location.pathname === "/employees" && {
-                  content: '""',
-                  position: "absolute",
-                  bottom: -4,
-                  left: 0,
-                  width: "100%",
-                  height: "2px",
-                  backgroundColor: "#fff",
-                  borderRadius: "2px",
-                },
-              }}
-            >
-              EMPLOYEES
-            </Typography>
-            <Typography
-              component={Link}
-              to="/masters"
-              sx={{
-                color: location.pathname === "/masters" ? "#fff" : "#E2E8F0",
-                fontWeight: location.pathname === "/masters" ? 700 : 500,
-                fontSize: {
-                  md: "15px",
-                  lg: "17px",
-                },
-                textDecoration: "none",
-                position: "relative",
-                "&::after": location.pathname === "/masters" && {
-                  content: '""',
-                  position: "absolute",
-                  bottom: -4,
-                  left: 0,
-                  width: "100%",
-                  height: "2px",
-                  backgroundColor: "#fff",
-                  borderRadius: "2px",
-                },
-              }}
-            >
-              MASTERS
-            </Typography>
+            <ProfilePopover />
           </Stack>
-        </Box>
-
-        {/* RIGHT SIDE */}
-        <Stack
-          direction="row"
-          spacing={{
-            xs: 1,
-            md: 2,
-          }}
-          alignItems="center"
-        >
-          <ProfilePopover />
-        </Stack>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
     </>
   );
 };

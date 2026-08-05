@@ -274,15 +274,30 @@ const Masters = () => {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box
+      sx={{
+        p: {
+          xs: 2,
+          sm: 3,
+          md: 4,
+        },
+      }}
+    >
       {/* Header Banner */}
 
       <Box
         sx={{
           background: "linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%)",
           color: "#fff",
-          p: 4,
-          borderRadius: "24px",
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 4,
+          },
+          borderRadius: {
+            xs: 3,
+            md: 4,
+          },
           mb: 4,
           boxShadow: "0 10px 30px rgba(15,23,42,0.25)",
         }}
@@ -290,6 +305,11 @@ const Masters = () => {
         <Typography
           variant="h4"
           sx={{
+            fontSize: {
+              xs: 26,
+              sm: 34,
+              md: 38,
+            },
             fontWeight: 700,
             mb: 1,
           }}
@@ -300,6 +320,10 @@ const Masters = () => {
         <Typography
           variant="body1"
           sx={{
+            fontSize: {
+              xs: 14,
+              sm: 16,
+            },
             opacity: 0.9,
           }}
         >
@@ -312,6 +336,14 @@ const Masters = () => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: {
+            xs: "column",
+            sm: "row",
+          },
+          width: {
+            xs: "100%",
+            sm: "auto",
+          },
           gap: 2,
           mb: 4,
           mt: 2,
@@ -323,8 +355,19 @@ const Masters = () => {
             display: "flex",
             alignItems: "center",
             gap: 1,
-            px: 2,
-            py: 1,
+            width: {
+              xs: "100%",
+              sm: "auto",
+            },
+            px: {
+              xs: 2,
+              sm: 2.5,
+            },
+
+            py: {
+              xs: 1.2,
+              sm: 1,
+            },
             borderRadius: "12px",
             cursor: "pointer",
 
@@ -346,11 +389,21 @@ const Masters = () => {
             transition: "all 0.3s ease",
           }}
         >
-          <ApartmentRoundedIcon sx={{ fontSize: 18 }} />
+          <ApartmentRoundedIcon
+            sx={{
+              fontSize: {
+                xs: 22,
+                sm: 18,
+              },
+            }}
+          />
 
           <Typography
             sx={{
-              fontSize: "14px",
+              fontSize: {
+                xs: 15,
+                sm: 14,
+              },
               fontWeight: 600,
             }}
           >
@@ -364,8 +417,20 @@ const Masters = () => {
             display: "flex",
             alignItems: "center",
             gap: 1,
-            px: 2,
-            py: 1,
+            px: {
+              xs: 2,
+              sm: 2.5,
+            },
+
+            py: {
+              xs: 1.2,
+              sm: 1,
+            },
+
+            width: {
+              xs: "100%",
+              sm: "auto",
+            },
             borderRadius: "12px",
             cursor: "pointer",
 
@@ -389,11 +454,21 @@ const Masters = () => {
             transition: "all 0.3s ease",
           }}
         >
-          <BadgeRoundedIcon sx={{ fontSize: 18 }} />
+          <BadgeRoundedIcon
+            sx={{
+              fontSize: {
+                xs: 22,
+                sm: 18,
+              },
+            }}
+          />
 
           <Typography
             sx={{
-              fontSize: "14px",
+              fontSize: {
+                xs: 15,
+                sm: 14,
+              },
               fontWeight: 600,
             }}
           >
@@ -465,15 +540,28 @@ const Masters = () => {
         <Box
           sx={{
             display: "flex",
+
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+            },
+
             justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 2.5,
+
+            alignItems: "stretch",
+
+            gap: 2,
+
             mt: 5,
           }}
         >
           <Button
             variant="outlined"
             sx={{
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
               minWidth: 110,
               borderRadius: "8px",
               textTransform: "none",
@@ -490,6 +578,10 @@ const Masters = () => {
             variant="contained"
             color="error"
             sx={{
+              width: {
+                xs: "100%",
+                sm: "auto",
+              },
               minWidth: 110,
               borderRadius: "8px",
               textTransform: "none",

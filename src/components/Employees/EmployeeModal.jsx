@@ -339,7 +339,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Join Date</Typography>
+            <Typography sx={labelStyle}>
+              Join Date
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               type="date"
               name="joinDate"
@@ -353,7 +367,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Full Name</Typography>
+            <Typography sx={labelStyle}>
+              Full Name
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               placeholder="Enter employee full name"
@@ -369,7 +397,21 @@ const EmployeeModal = ({
           {/* Row 2 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Corporate Email</Typography>
+            <Typography sx={labelStyle}>
+              Corporate Email
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               placeholder="Enter employee email"
@@ -410,7 +452,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Date of Birth</Typography>
+            <Typography sx={labelStyle}>
+              Date of Birth
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               type="date"
               fullWidth
@@ -424,7 +480,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Phone Number</Typography>
+            <Typography sx={labelStyle}>
+              Phone Number
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               placeholder="Enter Phone Number"
@@ -457,7 +527,21 @@ const EmployeeModal = ({
           {/* Row 3 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Designation</Typography>
+            <Typography sx={labelStyle}>
+              Designation
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
 
             <Dropdown
               value={formData.designation}
@@ -512,7 +596,21 @@ const EmployeeModal = ({
           {/* Row 4 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Employement Type</Typography>
+            <Typography sx={labelStyle}>
+              Employement Type
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
 
             <Dropdown
               value={formData.employmentType}
@@ -549,7 +647,21 @@ const EmployeeModal = ({
           {/* Row 5 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Location</Typography>
+            <Typography sx={labelStyle}>
+              Location
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               placeholder="Enter Location"
@@ -562,7 +674,21 @@ const EmployeeModal = ({
             />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Bank Name</Typography>
+            <Typography sx={labelStyle}>
+              Bank Name
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               name="bankName"
@@ -576,7 +702,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Bank Account Number</Typography>
+            <Typography sx={labelStyle}>
+              Bank Account Number
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               name="bankAccountNo"
@@ -590,7 +730,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>IFSC Code</Typography>
+            <Typography sx={labelStyle}>
+              IFSC Code
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               name="ifscCode"
@@ -604,7 +758,21 @@ const EmployeeModal = ({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>PAN Number</Typography>
+            <Typography sx={labelStyle}>
+              PAN Number
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "18px", // Increase size
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               name="panNo"
@@ -632,7 +800,21 @@ const EmployeeModal = ({
           </Grid>
           {mode === "edit" && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <Typography sx={labelStyle}>Status</Typography>
+              <Typography sx={labelStyle}>
+                Status
+                <Box
+                  component="span"
+                  sx={{
+                    color: "error.main",
+                    fontSize: "18px", // Increase size
+                    fontWeight: 700,
+                    ml: 0.3,
+                    verticalAlign: "middle",
+                  }}
+                >
+                  *
+                </Box>
+              </Typography>
 
               <Dropdown
                 value={formData.status}

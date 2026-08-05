@@ -133,50 +133,58 @@ const AuthLayout = ({ children }) => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        minHeight: "100dvh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        overflow: "hidden",
         position: "relative",
 
-        background: `
-radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 35%),
-radial-gradient(circle at bottom right, rgba(56,189,248,.15), transparent 40%),
-linear-gradient(
-135deg,
-#15123F 0%,
-#262261 25%,
-#4338CA 55%,
-#5B4CF5 75%,
-#38BDF8 100%
-)
-`,
+        overflowX: "hidden",
+        overflowY: "auto",
 
-        // Top Left Glow
+        px: { xs: 2, sm: 3, md: 4 },
+        py: { xs: 3, sm: 4, md: 6 },
+
+        paddingTop: "env(safe-area-inset-top)",
+        paddingBottom: "env(safe-area-inset-bottom)",
+
+        background: `
+          radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 35%),
+          radial-gradient(circle at bottom right, rgba(56,189,248,.15), transparent 40%),
+          linear-gradient(
+            135deg,
+            #15123F 0%,
+            #262261 25%,
+            #4338CA 55%,
+            #5B4CF5 75%,
+            #38BDF8 100%
+          )
+        `,
+
         "&::before": {
           content: '""',
           position: "absolute",
-          width: 700,
-          height: 700,
+          width: { xs: 420, sm: 520, md: 700 },
+          height: { xs: 420, sm: 520, md: 700 },
           borderRadius: "50%",
           background: "rgba(91,76,245,.30)",
           filter: "blur(150px)",
-          top: -250,
-          left: -250,
+          top: { xs: -180, md: -250 },
+          left: { xs: -180, md: -250 },
+          pointerEvents: "none",
         },
 
-        // Bottom Right Glow
         "&::after": {
           content: '""',
           position: "absolute",
-          width: 650,
-          height: 650,
+          width: { xs: 380, sm: 500, md: 650 },
+          height: { xs: 380, sm: 500, md: 650 },
           borderRadius: "50%",
           background: "rgba(56,189,248,.18)",
           filter: "blur(140px)",
-          bottom: -250,
-          right: -250,
+          bottom: { xs: -180, md: -250 },
+          right: { xs: -180, md: -250 },
+          pointerEvents: "none",
         },
       }}
     >
@@ -184,13 +192,15 @@ linear-gradient(
       <Box
         sx={{
           position: "absolute",
-          width: 400,
-          height: 400,
+          width: { xs: 220, sm: 300, md: 400 },
+          height: { xs: 220, sm: 300, md: 400 },
           borderRadius: "50%",
           background: "rgba(255,255,255,.12)",
           filter: "blur(120px)",
-          top: "15%",
-          left: "35%",
+          top: { xs: "12%", md: "15%" },
+          left: { xs: "50%", md: "35%" },
+          transform: { xs: "translateX(-50%)", md: "none" },
+          pointerEvents: "none",
         }}
       />
 
@@ -198,13 +208,15 @@ linear-gradient(
       <Box
         sx={{
           position: "absolute",
-          width: 300,
-          height: 300,
+          width: { xs: 180, sm: 240, md: 300 },
+          height: { xs: 180, sm: 240, md: 300 },
           borderRadius: "50%",
           background: "rgba(255,255,255,.08)",
           filter: "blur(100px)",
-          bottom: "8%",
-          left: "60%",
+          bottom: { xs: "4%", md: "8%" },
+          left: { xs: "50%", md: "60%" },
+          transform: { xs: "translateX(-50%)", md: "none" },
+          pointerEvents: "none",
         }}
       />
 
@@ -212,16 +224,18 @@ linear-gradient(
       <Box
         sx={{
           position: "absolute",
-          width: 250,
-          height: 250,
+          width: { xs: 160, sm: 200, md: 250 },
+          height: { xs: 160, sm: 200, md: 250 },
           borderRadius: "50%",
           background: "rgba(91,76,245,.22)",
           filter: "blur(90px)",
-          top: "60%",
-          left: "20%",
+          top: { xs: "65%", md: "60%" },
+          left: { xs: "10%", md: "20%" },
+          pointerEvents: "none",
         }}
       />
 
+      {/* Content */}
       <Box
         sx={{
           position: "relative",
@@ -229,6 +243,7 @@ linear-gradient(
           width: "100%",
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {children}

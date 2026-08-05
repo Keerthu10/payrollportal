@@ -86,21 +86,17 @@
 // export default AdminLayout;
 
 import React, { useEffect, useState } from "react";
-
 import { Box, CssBaseline } from "@mui/material";
-
 import { Outlet, useNavigate } from "react-router-dom";
 
 import TopToolbar from "../components/TopToolbar";
-
 import { GlobalSessionTimeoutModal } from "../ui/GlobalModal";
-
 import Footer from "../components/Footer";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
-  const [openTimeoutModal, setOpenTimeoutModal] = useState(false);
 
+  const [openTimeoutModal, setOpenTimeoutModal] = useState(false);
   const [countdown, setCountdown] = useState(30);
 
   useEffect(() => {
@@ -114,24 +110,19 @@ const AdminLayout = () => {
           setOpenTimeoutModal(true);
         },
         5 * 60 * 1000,
-      ); // 5 mins
+      );
     };
 
     window.addEventListener("mousemove", resetTimer);
-
     window.addEventListener("keydown", resetTimer);
-
     window.addEventListener("click", resetTimer);
 
     resetTimer();
 
     return () => {
       clearTimeout(inactivityTimer);
-
       window.removeEventListener("mousemove", resetTimer);
-
       window.removeEventListener("keydown", resetTimer);
-
       window.removeEventListener("click", resetTimer);
     };
   }, []);
@@ -153,40 +144,40 @@ const AdminLayout = () => {
 
   const handleContinueSession = () => {
     setOpenTimeoutModal(false);
-
     setCountdown(30);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-
     navigate("/login", { replace: true });
   };
+
   return (
     <>
       <CssBaseline />
 
       <Box
         sx={{
-          minHeight: "100vh",
+          minHeight: "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          overflowX: "hidden",
+          paddingBottom: "env(safe-area-inset-bottom)",
 
           background: `
-radial-gradient(circle at top left,
-rgba(109,93,251,.06), transparent 30%),
-
-radial-gradient(circle at bottom right,
-rgba(69,215,255,.06), transparent 35%),
-
-linear-gradient(
-180deg,
-#FFFCF8 0%,
-#FFF9F3 55%,
-#FDF6EE 100%)
-`,
+            radial-gradient(circle at top left,
+              rgba(109,93,251,.06), transparent 30%),
+            radial-gradient(circle at bottom right,
+              rgba(69,215,255,.06), transparent 35%),
+            linear-gradient(
+              180deg,
+              #FFFCF8 0%,
+              #FFF9F3 55%,
+              #FDF6EE 100%)
+          `,
         }}
       >
-        {/* TOP NAVBAR */}
-
+        {/* Top Navigation */}
         <TopToolbar />
 
         <GlobalSessionTimeoutModal
@@ -196,17 +187,19 @@ linear-gradient(
           onLogout={handleLogout}
         />
 
+        {/* Page Content */}
         <Box
           sx={{
+            flex: 1,
+            width: "100%",
             px: { xs: 1.5, sm: 2, md: 4 },
-
             py: { xs: 2, md: 4 },
-
             pt: { xs: "80px", md: "120px" },
           }}
         >
           <Outlet />
         </Box>
+
         <Footer />
       </Box>
     </>

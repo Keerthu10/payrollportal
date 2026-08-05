@@ -34,23 +34,49 @@ const AuthContent = ({ children }) => {
   return (
     <Box
       sx={{
-        width: { xs: "95%", sm: "90%" },
+        width: "100%",
         maxWidth: "1250px",
-        minHeight: { xs: "auto", md: "720px" },
+
+        minHeight: {
+          xs: "100dvh",
+          md: "720px",
+        },
+
         display: "flex",
         alignItems: "center",
-        justifyContent: { xs: "center", md: "space-between" },
-        gap: { xs: 0, md: 10 },
-        py: { xs: 4, md: 0 },
+        justifyContent: {
+          xs: "center",
+          md: "space-between",
+        },
+
+        gap: {
+          xs: 0,
+          md: 8,
+        },
+
+        px: {
+          xs: 2,
+          sm: 3,
+          md: 0,
+        },
+
+        py: {
+          xs: 3,
+          sm: 4,
+          md: 0,
+        },
       }}
     >
-      {/* LEFT SIDE — hidden on mobile */}
+      {/* LEFT SIDE */}
       <Box
         sx={{
           width: "48%",
           color: "#fff",
           pr: 4,
-          display: { xs: "none", md: "block" },
+          display: {
+            xs: "none",
+            md: "block",
+          },
         }}
       >
         <Box
@@ -84,13 +110,13 @@ const AuthContent = ({ children }) => {
 
         <Typography
           sx={{
-            fontSize: {
-              xs: 35,
-              md: 45,
-            },
             fontWeight: 700,
             lineHeight: 1.1,
             mb: 3,
+            fontSize: {
+              md: 45,
+              lg: 50,
+            },
           }}
         >
           Welcome to Payroll Portal
@@ -98,10 +124,10 @@ const AuthContent = ({ children }) => {
 
         <Typography
           sx={{
-            color: "rgba(255,255,255,.7)",
+            color: "rgba(255,255,255,.72)",
             fontSize: 16,
             lineHeight: 1.8,
-            maxWidth: "520px",
+            maxWidth: 520,
             mb: 6,
           }}
         >
@@ -109,190 +135,145 @@ const AuthContent = ({ children }) => {
           efficiently in one place.
         </Typography>
 
-        {/* Employee Management */}
-        {/* Employee Management */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 2,
-            mb: 4,
-          }}
-        >
+        {[
+          {
+            icon: <PeopleAltOutlinedIcon />,
+            title: "Employee Management",
+            desc: "Manage employee details and records easily.",
+          },
+          {
+            icon: <PaymentsOutlinedIcon />,
+            title: "Payroll Processing",
+            desc: "Process salaries and payroll efficiently.",
+          },
+          {
+            icon: <BarChartOutlinedIcon />,
+            title: "Reports & Analytics",
+            desc: "View reports and track insights.",
+          },
+        ].map((item) => (
           <Box
+            key={item.title}
             sx={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,.1)",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexShrink: 0,
+              alignItems: "flex-start",
+              gap: 2,
+              mb: 4,
             }}
           >
-            <PeopleAltOutlinedIcon />
-          </Box>
-
-          <Box>
-            <Typography
+            <Box
               sx={{
-                fontSize: 18,
-                fontWeight: 600,
-                color: "#fff",
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                bgcolor: "rgba(255,255,255,.12)",
+                border: "1px solid rgba(255,255,255,.15)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexShrink: 0,
               }}
             >
-              Employee Management
-            </Typography>
+              {item.icon}
+            </Box>
 
-            <Typography
-              sx={{
-                mt: 0.5,
-                color: "rgba(255,255,255,.82)",
-                fontSize: 15,
-              }}
-            >
-              Manage employee details and records easily.
-            </Typography>
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: "#fff",
+                }}
+              >
+                {item.title}
+              </Typography>
+
+              <Typography
+                sx={{
+                  mt: 0.5,
+                  color: "rgba(255,255,255,.78)",
+                  fontSize: 15,
+                }}
+              >
+                {item.desc}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-
-        {/* Payroll Processing */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 2,
-            mb: 4,
-          }}
-        >
-          <Box
-            sx={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,.12)",
-              border: "1px solid rgba(255,255,255,.15)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexShrink: 0,
-            }}
-          >
-            <PaymentsOutlinedIcon />
-          </Box>
-
-          <Box>
-            <Typography
-              sx={{
-                fontSize: 18,
-                fontWeight: 600,
-                color: "#fff",
-              }}
-            >
-              Payroll Processing
-            </Typography>
-
-            <Typography
-              sx={{
-                mt: 0.5,
-                color: "rgba(255,255,255,.7)",
-                fontSize: 15,
-              }}
-            >
-              Process salaries and payroll efficiently.
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Reports & Analytics */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 2,
-          }}
-        >
-          <Box
-            sx={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,.1)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexShrink: 0,
-            }}
-          >
-            <BarChartOutlinedIcon />
-          </Box>
-
-          <Box>
-            <Typography
-              sx={{
-                fontSize: 18,
-                fontWeight: 600,
-                color: "#fff",
-              }}
-            >
-              Reports & Analytics
-            </Typography>
-
-            <Typography
-              sx={{
-                mt: 0.5,
-                color: "rgba(255,255,255,.7)",
-                fontSize: 15,
-              }}
-            >
-              View reports and track insights.
-            </Typography>
-          </Box>
-        </Box>
+        ))}
       </Box>
 
-      {/* RIGHT SIDE CARD */}
+      {/* RIGHT SIDE */}
       <Box
         sx={{
-          width: { xs: "100%", sm: 480, md: 520 },
+          width: "100%",
+          maxWidth: {
+            xs: 420,
+            sm: 480,
+            md: 520,
+          },
+
           position: "relative",
           overflow: "hidden",
 
-          background:"rgba(255,255,255,.96)",
+          background: "rgba(255,255,255,.96)",
           backdropFilter: "blur(20px)",
 
           border: "1px solid rgba(255,255,255,.2)",
 
-          borderRadius: { xs: "20px", md: "28px" },
+          borderRadius: {
+            xs: 20,
+            sm: 24,
+            md: 28,
+          },
 
-          px: { xs: 3, sm: 5, md: 7 },
-          py: { xs: 4, sm: 5, md: 7 },
+          px: {
+            xs: 2.5,
+            sm: 5,
+            md: 7,
+          },
+
+          py: {
+            xs: 3,
+            sm: 5,
+            md: 7,
+          },
 
           boxShadow: "0 30px 70px rgba(15,23,42,.18)",
 
           "&::before": {
             content: '""',
             position: "absolute",
-            width: 250,
-            height: 250,
+            width: {
+              xs: 180,
+              md: 250,
+            },
+            height: {
+              xs: 180,
+              md: 250,
+            },
             borderRadius: "50%",
-            background:"rgba(56,189,248,.10)",
+            background: "rgba(56,189,248,.10)",
             filter: "blur(100px)",
-            bottom: -100,
-            right: -100,
+            bottom: -80,
+            right: -80,
           },
 
           "&::after": {
             content: '""',
             position: "absolute",
-            width: 180,
-            height: 180,
+            width: {
+              xs: 120,
+              md: 180,
+            },
+            height: {
+              xs: 120,
+              md: 180,
+            },
             borderRadius: "50%",
-            background:"rgba(91,76,245,.10)",
+            background: "rgba(91,76,245,.10)",
             filter: "blur(80px)",
-            top: -80,
-            left: -80,
+            top: -60,
+            left: -60,
           },
         }}
       >

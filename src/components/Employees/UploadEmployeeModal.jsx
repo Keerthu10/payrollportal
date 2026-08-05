@@ -22,6 +22,7 @@ const UploadEmployeeModal = ({
   handleClose,
   uploadedFileName,
   excelData,
+  validationErrors,
   loading,
   onImportEmployees,
   importing,
@@ -96,36 +97,74 @@ const UploadEmployeeModal = ({
               textAlign: "center",
               fontWeight: 600,
               mb: 3,
+              fontSize: {
+                xs: 14,
+                sm: 16,
+              },
+              wordBreak: "break-word",
             }}
           >
             Uploaded File : {uploadedFileName}
           </Typography>
         )}
 
-        {/* <Box
-          sx={{
-            background: "#FEF2F2",
-            border: "1px solid #FCA5A5",
-            borderRadius: "12px",
-            p: 2,
-            mb: 3,
-          }}
-        >
-          <Typography key={index} color="error" sx={{ mb: 1 }}>
-            • {error}
-          </Typography>
-        </Box> */}
+        {validationErrors?.length > 0 && (
+          <Box
+            sx={{
+              background: "#FEF2F2",
+              border: "1px solid #FCA5A5",
+              borderRadius: {
+                xs: 2,
+                sm: 3,
+              },
+
+              p: {
+                xs: 1.5,
+                sm: 2,
+              },
+              mb: 3,
+            }}
+          >
+            <Typography color="error" fontWeight={600} sx={{ mb: 1 }}>
+              {validationErrors.length} validation error(s) found
+            </Typography>
+
+            {validationErrors.map((error, index) => (
+              <Typography
+                key={index}
+                color="error"
+                sx={{
+                  fontSize: {
+                    xs: 13,
+                    sm: 14,
+                  },
+                  wordBreak: "break-word",
+                }}
+              >
+                • Row {error.row}: {error.message}
+              </Typography>
+            ))}
+          </Box>
+        )}
 
         {excelData.length > 0 && (
           <>
             <TableContainer
               component={Paper}
               sx={{
-                borderRadius: "20px",
                 border: "1px solid #1F2937",
                 background: "#111827",
-                maxHeight: 500,
                 overflow: "auto",
+                borderRadius: {
+                  xs: 2,
+                  sm: 3,
+                },
+
+                maxHeight: {
+                  xs: 350,
+                  sm: 450,
+                  md: 500,
+                },
                 mb: 2,
               }}
             >
@@ -222,6 +261,10 @@ const UploadEmployeeModal = ({
                           color: "#fff",
                           fontWeight: 700,
                           whiteSpace: "nowrap",
+                          fontSize: {
+                            xs: 12,
+                            sm: 14,
+                          },
                         }}
                       >
                         {header}
@@ -233,27 +276,81 @@ const UploadEmployeeModal = ({
                 <TableBody>
                   {excelData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell sx={{ color: "#E5E7EB" }}>
-                          {page * rowsPerPage + index + 1}
-                        </TableCell>
+                    .map((row, index) => {
+                      const rowNumber = page * rowsPerPage + index + 2;
 
-                        {previewHeaders.map((header) => (
+                      const rowErrors = validationErrors.filter(
+                        (error) => error.row === rowNumber,
+                      );
+
+                      return (
+                        <TableRow key={index}>
                           <TableCell
-                            key={header}
                             sx={{
                               color: "#E5E7EB",
+                              fontSize: {
+                                xs: 12,
+                                sm: 14,
+                              },
+                              whiteSpace: "nowrap",
                             }}
                           >
-                            {header === "Date of Birth (DD-MM-YYYY)" ||
-                            header === "Join Date (DD-MM-YYYY)"
-                              ? formatDate(row[header])
-                              : row[header] || "-"}
+                            {page * rowsPerPage + index + 1}
                           </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
+
+                          {previewHeaders.map((header) => (
+                            <TableCell
+                              key={header}
+                              sx={{
+                                color: "#E5E7EB",
+                                fontSize: {
+                                  xs: 12,
+                                  sm: 14,
+                                },
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {header === "Date of Birth (DD-MM-YYYY)" ||
+                              header === "Join Date (DD-MM-YYYY)"
+                                ? formatDate(row[header])
+                                : row[header] || "-"}
+                            </TableCell>
+                          ))}
+
+                          <TableCell>
+                            {rowErrors.length === 0 ? (
+                              <Typography
+                                sx={{
+                                  color: "#22C55E",
+                                  fontWeight: 600,
+                                  fontSize: {
+                                    xs: 12,
+                                    sm: 14,
+                                  },
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                ✓ Valid
+                              </Typography>
+                            ) : (
+                              <Typography
+                                sx={{
+                                  color: "#EF4444",
+                                  fontWeight: 600,
+                                  fontSize: {
+                                    xs: 12,
+                                    sm: 14,
+                                  },
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {rowErrors.map((e) => e.message).join(", ")}
+                              </Typography>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -272,6 +369,27 @@ const UploadEmployeeModal = ({
               sx={{
                 background: "#111827",
                 color: "#fff",
+                "& .MuiTablePagination-toolbar": {
+                  flexWrap: "wrap",
+                  justifyContent: {
+                    xs: "center",
+                    sm: "space-between",
+                  },
+                },
+
+                "& .MuiTablePagination-selectLabel": {
+                  fontSize: {
+                    xs: 12,
+                    sm: 14,
+                  },
+                },
+
+                "& .MuiTablePagination-displayedRows": {
+                  fontSize: {
+                    xs: 12,
+                    sm: 14,
+                  },
+                },
 
                 "& .MuiTablePagination-selectIcon": {
                   color: "#fff",

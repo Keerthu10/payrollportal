@@ -44,6 +44,7 @@ const Employees = () => {
   const fileInputRef = useRef(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [excelData, setExcelData] = useState([]);
+  const [validationErrors, setValidationErrors] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [importing, setImporting] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
@@ -142,6 +143,52 @@ const Employees = () => {
   //   setValidationErrors(errors);
   // };
 
+
+  const validateEmployeeData = (data) => {
+    const errors = [];
+
+    data.forEach((employee, index) => {
+      const row = index + 2;
+
+      if (!employee["Name"]) {
+        errors.push({
+          row,
+          field: "Name",
+          message: "Name is required",
+        });
+      }
+
+      if (!employee["Email"]) {
+        errors.push({
+          row,
+          field: "Email",
+          message: "Email is required",
+        });
+      }
+
+      if (
+        employee["Email"] &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(employee["Email"])
+      ) {
+        errors.push({
+          row,
+          field: "Email",
+          message: "Invalid Email",
+        });
+      }
+
+      if (!employee["Phone"]) {
+        errors.push({
+          row,
+          field: "Phone",
+          message: "Phone is required",
+        });
+      }
+    });
+
+    setValidationErrors(errors);
+  };
+
   const fetchEmployeeStats = async () => {
     try {
       const response = await getDashboardEmployeeStats();
@@ -184,7 +231,7 @@ const Employees = () => {
 
         setExcelData(jsonData);
 
-        // validateEmployeeData(jsonData);
+        validateEmployeeData(jsonData);
 
         setOpenUploadModal(true);
       } catch (error) {
@@ -457,6 +504,7 @@ const Employees = () => {
         handleClose={() => setOpenUploadModal(false)}
         uploadedFileName={uploadedFileName}
         excelData={excelData}
+        validationErrors={validationErrors}
         loading={loading}
         importing={importing}
         onImportEmployees={handleImportEmployees}

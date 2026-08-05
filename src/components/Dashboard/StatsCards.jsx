@@ -224,7 +224,16 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
       title: "Total Employees",
       value: dashboardStats?.currentMonth?.employeesProcessed ?? 0,
       subtitle: "Processed This Month",
-      icon: <GroupsRoundedIcon sx={{ fontSize: 28 }} />,
+      icon: (
+        <GroupsRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#8B5CF6",
       lightBg: "rgba(139,92,246,0.08)",
       shadowColor: "rgba(139,92,246,0.18)",
@@ -233,7 +242,16 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
       title: "Payslip Sent",
       value: dashboardStats?.currentMonth?.totalDelivered ?? 0,
       subtitle: "Successfully Delivered",
-      icon: <CheckCircleRoundedIcon sx={{ fontSize: 28 }} />,
+      icon: (
+        <CheckCircleRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#22C55E",
       lightBg: "rgba(34,197,94,0.08)",
       shadowColor: "rgba(34,197,94,0.18)",
@@ -244,7 +262,16 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
         (dashboardStats?.currentMonth?.totalFailed ?? 0) +
         (dashboardStats?.currentMonth?.totalBounced ?? 0),
       subtitle: "Delivery Failed",
-      icon: <CancelRoundedIcon sx={{ fontSize: 28 }} />,
+      icon: (
+        <CancelRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#F43F5E",
       lightBg: "rgba(244,63,94,0.08)",
       shadowColor: "rgba(244,63,94,0.18)",
@@ -253,7 +280,16 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
       title: "Email Pending",
       value: dashboardStats?.currentMonth?.totalPending ?? 0,
       subtitle: "Payroll Executions",
-      icon: <ApartmentRoundedIcon sx={{ fontSize: 28 }} />,
+      icon: (
+        <ApartmentRoundedIcon
+          sx={{
+            fontSize: {
+              xs: 24,
+              sm: 28,
+            },
+          }}
+        />
+      ),
       color: "#3B82F6",
       lightBg: "rgba(59,130,246,0.08)",
       shadowColor: "rgba(59,130,246,0.18)",
@@ -269,7 +305,7 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
           sm: "repeat(2, 1fr)",
           md: "repeat(4, 1fr)",
         },
-        gap: { xs: 2, md: 3 },
+        gap: { xs: 2, sm: 2.5, md: 3 },
         mb: 4,
         width: "100%",
       }}
@@ -280,10 +316,13 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
           elevation={0}
           onClick={() => onCardClick?.(card)}
           sx={{
-            p: { xs: 2, md: 3 },
+            p: { xs: 2, sm: 2.5, md: 3 },
             height: { xs: "auto", md: 150 },
             minHeight: { xs: 120, md: "auto" },
-            borderRadius: "24px",
+            borderRadius: {
+              xs: 3,
+              md: 4,
+            },
             background: "#FFFFFF",
             border: "1px solid #E5E7EB",
             boxShadow: `0 8px 24px ${card.shadowColor}`,
@@ -300,9 +339,14 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
               height: "5px",
               background: card.color,
             },
-            "&:hover": {
-              transform: "translateY(-4px)",
-              boxShadow: `0 14px 32px ${card.shadowColor}`,
+            "@media (hover: hover)": {
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: `0 14px 32px ${card.shadowColor}`,
+              },
+              "&:active": {
+                transform: "scale(0.98)",
+              },
             },
           }}
         >
@@ -312,12 +356,16 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
+              gap: 2,
             }}
           >
             <Box>
               <Typography
                 sx={{
-                  fontSize: 14,
+                  fontSize: {
+                    xs: 13,
+                    sm: 14,
+                  },
                   fontWeight: 600,
                   color: "rgba(40, 35, 35, 0.85)",
                 }}
@@ -327,7 +375,11 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
 
               <Typography
                 sx={{
-                  fontSize: 34,
+                  fontSize: {
+                    xs: 26,
+                    sm: 30,
+                    md: 34,
+                  },
                   fontWeight: 700,
                   color: "#262222ff",
                   mt: 1,
@@ -337,7 +389,14 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
               </Typography>
 
               <Typography
-                sx={{ fontSize: 13, color: "rgba(15, 14, 14, 0.65)", mt: 0.5 }}
+                sx={{
+                  fontSize: {
+                    xs: 12,
+                    sm: 13,
+                  },
+                  color: "rgba(15, 14, 14, 0.65)",
+                  mt: 0.5,
+                }}
               >
                 {card.subtitle}
               </Typography>
@@ -345,8 +404,15 @@ const StatsCards = ({ dashboardStats, onCardClick }) => {
 
             <Box
               sx={{
-                width: 54,
-                height: 54,
+                width: {
+                  xs: 46,
+                  sm: 54,
+                },
+
+                height: {
+                  xs: 46,
+                  sm: 54,
+                },
                 borderRadius: "16px",
                 background: card.lightBg,
                 color: card.color,

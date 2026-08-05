@@ -15,8 +15,8 @@
   background-color: #2f343b;
   color: #ffffff;
   font-weight: 600;
-  font-size: 14px;
-  padding: 14px 16px;
+  font-size: 12px;
+  padding: 12px;
   border: none;
   text-align: left;
   vertical-align: middle;
@@ -35,7 +35,7 @@
 ========================= */
 .custom-datatable .p-datatable-thead > tr:nth-child(2) > th {
   background-color: #3a4047;
-  padding: 10px 16px;
+  padding: 8px 10px;
   border: none;
 }
 
@@ -70,8 +70,8 @@
    TABLE BODY
 ========================= */
 .custom-datatable .p-datatable-tbody > tr > td {
-  padding: 14px 16px;
-  font-size: 14px;
+  padding: 10px 12px;
+  font-size: 12px;
   color: #374151;
   border-bottom: 1px solid #e5e7eb;
   vertical-align: middle;
@@ -83,8 +83,10 @@
 }
 
 /* Hover effect */
-.custom-datatable .p-datatable-tbody > tr:hover {
-  background-color: #f1f5f9;
+@media (hover: hover) {
+  .custom-datatable .p-datatable-tbody > tr:hover {
+    background-color: #f1f5f9;
+  }
 }
 
 /* Bottom corner radius fix */
@@ -106,9 +108,12 @@
 /* =========================
    PAGINATOR
 ========================= */
-.custom-datatable .p-paginator {
-  padding: 14px;
-  justify-content: center;
+@media (max-width:600px) {
+  .custom-datatable .p-paginator {
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 }
 
 .custom-datatable .p-paginator .p-paginator-pages .p-paginator-page {
@@ -231,10 +236,15 @@
 }
 
 /* Footer buttons container */
-.p-column-filter-buttonbar {
-  padding-top: 0.6rem;
-  display: flex;
-  justify-content: space-between;
+@media (max-width:600px) {
+  .p-column-filter-buttonbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .p-column-filter-buttonbar .p-button {
+    width: 100%;
+  }
 }
 
 /* Clear / Apply buttons */
@@ -256,17 +266,12 @@
   color: #6b7280;
 }
 
-/* Make search look clean */
-.search-field {
-  width: 260px;
-  position: relative;
-}
-
 /* =========================
    SEARCH FIELD (PrimeReact)
 ========================= */
 .search-field {
-  width: 260px;
+  width: 100%;
+  max-width: 260px;
   position: relative;
 }
 

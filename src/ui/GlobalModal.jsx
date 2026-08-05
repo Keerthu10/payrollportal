@@ -187,7 +187,14 @@ const GlobalModal = ({
               },
             }}
           >
-            <CloseTwoTone />
+            <CloseTwoTone
+              sx={{
+                fontSize: {
+                  xs: 20,
+                  sm: 24,
+                },
+              }}
+            />
           </IconButton>
         </Box>
 
@@ -277,7 +284,22 @@ const GlobalModal = ({
                     },
                   }}
                 >
-                  <CircularProgress size={24} />
+                  <Box
+                    sx={{
+                      "& .MuiCircularProgress-root": {
+                        width: {
+                          xs: 20,
+                          sm: 24,
+                        },
+                        height: {
+                          xs: 20,
+                          sm: 24,
+                        },
+                      },
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
                 </Box>
               )}
             </Stack>
@@ -340,7 +362,17 @@ export const GlobalDeleteModal = ({
         </>
       }
     >
-      <Typography>{message}</Typography>
+      <Typography
+        sx={{
+          textAlign: "center",
+          fontSize: {
+            xs: 14,
+            sm: 16,
+          },
+        }}
+      >
+        {message}
+      </Typography>
     </GlobalModal>
   );
 };
@@ -418,7 +450,10 @@ export const GlobalSessionTimeoutModal = ({
         <Typography
           variant="body1"
           sx={{
-            fontSize: "16px",
+            fontSize: {
+              xs: 14,
+              sm: 16,
+            },
           }}
         >
           Your session will expire in{" "}
@@ -427,7 +462,10 @@ export const GlobalSessionTimeoutModal = ({
             sx={{
               color: "primary.main",
               fontWeight: 700,
-              fontSize: "20px",
+              fontSize: {
+                xs: 18,
+                sm: 20,
+              },
             }}
           >
             {countdown}

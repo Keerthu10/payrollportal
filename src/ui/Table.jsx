@@ -14,7 +14,16 @@ const Table = ({
   onPaginationModelChange,
 }) => {
   return (
-    <Box sx={{ height: 450, width: "100%" }}>
+    <Box
+      sx={{
+        height: {
+          xs: 380,
+          sm: 450,
+          md: 500,
+        },
+        width: "100%",
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
@@ -42,7 +51,17 @@ const Table = ({
                 justifyContent: "center",
               }}
             >
-              <Typography sx={{ color: "#CBD5E1" }}>
+              <Typography
+                sx={{
+                  color: "#CBD5E1",
+                  fontSize: {
+                    xs: 14,
+                    sm: 16,
+                  },
+                  textAlign: "center",
+                  px: 2,
+                }}
+              >
                 No records found
               </Typography>
             </Box>
@@ -74,7 +93,10 @@ const Table = ({
           "& .MuiDataGrid-columnHeaderTitle": {
             color: "#FFFFFF",
             fontWeight: 700,
-            fontSize: "14px",
+            fontSize: {
+              xs: 12,
+              sm: 14,
+            },
           },
 
           /* Rows */
@@ -87,16 +109,21 @@ const Table = ({
             backgroundColor: "rgba(255,255,255,0.02)",
           },
 
-          "& .MuiDataGrid-row:hover": {
-            backgroundColor: "rgba(99,102,241,0.15)",
-            transform: "translateY(-1px)",
+          "@media (hover: hover)": {
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: "rgba(99,102,241,0.15)",
+              transform: "translateY(-1px)",
+            },
           },
 
           /* Cells */
           "& .MuiDataGrid-cell": {
             borderBottom: "1px solid rgba(255,255,255,0.08)",
             color: "#F8FAFC",
-            fontSize: "14px",
+            fontSize: {
+              xs: 12,
+              sm: 14,
+            },
           },
 
           /* Footer */
@@ -108,9 +135,37 @@ const Table = ({
 
           /* Toolbar */
           "& .MuiDataGrid-toolbarContainer": {
-            padding: "14px 16px",
+            padding: {
+              xs: "10px 12px",
+              sm: "14px 16px",
+            },
+            flexWrap: "wrap",
+            gap: 1,
             borderBottom: "1px solid rgba(255,255,255,0.08)",
             background: "rgba(255,255,255,0.03)",
+          },
+
+          "& .MuiTablePagination-toolbar": {
+            flexWrap: "wrap",
+
+            justifyContent: {
+              xs: "center",
+              sm: "space-between",
+            },
+          },
+
+          "& .MuiTablePagination-selectLabel": {
+            fontSize: {
+              xs: 12,
+              sm: 14,
+            },
+          },
+
+          "& .MuiTablePagination-displayedRows": {
+            fontSize: {
+              xs: 12,
+              sm: 14,
+            },
           },
 
           "& .MuiButton-root": {

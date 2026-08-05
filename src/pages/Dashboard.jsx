@@ -424,7 +424,6 @@ import StatDetailModal from "../ui/StatsDetailModal";
 
 import {
   ResponsiveContainer,
-  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -582,9 +581,13 @@ const Dashboard = () => {
     <>
       <Box
         sx={{
-          p: 1,
+          p: {
+            xs: 1,
+            sm: 2,
+            md: 3,
+          },
           background: "#EEF4FA",
-          minHeight: "100vh",
+          minHeight: "100dvh",
         }}
       >
         {/* ================= HEADER ================= */}
@@ -600,76 +603,136 @@ const Dashboard = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: 3,
-            mt: 3,
-            alignItems: "flex-start",
+            flexDirection: {
+              xs: "column",
+              lg: "row",
+            },
+
+            gap: {
+              xs: 2,
+              md: 3,
+            },
+
+            mt: {
+              xs: 2,
+              md: 3,
+            },
+
+            alignItems: "stretch",
           }}
         >
           <Box
             sx={{
               flex: 3,
-              p: 4,
-              borderRadius: 6,
+
+              width: "100%",
+
+              p: {
+                xs: 2,
+                sm: 3,
+                md: 4,
+              },
+
+              borderRadius: {
+                xs: 3,
+                md: 6,
+              },
+
               background: "#fff",
+
               boxShadow: "0 8px 30px rgba(0,0,0,.08)",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
               <Typography
-                sx={{ fontWeight: 700, color: "#0F172A", fontSize: "18px" }}
+                sx={{
+                  fontWeight: 700,
+                  color: "#0F172A",
+                  fontSize: {
+                    xs: 16,
+                    sm: 18,
+                  },
+                }}
               >
                 Payroll Processing Trend
               </Typography>
             </Box>
 
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient
-                    id="payrollGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="5%" stopColor="#38BDF8" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#38BDF8" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
+            <Box
+              sx={{
+                width: "100%",
+                height: {
+                  xs: 220,
+                  sm: 250,
+                  md: 280,
+                },
+              }}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData}>
+                  <defs>
+                    <linearGradient
+                      id="payrollGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#38BDF8" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#38BDF8" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
 
-                <CartesianGrid strokeDasharray="3 3" stroke="#CBD5E1" />
-                <XAxis dataKey="month" />
-                <YAxis domain={[0, 70]} tickCount={15} />
-                <Tooltip />
-                <Legend />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#CBD5E1" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
 
-                <Area
-                  type="monotone"
-                  dataKey="successfulPayrolls"
-                  name="Successful Payrolls"
-                  stroke="#38BDF8"
-                  fill="url(#payrollGradient)"
-                  strokeWidth={4}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="pendingPayrolls"
-                  name="Pending Payrolls"
-                  stroke="#8B5CF6"
-                  strokeWidth={4}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+                  <Area
+                    type="monotone"
+                    dataKey="successfulPayrolls"
+                    name="Successful Payrolls"
+                    stroke="#38BDF8"
+                    fill="url(#payrollGradient)"
+                    strokeWidth={4}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="pendingPayrolls"
+                    name="Pending Payrolls"
+                    stroke="#8B5CF6"
+                    strokeWidth={4}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Box>
           </Box>
 
           <Box
             sx={{
-              flex: "1 1 28%",
-              minWidth: { xs: "100%", md: 350 },
-              height: 380,
-              borderRadius: 6,
+              flex: 1,
+
+              width: "100%",
+
+              minWidth: {
+                xs: "100%",
+                lg: 350,
+              },
+
+              height: {
+                xs: 320,
+                sm: 360,
+                md: 380,
+              },
+
+              borderRadius: {
+                xs: 3,
+                md: 6,
+              },
+
               background: "#fff",
+
               boxShadow: "0 8px 30px rgba(0,0,0,.08)",
             }}
           >
