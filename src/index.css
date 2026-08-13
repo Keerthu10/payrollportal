@@ -83,6 +83,40 @@ body {
   transition: all 0.2s ease;
 }
 
+.modal-dropdown .p-dropdown {
+  width: 100%;
+  min-height: 52px;
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+.modal-dropdown .p-dropdown:hover {
+  border-color: #6d5dfb !important;
+}
+
+.modal-dropdown .p-dropdown.p-focus {
+  border-color: #6d5dfb !important;
+  box-shadow: 0 0 0 2px rgba(109, 93, 251, 0.15) !important;
+}
+
+.modal-dropdown .p-dropdown-label {
+  color: #0f172a !important;
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  font-size: 15px;
+}
+
+.modal-dropdown .p-dropdown-label.p-placeholder {
+  color: #94a3b8 !important;
+}
+
+.modal-dropdown .p-dropdown-trigger {
+  color: #6b7280 !important;
+}
+
 .p-dropdown:hover {
   border-color: rgba(255, 255, 255, 0.35) !important;
 }
@@ -160,7 +194,9 @@ body {
 .p-dropdown-item {
   padding: 12px 16px !important;
   font-size: 15px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .p-dropdown-item:hover {
@@ -168,8 +204,8 @@ body {
 }
 
 .p-dropdown-item.p-highlight {
-  background: #F8FAFC !important;
-  color: #2563EB !important;
+  background: #f8fafc !important;
+  color: #2563eb !important;
   font-weight: 600;
 }
 
@@ -182,17 +218,17 @@ body {
   min-height: 52px;
   height: auto;
   background: #fff !important;
-  border: 1px solid #BDBDBD !important;
+  border: 1px solid #bdbdbd !important;
   border-radius: 12px !important;
   transition: all 0.2s ease;
 }
 
 .modal-dropdown:hover {
-  border-color: #1976D2 !important;
+  border-color: #1976d2 !important;
 }
 
 .modal-dropdown.p-focus {
-  border-color: #1976D2 !important;
+  border-color: #1976d2 !important;
   box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15) !important;
 }
 
@@ -204,11 +240,11 @@ body {
 }
 
 .modal-dropdown .p-dropdown-label.p-placeholder {
-  color: #9CA3AF !important;
+  color: #9ca3af !important;
 }
 
 .modal-dropdown .p-dropdown-trigger {
-  color: #6B7280 !important;
+  color: #6b7280 !important;
 }
 
 /* =========================================================

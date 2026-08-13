@@ -17,6 +17,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Dropdown } from "primereact/dropdown";
 
 import GlobalModal from "../../ui/GlobalModal";
+import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 import { getDesignationInfo } from "../../services/designationService";
 import { getEmploymentTypeInfo } from "../../services/EmploymentType";
 import { getNextEmployeeId } from "../../services/employeeService";
@@ -113,7 +114,7 @@ const EmployeeModal = ({
         employmentType: employee.employmentType || "",
         reportingManager: employee.reportingManager || "",
         location: employee.location,
-        status:employee.active?"Active":"Inactive",
+        status: employee.active ? "Active" : "Inactive",
 
         dob: employee.dateOfBirth || "",
         bankName: employee.bankName || "",
@@ -125,92 +126,92 @@ const EmployeeModal = ({
     }
   }, [open, mode, employee]);
 
+  const validateField = (name, value) => {
+    const v = value ?? "";
+    switch (name) {
+      case "fullName":
+        return !v.trim() ? "Full Name is required" : "";
+      case "email":
+        return !v.trim()
+          ? "Email is required"
+          : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+            ? "Invalid email"
+            : "";
+      case "phone":
+        return !v
+          ? "Phone Number is required"
+          : !/^\d{10}$/.test(v)
+            ? "Phone Number must contain 10 digits"
+            : "";
+      case "dob":
+        return !v ? "Date of Birth is required" : "";
+      case "designation":
+        return !v ? "Designation is required" : "";
+      case "employmentType":
+        return !v ? "Employement Type is required" : "";
+      case "location":
+        return !v.trim() ? "Location is required" : "";
+      case "bankName":
+        return !v.trim() ? "Bank Name is required" : "";
+      case "bankAccountNo":
+        return !v.trim()
+          ? "Bank Account Number is required"
+          : !/^\d{9,18}$/.test(v)
+            ? "Invalid Account Number"
+            : "";
+      case "ifscCode":
+        return !v.trim()
+          ? "IFSC Code is required"
+          : !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(v.toUpperCase())
+            ? "Invalid IFSC Code"
+            : "";
+      case "panNo":
+        return !v.trim()
+          ? "PAN Number is required"
+          : !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(v.toUpperCase())
+            ? "Invalid PAN Number"
+            : "";
+      case "uanNo":
+        return !v.trim()
+          ? "UAN Number is required"
+          : !/^\d{12}$/.test(v)
+            ? "UAN Number must contain 12 digits"
+            : "";
+      default:
+        return "";
+    }
+  };
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    console.log(name, value);
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     setErrors((prev) => ({
       ...prev,
-      [name]: "",
+      [name]: validateField(name, value),
     }));
   };
 
+  
+
   const handleSubmit = () => {
-    let tempErrors = {};
+    const tempErrors = {};
 
-    if (!formData.fullName.trim()) {
-      tempErrors.fullName = "Full Name is required";
-    }
+    Object.keys(formData).forEach((field) => {
+      const error = validateField(field, formData[field]);
 
-    if (!formData.email.trim()) {
-      tempErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      tempErrors.email = "Invalid email";
-    }
-
-    if (!formData.phone) {
-      tempErrors.phone = "Phone Number is required";
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      tempErrors.phone = "Phone Number must contain 10 digits";
-    }
-
-    if (!formData.dob) {
-      tempErrors.dob = "Date of Birth is required";
-    }
-
-    if (!formData.designation) {
-      tempErrors.designation = "Designation is required";
-    }
-
-    if (!formData.employmentType) {
-      tempErrors.employmentType = "Employement Type is required";
-    }
-
-    if (!formData.location.trim()) {
-      tempErrors.location = "Location is required";
-    }
-
-    if (!formData.bankName.trim()) {
-      tempErrors.bankName = "Bank Name is required";
-    }
-
-    if (!formData.bankAccountNo.trim()) {
-      tempErrors.bankAccountNo = "Bank Account Number is required";
-    } else if (!/^\d{9,18}$/.test(formData.bankAccountNo)) {
-      tempErrors.bankAccountNo = "Invalid Account Number";
-    }
-
-    if (!formData.ifscCode.trim()) {
-      tempErrors.ifscCode = "IFSC Code is required";
-    } else if (
-      !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.ifscCode.toUpperCase())
-    ) {
-      tempErrors.ifscCode = "Invalid IFSC Code";
-    }
-
-    if (!formData.panNo.trim()) {
-      tempErrors.panNo = "PAN Number is required";
-    } else if (
-      !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNo.toUpperCase())
-    ) {
-      tempErrors.panNo = "Invalid PAN Number";
-    }
-
-    if (!formData.uanNo.trim()) {
-      tempErrors.uanNo = "UAN Number is required";
-    } else if (!/^\d{12}$/.test(formData.uanNo)) {
-      tempErrors.uanNo = "UAN Number must contain 12 digits";
-    }
+      if (error) {
+        tempErrors[field] = error;
+      }
+    });
 
     setErrors(tempErrors);
 
-    if (Object.keys(tempErrors).length > 0) return;
+    if (Object.keys(tempErrors).length > 0) {
+      return;
+    }
 
     const payload = {
       name: formData.fullName,
@@ -242,10 +243,28 @@ const EmployeeModal = ({
       borderRadius: "12px",
       backgroundColor: "#fff",
       height: 52,
+      display: "flex",
+      alignItems: "center",
     },
 
     "& .MuiInputBase-root": {
       width: "100%",
+    },
+
+    "& .MuiOutlinedInput-input": {
+      padding: "0 14px",
+      height: "100%",
+      boxSizing: "border-box",
+    },
+
+    "& input[type='date']::-webkit-calendar-picker-indicator": {
+      background: "transparent",
+      cursor: "pointer",
+      opacity: 0,
+      position: "absolute",
+      right: 0,
+      width: "36px",
+      height: "100%",
     },
   };
 
@@ -329,12 +348,33 @@ const EmployeeModal = ({
           {/* Row 1 */}
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <Typography sx={labelStyle}>Employee ID</Typography>
+            <Typography sx={labelStyle}>
+              Employee ID
+              <Box
+                component="span"
+                sx={{
+                  color: "error.main",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  ml: 0.3,
+                  verticalAlign: "middle",
+                  visibility: "hidden",
+                }}
+              >
+                *
+              </Box>
+            </Typography>
             <TextField
               fullWidth
               disabled
               value={formData.employeeId}
               sx={fieldStyle}
+              InputProps={{
+                sx: {
+                  height: 52,
+                  alignItems: "center",
+                },
+              }}
             />
           </Grid>
 
@@ -345,7 +385,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px",
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -354,16 +394,30 @@ const EmployeeModal = ({
                 *
               </Box>
             </Typography>
-            <TextField
-              type="date"
-              name="joinDate"
-              fullWidth
-              value={formData.joinDate}
-              onChange={handleChange}
-              error={!!errors.joinDate}
-              helperText={errors.joinDate}
-              sx={fieldStyle}
-            />
+
+            <Box sx={{ position: "relative" }}>
+              <TextField
+                type="date"
+                name="joinDate"
+                fullWidth
+                value={formData.joinDate}
+                onChange={handleChange}
+                error={!!errors.joinDate}
+                helperText={errors.joinDate}
+                sx={fieldStyle}
+              />
+              <CalendarTodayRoundedIcon
+                sx={{
+                  position: "absolute",
+                  right: 14,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: 20,
+                  color: "#6D5DFB",
+                  pointerEvents: "none",
+                }}
+              />
+            </Box>
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
@@ -373,7 +427,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -403,7 +457,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -458,7 +512,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px",
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -467,16 +521,30 @@ const EmployeeModal = ({
                 *
               </Box>
             </Typography>
-            <TextField
-              type="date"
-              fullWidth
-              name="dob"
-              value={formData.dob}
-              onChange={handleChange}
-              error={!!errors.dob}
-              helperText={errors.dob}
-              sx={fieldStyle}
-            />
+
+            <Box sx={{ position: "relative" }}>
+              <TextField
+                type="date"
+                fullWidth
+                name="dob"
+                value={formData.dob}
+                onChange={handleChange}
+                error={!!errors.dob}
+                helperText={errors.dob}
+                sx={fieldStyle}
+              />
+              <CalendarTodayRoundedIcon
+                sx={{
+                  position: "absolute",
+                  right: 14,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: 20,
+                  color: "#6D5DFB",
+                  pointerEvents: "none",
+                }}
+              />
+            </Box>
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
@@ -486,7 +554,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -533,7 +601,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -602,7 +670,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -653,7 +721,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -680,7 +748,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -708,7 +776,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -736,7 +804,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -764,7 +832,7 @@ const EmployeeModal = ({
                 component="span"
                 sx={{
                   color: "error.main",
-                  fontSize: "18px", // Increase size
+                  fontSize: "13px", // Increase size
                   fontWeight: 700,
                   ml: 0.3,
                   verticalAlign: "middle",
@@ -806,7 +874,7 @@ const EmployeeModal = ({
                   component="span"
                   sx={{
                     color: "error.main",
-                    fontSize: "18px", // Increase size
+                    fontSize: "13px", // Increase size
                     fontWeight: 700,
                     ml: 0.3,
                     verticalAlign: "middle",

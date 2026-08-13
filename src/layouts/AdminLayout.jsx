@@ -90,6 +90,7 @@ import { Box, CssBaseline } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import TopToolbar from "../components/TopToolbar";
+import Sidebar from "../components/Sidebar";
 import { GlobalSessionTimeoutModal } from "../ui/GlobalModal";
 import Footer from "../components/Footer";
 
@@ -98,6 +99,7 @@ const AdminLayout = () => {
 
   const [openTimeoutModal, setOpenTimeoutModal] = useState(false);
   const [countdown, setCountdown] = useState(30);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     let inactivityTimer;

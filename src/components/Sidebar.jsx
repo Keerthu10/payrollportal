@@ -566,17 +566,7 @@ const Sidebar = ({ open }) => {
             <DashboardOutlined />
           </ListItemIcon>
 
-          {open && (
-            <ListItemText
-              primary="Dashboard"
-              primaryTypographyProps={{
-                sx: {
-                  color: "#FFFFFF",
-                  fontWeight: 500,
-                },
-              }}
-            />
-          )}
+          {open && <ListItemText primary="Dashboard" />}
         </ListItemButton>
 
         {/* EMPLOYEES

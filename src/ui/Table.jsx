@@ -128,9 +128,26 @@ const Table = ({
 
           /* Footer */
           "& .MuiDataGrid-footerContainer": {
+            minHeight: "48px !important",
+            height: "48px",
             borderTop: "1px solid rgba(255,255,255,0.08)",
             background: "rgba(255,255,255,0.04)",
             color: "#FFFFFF",
+          },
+
+          "& .MuiTablePagination-root": {
+            color: "#FFFFFF",
+            minHeight: "48px",
+          },
+
+          "& .MuiTablePagination-selectLabel": {
+            margin: 0,
+            fontSize: "14px",
+          },
+
+          "& .MuiTablePagination-displayedRows": {
+            margin: 0,
+            fontSize: "14px",
           },
 
           /* Toolbar */
@@ -144,14 +161,12 @@ const Table = ({
             borderBottom: "1px solid rgba(255,255,255,0.08)",
             background: "rgba(255,255,255,0.03)",
           },
-
           "& .MuiTablePagination-toolbar": {
-            flexWrap: "wrap",
-
-            justifyContent: {
-              xs: "center",
-              sm: "space-between",
-            },
+            minHeight: "48px !important",
+            height: "48px",
+            padding: "0 12px",
+            flexWrap: "nowrap",
+            justifyContent: "space-between",
           },
 
           "& .MuiTablePagination-selectLabel": {
@@ -187,6 +202,7 @@ const Table = ({
           "& .MuiSelect-icon": {
             color: "#FFFFFF",
           },
+          
         }}
       />
     </Box>

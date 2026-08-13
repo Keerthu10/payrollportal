@@ -22,6 +22,8 @@ import { designationColumns } from "../components/Masters/DesignationColumn";
 import { employmentTypeColumns } from "../components/Masters/EmploymentTypeColumn";
 import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
 import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
+import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
+import CompanyProfile from "../components/Masters/CompanyProfile";
 
 const Masters = () => {
   const { showToast } = useToast();
@@ -80,20 +82,26 @@ const Masters = () => {
     loadEmploymentTypes();
   }, []);
 
-  const title =
-    selectedMaster === "designation"
-      ? "Designation Master"
-      : "Employment Type Master";
+const title =
+  selectedMaster === "designation"
+    ? "Designation Master"
+    : selectedMaster === "employmentTypes"
+      ? "Employment Type Master"
+      : "Company Profile";
 
   const subtitle =
     selectedMaster === "designation"
       ? "Manage and maintain designation records"
-      : "Manage and maintain employment types";
+      : selectedMaster === "employmentTypes"
+        ? "Manage and maintain employment types"
+        : "Manage company signature and seal";
 
   const buttonText =
     selectedMaster === "designation"
       ? "Add Designation"
-      : "Add Employment Type";
+      : selectedMaster === "employmentTypes"
+        ? "Add Employment Type"
+        : "";
 
   const handleSave = async (data) => {
     try {
@@ -475,123 +483,184 @@ const Masters = () => {
             Employment Types
           </Typography>
         </Box>
+        <Box
+          onClick={() => setSelectedMaster("companyProfile")}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            px: {
+              xs: 2,
+              sm: 2.5,
+            },
+            py: {
+              xs: 1.2,
+              sm: 1,
+            },
+            width: {
+              xs: "100%",
+              sm: "auto",
+            },
+            borderRadius: "12px",
+            cursor: "pointer",
+
+            background:
+              selectedMaster === "companyProfile"
+                ? "linear-gradient(135deg, #7C3AED 0%, #4F46E5 55%, #2563EB 100%)"
+                : "#FFFFFF",
+
+            color: selectedMaster === "companyProfile" ? "#FFFFFF" : "#334155",
+
+            border:
+              selectedMaster === "companyProfile"
+                ? "none"
+                : "2px solid #0b0b0bff",
+
+            boxShadow:
+              selectedMaster === "companyProfile"
+                ? "0 8px 20px rgba(79,70,229,0.25)"
+                : "none",
+
+            transition: "all 0.3s ease",
+          }}
+        >
+          <BusinessRoundedIcon
+            sx={{
+              fontSize: {
+                xs: 22,
+                sm: 18,
+              },
+            }}
+          />
+
+          <Typography
+            sx={{
+              fontSize: {
+                xs: 15,
+                sm: 14,
+              },
+              fontWeight: 600,
+            }}
+          >
+            Company Profile
+          </Typography>
+        </Box>
       </Box>
 
       {/* Dynamic Section Title */}
 
-      <MasterTable
-        title={
-          selectedMaster === "designation"
-            ? "Designation Master"
-            : "Employment Type Master"
-        }
-        subtitle={
-          selectedMaster === "designation"
-            ? "Manage and maintain designation records"
-            : "Manage and maintain employment types"
-        }
-        buttonText={
-          selectedMaster === "designation"
-            ? "Add Designation"
-            : "Add Employment Type"
-        }
-        onAddClick={() => {
-          setSelectedRecord(null);
-          setOpenModal(true);
-        }}
-        rows={
-          selectedMaster === "designation"
-            ? designationRows
-            : employmentTypeRows
-        }
-        columns={
-          selectedMaster === "designation"
-            ? designationColumns(handleEdit, handleDelete)
-            : employmentTypeColumns(handleEdit, handleDelete)
-        }
-      />
-      <MasterModal
-        open={openModal}
-        handleClose={() => {
-          setOpenModal(false);
-          setSelectedRecord(null);
-        }}
-        record={selectedRecord}
-        mode={
-          selectedMaster === "designation" ? "designation" : "employmentType"
-        }
-        onSave={handleSave}
-        showToast={showToast}
-      />
-      <GlobalModal
-        open={deleteModalOpen}
-        handleClose={() => {
-          setDeleteModalOpen(false);
-          setDeleteRecord(null);
-        }}
-        title="Delete Confirmation"
-      >
-        <Typography sx={{ mb: 3, fontWeight: 700 }}>
-          Are you sure you want to delete this{" "}
-          {selectedMaster === "designation" ? "Designation" : "Employment Type"}
-          ?
-        </Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-
-            flexDirection: {
-              xs: "column",
-              sm: "row",
-            },
-
-            justifyContent: "flex-end",
-
-            alignItems: "stretch",
-
-            gap: 2,
-
-            mt: 5,
+      {selectedMaster === "designation" && (
+        <MasterTable
+          title="Designation Master"
+          subtitle="Manage and maintain designation records"
+          buttonText="Add Designation"
+          onAddClick={() => {
+            setSelectedRecord(null);
+            setOpenModal(true);
           }}
-        >
-          <Button
-            variant="outlined"
-            sx={{
-              width: {
-                xs: "100%",
-                sm: "auto",
-              },
-              minWidth: 110,
-              borderRadius: "8px",
-              textTransform: "none",
-            }}
-            onClick={() => {
-              setDeleteModalOpen(false);
-              setDeleteRecord(null);
-            }}
-          >
-            Cancel
-          </Button>
+          rows={designationRows}
+          columns={designationColumns(handleEdit, handleDelete)}
+        />
+      )}
 
-          <Button
-            variant="contained"
-            color="error"
+      {selectedMaster === "employmentTypes" && (
+        <MasterTable
+          title="Employment Type Master"
+          subtitle="Manage and maintain employment types"
+          buttonText="Add Employment Type"
+          onAddClick={() => {
+            setSelectedRecord(null);
+            setOpenModal(true);
+          }}
+          rows={employmentTypeRows}
+          columns={employmentTypeColumns(handleEdit, handleDelete)}
+        />
+      )}
+
+      {selectedMaster === "companyProfile" && <CompanyProfile />}
+      {selectedMaster !== "companyProfile" && (
+        <MasterModal
+          open={openModal}
+          handleClose={() => {
+            setOpenModal(false);
+            setSelectedRecord(null);
+          }}
+          record={selectedRecord}
+          mode={
+            selectedMaster === "designation" ? "designation" : "employmentType"
+          }
+          onSave={handleSave}
+          showToast={showToast}
+        />
+      )}
+      {selectedMaster !== "companyProfile" && (
+        <GlobalModal
+          open={deleteModalOpen}
+          handleClose={() => {
+            setDeleteModalOpen(false);
+            setDeleteRecord(null);
+          }}
+          title="Delete Confirmation"
+        >
+          <Typography sx={{ mb: 3, fontWeight: 700 }}>
+            Are you sure you want to delete this{" "}
+            {selectedMaster === "designation"
+              ? "Designation"
+              : "Employment Type"}
+            ?
+          </Typography>
+
+          <Box
             sx={{
-              width: {
-                xs: "100%",
-                sm: "auto",
+              display: "flex",
+              flexDirection: {
+                xs: "column",
+                sm: "row",
               },
-              minWidth: 110,
-              borderRadius: "8px",
-              textTransform: "none",
+              justifyContent: "flex-end",
+              alignItems: "stretch",
+              gap: 2,
+              mt: 5,
             }}
-            onClick={confirmDelete}
           >
-            Delete
-          </Button>
-        </Box>
-      </GlobalModal>
+            <Button
+              variant="outlined"
+              sx={{
+                width: {
+                  xs: "100%",
+                  sm: "auto",
+                },
+                minWidth: 110,
+                borderRadius: "8px",
+                textTransform: "none",
+              }}
+              onClick={() => {
+                setDeleteModalOpen(false);
+                setDeleteRecord(null);
+              }}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="contained"
+              color="error"
+              sx={{
+                width: {
+                  xs: "100%",
+                  sm: "auto",
+                },
+                minWidth: 110,
+                borderRadius: "8px",
+                textTransform: "none",
+              }}
+              onClick={confirmDelete}
+            >
+              Delete
+            </Button>
+          </Box>
+        </GlobalModal>
+      )}
     </Box>
   );
 };

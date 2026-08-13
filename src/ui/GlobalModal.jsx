@@ -96,6 +96,8 @@ const GlobalModal = ({
     <Modal
       open={open}
       onClose={disableBackdropClick ? undefined : handleClose}
+      disableEnforceFocus
+      disableAutoFocus
       slotProps={{
         backdrop: {
           sx: {

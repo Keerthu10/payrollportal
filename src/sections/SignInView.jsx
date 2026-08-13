@@ -21,6 +21,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { loginUser } from "../services/login";
+import cloudeLogo from "../assets/cloude.png"
 
 const SignInView = () => {
   const { showToast } = useToast();
@@ -113,19 +114,38 @@ const SignInView = () => {
 
   return (
     <AuthContent>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mb: 1,
+        }}
+      >
+        <Box
+          component="img"
+          src={cloudeLogo}
+          alt="Cloute Technologies"
+          sx={{
+            width: 100,
+            height: "auto",
+            objectFit: "contain",
+          }}
+        />
+      </Box>
+      <Typography
+        sx={{
+          color: "#6D5DFB",
+          fontWeight: 700,
+          fontSize: 15,
+          letterSpacing: 1.5,
+          textAlign: "center",
+          mb:3
+        }}
+      >
+        CLOUTE TECHNOLOGIES
+      </Typography>
       {/* Header Section */}
       <Box sx={{ mb: 3 }}>
-        <Typography
-          sx={{
-            color: "#6D5DFB",
-            fontWeight: 700,
-            fontSize: 13,
-            letterSpacing: 1.5,
-            mb: 1,
-          }}
-        >
-          PAYROLL PORTAL
-        </Typography>
 
         <Typography
           sx={{
@@ -299,7 +319,6 @@ const SignInView = () => {
           mb: 3,
         }}
       >
-
         <Typography
           variant="body2"
           sx={{

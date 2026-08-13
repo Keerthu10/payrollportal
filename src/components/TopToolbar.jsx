@@ -109,24 +109,53 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  ListItemIcon,
   Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import ProfilePopover from "../ui/ProfilePopover";
 import CloudeLogo from "../assets/cloude.png";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 const TopToolbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { label: "DASHBOARD", to: "/dashboard" },
-    { label: "PAYROLL", to: "/payroll" },
-    { label: "EMPLOYEES", to: "/employees" },
-    { label: "MASTERS", to: "/masters" },
+    {
+      label: "DASHBOARD",
+      to: "/dashboard",
+      icon: <DashboardOutlinedIcon />,
+    },
+    {
+      label: "PAYROLL",
+      to: "/payroll",
+      icon: <AccountBalanceWalletOutlinedIcon />,
+    },
+    {
+      label: "EMPLOYEES",
+      to: "/employees",
+      icon: <GroupsOutlinedIcon />,
+    },
+    {
+      label: "MASTERS",
+      to: "/masters",
+      icon: <SettingsOutlinedIcon />,
+    },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    handleDrawerToggle();
+    navigate("/login");
+  };
 
   const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
 
@@ -184,25 +213,71 @@ const TopToolbar = () => {
                 mb: 1,
                 px: 2,
                 py: 1.2,
+
                 background: active ? "rgba(255,255,255,.15)" : "transparent",
-                "&:hover": { background: "rgba(255,255,255,.10)" },
+
+                color: active ? "#FFFFFF" : "#D1D5DB",
+
+                "& .MuiListItemText-primary": {
+                  color: active ? "#FFFFFF" : "#D1D5DB",
+                },
+
+                "& .MuiListItemIcon-root": {
+                  color: active ? "#FFFFFF" : "#D1D5DB",
+                },
+
+                "&:hover": {
+                  background: "rgba(255,255,255,.10)",
+
+                  "& .MuiListItemText-primary": {
+                    color: "#FFFFFF",
+                  },
+
+                  "& .MuiListItemIcon-root": {
+                    color: "#FFFFFF",
+                  },
+                },
               }}
             >
-              <ListItemText
-                primary={link.label}
-                primaryTypographyProps={{
-                  sx: {
-                    color: active ? "#fff" : "#C7D2FE",
-                    fontWeight: active ? 700 : 500,
-                    fontSize: 14,
-                    letterSpacing: "0.5px",
-                  },
-                }}
-              />
+              <ListItemIcon>{link.icon}</ListItemIcon>
+
+              <ListItemText primary={link.label} />
             </ListItemButton>
           );
         })}
       </List>
+      <Box sx={{ mt: "auto" }}>
+        <Divider sx={{ borderColor: "rgba(255,255,255,.15)", mb: 2 }} />
+
+        <ListItemButton
+          onClick={handleLogout}
+          sx={{
+            borderRadius: "12px",
+            px: 2,
+            py: 1.2,
+            color: "#FF6B6B",
+
+            "& .MuiListItemIcon-root": {
+              color: "#FF6B6B",
+            },
+
+            "& .MuiListItemText-primary": {
+              color: "#FF6B6B",
+              fontWeight: 600,
+            },
+
+            "&:hover": {
+              background: "rgba(255,107,107,.10)",
+            },
+          }}
+        >
+          <ListItemIcon>
+            <LogoutOutlinedIcon />
+          </ListItemIcon>
+
+          <ListItemText primary="LOGOUT" />
+        </ListItemButton>
+      </Box>
     </Box>
   );
 
@@ -450,7 +525,7 @@ const TopToolbar = () => {
                 to="/dashboard"
                 sx={{
                   color:
-                    location.pathname === "/dashboard" ? "#fff" : "#E2E8F0",
+                    location.pathname === "/dashboard" ? "#FFFFFF" : "#E2E8F0",
 
                   fontWeight: location.pathname === "/dashboard" ? 700 : 600,
                   fontSize: {
