@@ -248,18 +248,18 @@ body {
 }
 
 /* =========================================================
-   Responsive Tweaks
+   Responsive Tweaks & Mobile Optimizations
 ========================================================= */
 
 @media (max-width: 768px) {
   .p-dropdown,
   .modal-dropdown {
-    min-height: 52px;
+    min-height: 48px;
   }
 
   .p-dropdown-label,
   .modal-dropdown .p-dropdown-label {
-    min-height: 52px;
+    min-height: 48px;
     font-size: 14px;
   }
 
@@ -267,4 +267,34 @@ body {
     font-size: 14px;
     padding: 10px 14px !important;
   }
+
+  /* PrimeReact Dropdown panel on mobile */
+  .p-dropdown-panel {
+    max-width: 95vw !important;
+    z-index: 100000 !important;
+  }
+
+  /* Touch-friendly touch targets */
+  button,
+  .MuiButton-root,
+  .MuiIconButton-root,
+  .p-button {
+    min-height: 40px;
+  }
+
+  /* Smooth momentum scrolling for all table containers on mobile */
+  .MuiTableContainer-root,
+  .p-datatable-wrapper {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+}
+
+/* Hide scrollbars on elements with .no-scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

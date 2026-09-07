@@ -1,103 +1,4 @@
-// import {
-//   AppBar,
-//   Toolbar,
-//   IconButton,
-//   Typography,
-//   Box,
-//   Stack,
-//   Badge,
-// } from "@mui/material";
-
-// import MenuIcon from "@mui/icons-material/Menu";
-// import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-// import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-
-// import DatePickerComponent from "../ui/DatePicker";
-// import ProfilePopover from "../ui/ProfilePopover";
-
-// const TopToolbar = ({ open, setOpen }) => {
-//   return (
-//     <AppBar
-//       position="fixed"
-//       elevation={0}
-//       sx={{
-//         background: "rgba(2, 6, 23, 0.82)",
-//         backdropFilter: "blur(18px)",
-//         WebkitBackdropFilter: "blur(18px)",
-//         borderBottom: "1px solid rgba(255,255,255,0.06)",
-//         boxShadow: "0 8px 32px rgba(0,0,0,0.28)",
-//         color: "#F8FAFC",
-//         zIndex: 1200,
-//         height: "70px",
-//         justifyContent: "center",
-//       }}
-//     >
-//       <Toolbar
-//         sx={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//         }}
-//       >
-//         {/* LEFT SECTION */}
-//         <Box
-//           sx={{
-//             display: "flex",
-//             alignItems: "center",
-//             gap: 2,
-//           }}
-//         >
-//           {/* Sidebar Toggle */}
-//           <IconButton
-//             sx={{
-//               color: "#E2E8F0",
-//               display: { xs: "none", lg: "flex" },
-//             }}
-//             onClick={() => setOpen((prev) => !prev)}
-//           >
-//             <MenuIcon />
-//           </IconButton>
-
-//           {/* Logo */}
-//           <Typography
-//             variant="h6"
-//             sx={{
-//               fontWeight: 700,
-//               letterSpacing: 1,
-//             }}
-//           >
-//             PAYROLL PORTAL
-//           </Typography>
-//         </Box>
-
-//         {/* RIGHT SECTION */}
-//         <Stack direction="row" spacing={1} alignItems="center">
-//           {/* Date Picker */}
-//           {/* <DatePickerComponent /> */}
-
-//           {/* Notifications */}
-//           <IconButton sx={{ color: "#E2E8F0" }}>
-//             <Badge badgeContent={3} color="error">
-//               <NotificationsNoneOutlinedIcon />
-//             </Badge>
-//           </IconButton>
-
-//           {/* Settings */}
-//           <IconButton sx={{ color: "#E2E8F0" }}>
-//             <SettingsOutlinedIcon />
-//           </IconButton>
-
-//           {/* Profile */}
-//           <ProfilePopover />
-//         </Stack>
-//       </Toolbar>
-//     </AppBar>
-//   );
-// };
-
-// export default TopToolbar;
-
 import React, { useState } from "react";
-
 import {
   AppBar,
   Toolbar,
@@ -114,46 +15,55 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link, useLocation,useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProfilePopover from "../ui/ProfilePopover";
-import CloudeLogo from "../assets/cloude.png";
+import CompanyLogo from "./CompanyLogo";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import { useLiveDateTime } from "../hooks/useLiveDateTime";
+
+const navLinks = [
+  {
+    label: "DASHBOARD",
+    to: "/dashboard",
+    icon: <DashboardOutlinedIcon />,
+  },
+  {
+    label: "PAYROLL",
+    to: "/payroll",
+    icon: <AccountBalanceWalletOutlinedIcon />,
+  },
+  {
+    label: "EMPLOYEES",
+    to: "/employees",
+    icon: <GroupsOutlinedIcon />,
+  },
+  {
+    label: "MASTERS",
+    to: "/masters",
+    icon: <SettingsOutlinedIcon />,
+  },
+  {
+    label: "PAYSLIPS",
+    to: "/payslips",
+    icon: <ReceiptLongOutlinedIcon />,
+  },
+];
 
 const TopToolbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const navLinks = [
-    {
-      label: "DASHBOARD",
-      to: "/dashboard",
-      icon: <DashboardOutlinedIcon />,
-    },
-    {
-      label: "PAYROLL",
-      to: "/payroll",
-      icon: <AccountBalanceWalletOutlinedIcon />,
-    },
-    {
-      label: "EMPLOYEES",
-      to: "/employees",
-      icon: <GroupsOutlinedIcon />,
-    },
-    {
-      label: "MASTERS",
-      to: "/masters",
-      icon: <SettingsOutlinedIcon />,
-    },
-  ];
+  const currentDateTime = useLiveDateTime();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    handleDrawerToggle();
+    setMobileOpen(false);
     navigate("/login");
   };
 
@@ -163,17 +73,16 @@ const TopToolbar = () => {
   const mobileDrawer = (
     <Box
       sx={{
-        width: {
-          xs: 260,
-          sm: 280,
-        },
+        width: { xs: 270, sm: 300 },
         height: "100%",
-        background: "linear-gradient(180deg,#15123F 0%,#4338CA 100%)",
+        background: "linear-gradient(180deg, #15123F 0%, #28256E 60%, #4338CA 100%)",
         display: "flex",
         flexDirection: "column",
-        pt: 2,
+        pt: 2.5,
         pb: 4,
         px: 2,
+        paddingTop: "max(16px, env(safe-area-inset-top))",
+        paddingBottom: "max(24px, env(safe-area-inset-bottom))",
       }}
     >
       {/* Drawer header */}
@@ -182,24 +91,28 @@ const TopToolbar = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          mb: 3,
+          mb: 2.5,
+          px: 1,
         }}
       >
-        <Box
-          component="img"
-          src={CloudeLogo}
-          alt="Logo"
-          sx={{ width: 56, height: 32, objectFit: "contain" }}
-        />
-        <IconButton onClick={handleDrawerToggle} sx={{ color: "#fff" }}>
+        <CompanyLogo size="md" variant="light" />
+        <IconButton
+          onClick={handleDrawerToggle}
+          aria-label="close navigation drawer"
+          sx={{
+            color: "#fff",
+            p: 1,
+            "&:hover": { backgroundColor: "rgba(255,255,255,0.12)" },
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </Box>
 
-      <Divider sx={{ borderColor: "rgba(255,255,255,.15)", mb: 2 }} />
+      <Divider sx={{ borderColor: "rgba(255,255,255,0.12)", mb: 2 }} />
 
       {/* Nav links */}
-      <List disablePadding>
+      <List disablePadding sx={{ flex: 1 }}>
         {navLinks.map((link) => {
           const active = location.pathname === link.to;
           return (
@@ -209,72 +122,63 @@ const TopToolbar = () => {
               to={link.to}
               onClick={handleDrawerToggle}
               sx={{
-                borderRadius: "12px",
-                mb: 1,
+                borderRadius: "14px",
+                mb: 1.2,
                 px: 2,
-                py: 1.2,
-
-                background: active ? "rgba(255,255,255,.15)" : "transparent",
-
-                color: active ? "#FFFFFF" : "#D1D5DB",
-
+                minHeight: 48,
+                background: active ? "rgba(255,255,255,0.18)" : "transparent",
+                color: active ? "#FFFFFF" : "#E2E8F0",
+                border: active ? "1px solid rgba(255,255,255,0.25)" : "1px solid transparent",
                 "& .MuiListItemText-primary": {
-                  color: active ? "#FFFFFF" : "#D1D5DB",
+                  color: active ? "#FFFFFF" : "#E2E8F0",
+                  fontWeight: active ? 700 : 500,
+                  fontSize: 15,
                 },
-
                 "& .MuiListItemIcon-root": {
-                  color: active ? "#FFFFFF" : "#D1D5DB",
+                  color: active ? "#38BDF8" : "#CBD5E1",
+                  minWidth: 40,
                 },
-
                 "&:hover": {
-                  background: "rgba(255,255,255,.10)",
-
-                  "& .MuiListItemText-primary": {
-                    color: "#FFFFFF",
-                  },
-
-                  "& .MuiListItemIcon-root": {
-                    color: "#FFFFFF",
-                  },
+                  background: "rgba(255,255,255,0.10)",
+                  "& .MuiListItemText-primary": { color: "#FFFFFF" },
+                  "& .MuiListItemIcon-root": { color: "#FFFFFF" },
                 },
               }}
             >
               <ListItemIcon>{link.icon}</ListItemIcon>
-
               <ListItemText primary={link.label} />
             </ListItemButton>
           );
         })}
       </List>
-      <Box sx={{ mt: "auto" }}>
-        <Divider sx={{ borderColor: "rgba(255,255,255,.15)", mb: 2 }} />
 
+      {/* Drawer bottom: Logout */}
+      <Box sx={{ mt: "auto", pt: 2 }}>
+        <Divider sx={{ borderColor: "rgba(255,255,255,0.12)", mb: 2 }} />
         <ListItemButton
           onClick={handleLogout}
           sx={{
-            borderRadius: "12px",
+            borderRadius: "14px",
             px: 2,
-            py: 1.2,
-            color: "#FF6B6B",
-
+            minHeight: 48,
+            color: "#FCA5A5",
+            background: "rgba(239,68,68,0.10)",
             "& .MuiListItemIcon-root": {
-              color: "#FF6B6B",
+              color: "#F87171",
+              minWidth: 40,
             },
-
             "& .MuiListItemText-primary": {
-              color: "#FF6B6B",
+              color: "#FCA5A5",
               fontWeight: 600,
             },
-
             "&:hover": {
-              background: "rgba(255,107,107,.10)",
+              background: "rgba(239,68,68,0.20)",
             },
           }}
         >
           <ListItemIcon>
             <LogoutOutlinedIcon />
           </ListItemIcon>
-
           <ListItemText primary="LOGOUT" />
         </ListItemButton>
       </Box>
@@ -283,7 +187,7 @@ const TopToolbar = () => {
 
   return (
     <>
-      {/* Mobile Drawer */}
+      {/* Mobile Navigation Drawer */}
       <Drawer
         anchor="left"
         open={mobileOpen}
@@ -293,15 +197,7 @@ const TopToolbar = () => {
         PaperProps={{
           sx: {
             border: "none",
-
-            width: {
-              xs: 260,
-              sm: 280,
-            },
-
-            paddingTop: "env(safe-area-inset-top)",
-
-            paddingBottom: "env(safe-area-inset-bottom)",
+            width: { xs: 270, sm: 300 },
           },
         }}
       >
@@ -311,334 +207,183 @@ const TopToolbar = () => {
       <AppBar
         position="fixed"
         elevation={0}
-        // sx={{
-        //   background: "linear-gradient(90deg, #0B132B 0%, #111827 100%)",
-        //   borderBottom: "1px solid #1F2937",
-        //   backdropFilter: "blur(10px)",
-
-        //   color: "#111827",
-
-        //   zIndex: 1200,
-
-        //   height: "68px",
-
-        //   justifyContent: "center",
-
-        //   boxShadow: "none",
-
-        //   left: open ? `${SIDEBAR_WIDTH}px` : `${COLLAPSED_WIDTH}px`,
-
-        //   width: open
-        //     ? `calc(100% - ${SIDEBAR_WIDTH}px)`
-        //     : `calc(100% - ${COLLAPSED_WIDTH}px)`,
-
-        //   transition: "all 0.25s ease",
-        // }}
         sx={{
           background: `linear-gradient(
-    90deg,
-    #15123F 0%,
-    #28256E 40%,
-    #4338CA 75%,
-    #45D7FF 100%
-  )`,
-
+            90deg,
+            #15123F 0%,
+            #28256E 40%,
+            #4338CA 75%,
+            #45D7FF 100%
+          )`,
           backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255,255,255,.08)",
-          boxShadow: "0 8px 30px rgba(15,23,42,.15)",
-
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 8px 30px rgba(15,23,42,0.15)",
           color: "#fff",
-
-          borderRadius: {
-            xs: 0,
-            md: "20px",
-          },
-
-          minHeight: {
-            xs: 60,
-            sm: 64,
-            md: 72,
-          },
-
-          top: {
-            xs: 0,
-            md: 20,
-          },
-
-          left: {
-            xs: 0,
-            md: 20,
-          },
-
-          right: {
-            xs: 0,
-            md: 20,
-          },
-
-          width: {
-            xs: "100%",
-            md: "auto",
-          },
-
+          borderRadius: { xs: 0, md: "20px" },
+          minHeight: { xs: 58, sm: 64, md: 72 },
+          top: { xs: 0, md: 16 },
+          left: { xs: 0, md: 20 },
+          right: { xs: 0, md: 20 },
+          width: { xs: "100%", md: "calc(100% - 40px)" },
+          maxWidth: "1600px",
+          mx: "auto",
           overflowX: "hidden",
-
           paddingTop: "env(safe-area-inset-top)",
-
           zIndex: 1200,
         }}
       >
         <Toolbar
           sx={{
-            display: "flex",
-
-            justifyContent: "space-between",
-
+            display: "grid",
+            gridTemplateColumns: { xs: "auto 1fr auto", md: "1fr auto 1fr" },
             alignItems: "center",
-
-            minHeight: {
-              xs: 60,
-              sm: 64,
-              md: 72,
-            },
-
-            px: {
-              xs: 1.5,
-              sm: 2,
-              md: 4,
-            },
+            minHeight: { xs: 58, sm: 64, md: 72 },
+            px: { xs: 1.5, sm: 2.5, md: 4 },
+            columnGap: 2,
           }}
         >
-          {/* LEFT SIDE */}
+          {/* LEFT ZONE — Hamburger + Logo */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              width: "100%",
-              position: "relative",
+              gap: { xs: 1, sm: 2, md: 3 },
             }}
           >
-            {/* Hamburger — mobile only */}
             <IconButton
               onClick={handleDrawerToggle}
-              aria-label="open navigation"
+              aria-label="open navigation menu"
               sx={{
                 display: { xs: "flex", md: "none" },
                 color: "#fff",
-                mr: 1,
-
-                width: 48,
-                height: 48,
-
+                width: 44,
+                height: 44,
                 borderRadius: 2,
-
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,.08)",
-                },
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.12)" },
               }}
             >
               <MenuIcon />
             </IconButton>
 
-            <Stack
-              direction="row"
-              spacing={{
-                xs: 1.5,
-                md: 3,
-              }}
-              alignItems="center"
-              sx={{ height: "100%" }}
-            >
-              {/* LOGO */}
-              <Box
-                component="img"
-                src={CloudeLogo}
-                alt="Company Logo"
-                sx={{
-                  width: {
-                    xs: 48,
-                    sm: 60,
-                    md: 90,
-                  },
+            <CompanyLogo size="md" variant="light" showText={true} />
 
-                  height: {
-                    xs: 28,
-                    sm: 36,
-                    md: 50,
-                  },
-
-                  objectFit: "contain",
-
-                  filter: "drop-shadow(0 8px 16px rgba(109,93,251,.25))",
-                }}
-              />
-
-              {/* TITLE */}
-              <Typography
-                sx={{
-                  display: {
-                    xs: "none",
-                    sm: "flex",
-                  },
-
-                  fontSize: {
-                    sm: 15,
-                    md: 20,
-                  },
-
-                  fontWeight: 700,
-
-                  background: "linear-gradient(90deg,#6D5DFB,#45D7FF)",
-
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-
-                  letterSpacing: ".5px",
-
-                  lineHeight: 1,
-
-                  alignItems: "center",
-                }}
-              >
-                PAYROLL PORTAL
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              spacing={{
-                md: 4,
-                lg: 5,
-              }}
-              alignItems="center"
+            <Typography
+              component="span"
               sx={{
-                display: {
-                  xs: "none",
-                  md: "flex",
-                },
-
-                position: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
+                display: { xs: "none", sm: "inline-block" },
+                fontSize: { sm: 14, md: 18 },
+                fontWeight: 700,
+                color: "rgba(255,255,255,0.9)",
+                letterSpacing: ".5px",
+                lineHeight: 1,
+                whiteSpace: "nowrap",
+                borderLeft: "1px solid rgba(255,255,255,0.2)",
+                pl: { sm: 1.5, md: 2 },
               }}
             >
-              <Typography
-                component={Link}
-                to="/dashboard"
-                sx={{
-                  color:
-                    location.pathname === "/dashboard" ? "#FFFFFF" : "#E2E8F0",
-
-                  fontWeight: location.pathname === "/dashboard" ? 700 : 600,
-                  fontSize: {
-                    md: "15px",
-                    lg: "17px",
-                  },
-                  position: "relative",
-                  textDecoration: "none",
-                  "&::after": location.pathname === "/dashboard" && {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -4,
-                    left: 0,
-                    width: "100%",
-                    height: "2px",
-                    backgroundColor: "#fff",
-                    borderRadius: "2px",
-                  },
-                }}
-              >
-                DASHBOARD
-              </Typography>
-              <Typography
-                component={Link}
-                to="/payroll"
-                sx={{
-                  color: location.pathname === "/payroll" ? "#fff" : "#E2E8F0",
-                  fontWeight: location.pathname === "/payroll" ? 700 : 500,
-                  fontSize: {
-                    md: "15px",
-                    lg: "17px",
-                  },
-                  textDecoration: "none",
-                  position: "relative",
-                  "&::after": location.pathname === "/payroll" && {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -4,
-                    left: 0,
-                    width: "100%",
-                    height: "2px",
-                    backgroundColor: "#fff",
-                    borderRadius: "2px",
-                  },
-                }}
-              >
-                PAYROLL
-              </Typography>
-              <Typography
-                component={Link}
-                to="/employees"
-                sx={{
-                  color:
-                    location.pathname === "/employees" ? "#fff" : "#E2E8F0",
-                  fontWeight: location.pathname === "/employees" ? 700 : 500,
-                  fontSize: {
-                    md: "15px",
-                    lg: "17px",
-                  },
-                  textDecoration: "none",
-                  position: "relative",
-                  "&::after": location.pathname === "/employees" && {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -4,
-                    left: 0,
-                    width: "100%",
-                    height: "2px",
-                    backgroundColor: "#fff",
-                    borderRadius: "2px",
-                  },
-                }}
-              >
-                EMPLOYEES
-              </Typography>
-              <Typography
-                component={Link}
-                to="/masters"
-                sx={{
-                  color: location.pathname === "/masters" ? "#fff" : "#E2E8F0",
-                  fontWeight: location.pathname === "/masters" ? 700 : 500,
-                  fontSize: {
-                    md: "15px",
-                    lg: "17px",
-                  },
-                  textDecoration: "none",
-                  position: "relative",
-                  "&::after": location.pathname === "/masters" && {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -4,
-                    left: 0,
-                    width: "100%",
-                    height: "2px",
-                    backgroundColor: "#fff",
-                    borderRadius: "2px",
-                  },
-                }}
-              >
-                MASTERS
-              </Typography>
-            </Stack>
+              PAYROLL
+            </Typography>
           </Box>
 
-          {/* RIGHT SIDE */}
+          {/* CENTER ZONE — Desktop Nav links */}
           <Stack
             direction="row"
-            spacing={{
-              xs: 1,
-              md: 2,
-            }}
+            spacing={{ md: 2.5, lg: 4 }}
             alignItems="center"
+            justifyContent="center"
+            sx={{ display: { xs: "none", md: "flex" }, overflow: "hidden" }}
           >
+            {navLinks.map((link) => {
+              const active = location.pathname === link.to;
+              return (
+                <Typography
+                  key={link.to}
+                  component={Link}
+                  to={link.to}
+                  sx={{
+                    color: active ? "#FFFFFF" : "#E2E8F0",
+                    fontWeight: active ? 700 : 500,
+                    fontSize: { md: "14px", lg: "16px" },
+                    position: "relative",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                    py: 1,
+                    transition: "color 0.2s ease",
+                    "&:hover": { color: "#FFFFFF" },
+                    "&::after": active
+                      ? {
+                          content: '""',
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "3px",
+                          background: "linear-gradient(90deg, #38BDF8, #818CF8)",
+                          borderRadius: "2px",
+                        }
+                      : {},
+                  }}
+                >
+                  {link.label}
+                </Typography>
+              );
+            })}
+          </Stack>
+
+          {/* RIGHT ZONE — Live Clock + Profile */}
+          <Stack
+            direction="row"
+            spacing={{ xs: 1, md: 2 }}
+            alignItems="center"
+            sx={{ justifySelf: "end", height: "100%" }}
+          >
+            {/* Live Clock Indicator */}
+            <Box
+              sx={{
+                display: { xs: "none", lg: "flex" },
+                alignItems: "center",
+                gap: 0.8,
+              }}
+            >
+              <Box
+                sx={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: "50%",
+                  backgroundColor: "#4ADE80",
+                  animation: "livePulse 1.5s ease-in-out infinite",
+                  "@keyframes livePulse": {
+                    "0%": {
+                      opacity: 1,
+                      boxShadow: "0 0 0 0 rgba(74,222,128,0.6)",
+                    },
+                    "70%": {
+                      opacity: 0.7,
+                      boxShadow: "0 0 0 5px rgba(74,222,128,0)",
+                    },
+                    "100%": {
+                      opacity: 1,
+                      boxShadow: "0 0 0 0 rgba(74,222,128,0)",
+                    },
+                  },
+                }}
+              />
+              <Typography
+                component="span"
+                sx={{
+                  color: "#F1F5F9",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  whiteSpace: "nowrap",
+                  fontVariantNumeric: "tabular-nums",
+                  letterSpacing: "0.3px",
+                  lineHeight: 1,
+                }}
+              >
+                {currentDateTime}
+              </Typography>
+            </Box>
+
             <ProfilePopover />
           </Stack>
         </Toolbar>

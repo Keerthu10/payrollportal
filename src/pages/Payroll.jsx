@@ -65,6 +65,7 @@ const sampleHeaders = [
   "TDS",
   "EDU Cess",
   "Other Deductions",
+  "Email Verified"
 ];
 
 const previewHeaders = [
@@ -647,7 +648,7 @@ const Payroll = () => {
         tds: parseNumber(item["TDS"]),
         eduCess: parseNumber(item["EDU Cess"]),
         otherDeductions: parseNumber(item["Other Deductions"]),
-        emailVerified: true,
+        emailVerified: /^(true|yes)$/i.test(String(item["Email Verified"] ?? "").trim()),
       }));
 
       let runId = null;

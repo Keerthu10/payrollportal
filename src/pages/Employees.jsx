@@ -5,7 +5,9 @@ import EmployeeHeader from "../components/Employees/EmployeeHeader";
 import EmployeeStats from "../components/Employees/EmployeeStats";
 import EmployeeFilters from "../components/Employees/EmployeeFilter";
 import EmployeeTable from "../components/Employees/EmployeeTable";
+import EmployeeTablePrime from "../ui/EmployeeTablePrime";
 import EmployeeModal from "../components/Employees/EmployeeModal";
+import ExportEmployeeModal from "../components/Employees/ExportEmployeeModal";
 import {
   addEmployee,
   getEmployees,
@@ -14,16 +16,19 @@ import {
   resendVerificationEmail,
   getEmployeeById,
   downloadEmployeeTemplate,
+  exportEmployeeReport,
 } from "../services/employeeService";
 import { getDashboardEmployeeStats } from "../services/dashboard";
 import GlobalModal from "../ui/GlobalModal";
 import { useToast } from "../context/ToastContext";
 import UploadEmployeeModal from "../components/Employees/UploadEmployeeModal";
 import { bulkUploadEmployees } from "../services/employeeService";
+import { buildExportPayload } from "../components/Employees/ExportHelpers";
 import dayjs from "dayjs";
 
 const Employees = () => {
   const [openUploadModal, setOpenUploadModal] = useState(false);
+  const [openExportModal, setOpenExportModal] = useState(false);
   const [search, setSearch] = useState("");
   const { showToast } = useToast();
   const [openEmployeeModal, setOpenEmployeeModal] = useState(false);
@@ -48,6 +53,7 @@ const Employees = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [importing, setImporting] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
+  const [designation, setDesignation] = useState("");
 
   const [stats, setStats] = useState({
     totalEmployees: 0,
@@ -69,8 +75,7 @@ const Employees = () => {
       setLoading(true);
 
       const payload = {
-        designation: "",
-        department: department || "",
+        designation: designation || "",
         verified: true,
         search: debouncedSearch,
         page,
@@ -100,7 +105,7 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmployees();
-  }, [debouncedSearch, department, status, page, rowsPerPage]);
+  }, [debouncedSearch, designation, status, page, rowsPerPage]);
 
   // const validateEmployeeData = (data) => {
   //   const errors = [];
@@ -142,7 +147,6 @@ const Employees = () => {
 
   //   setValidationErrors(errors);
   // };
-
 
   const validateEmployeeData = (data) => {
     const errors = [];
@@ -330,10 +334,18 @@ const Employees = () => {
   };
 
   const handleResendVerificationForRow = async (employee) => {
+    console.log("Employee Object:", employee);
+
     try {
-      await resendVerificationEmail({
+      const payload = {
         employeeId: employee.id,
-      });
+      };
+
+      console.log("Payload:", payload);
+
+      const response = await resendVerificationEmail(payload);
+
+      console.log("Response:", response);
 
       showToast(
         "success",
@@ -341,8 +353,42 @@ const Employees = () => {
         `Verification email sent to ${employee.name}`,
       );
     } catch (error) {
-      console.log(error);
+      console.log("Error Response:", error.response?.data);
+      console.log("Status:", error.response?.status);
+
       showToast("error", "Error", "Failed to send verification email");
+    }
+  };
+
+  const handleExportEmployees = async (exportData) => {
+    try {
+      const payload = buildExportPayload(exportData);
+
+      console.log("Export Payload:", payload);
+
+      const response = await exportEmployeeReport(payload);
+
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = url;
+
+      link.download = `Employee_Report_${Date.now()}.xlsx`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Export Failed:", error);
     }
   };
 
@@ -463,6 +509,16 @@ const Employees = () => {
         }}
         onDownloadTemplate={handleDownloadTemplate}
         onUploadEmployee={handleUploadClick}
+        onExportEmployees={() => {
+          console.log("Export Button Clicked");
+          setOpenExportModal(true);
+        }}
+      />
+
+      <ExportEmployeeModal
+        open={openExportModal}
+        handleClose={() => setOpenExportModal(false)}
+        onExport={handleExportEmployees}
       />
 
       <EmployeeStats stats={stats} />
@@ -470,13 +526,13 @@ const Employees = () => {
       <EmployeeFilters
         search={search}
         setSearch={setSearch}
-        department={department}
-        setDepartment={setDepartment}
+        designation={designation}
+        setDesignation={setDesignation}
         status={status}
         setStatus={setStatus}
       />
 
-      <EmployeeTable
+      {/* <EmployeeTable
         employees={employees}
         loading={loading}
         onEdit={handleEditEmployee}
@@ -487,6 +543,21 @@ const Employees = () => {
         onPaginationModelChange={(model) => {
           setPage(model.page);
           setRowsPerPage(model.pageSize);
+        }}
+      /> */}
+
+      <EmployeeTablePrime
+        employees={employees}
+        loading={loading}
+        onEdit={handleEditEmployee}
+        onDelete={handleDeleteEmployee}
+        onResendVerification={handleResendVerificationForRow}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        totalRecords={totalElements}
+        onPageChange={(newPage, newRowsPerPage) => {
+          setPage(newPage);
+          setRowsPerPage(newRowsPerPage);
         }}
       />
 

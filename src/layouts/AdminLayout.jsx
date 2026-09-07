@@ -1,96 +1,8 @@
-// import React, { useState } from "react";
-
-// import { Box, CssBaseline } from "@mui/material";
-
-// import { Outlet } from "react-router-dom";
-
-// import Sidebar from "../components/Sidebar";
-// import TopToolbar from "../components/TopToolbar";
-
-// const AdminLayout = () => {
-//   const [open, setOpen] = useState(true);
-
-//   return (
-//     <>
-//       <CssBaseline />
-
-//       {/* MAIN LAYOUT */}
-//       <Box
-//         sx={{
-//           display: "flex",
-
-//           minHeight: "100vh",
-
-//           background: "#F1F5F9",
-//         }}
-//       >
-//         {/* SIDEBAR */}
-//         <Sidebar open={open} />
-
-//         {/* RIGHT SIDE */}
-//         <Box
-//           sx={{
-//             flexGrow: 1,
-
-//             marginLeft: open ? "240px" : "90px",
-
-//             transition: "margin-left 0.25s ease",
-
-//             display: "flex",
-
-//             flexDirection: "column",
-
-//             minHeight: "100vh",
-//           }}
-//         >
-//           {/* TOP TOOLBAR */}
-//           <TopToolbar open={open} setOpen={setOpen} />
-
-//           {/* PAGE CONTENT */}
-//           <Box
-//             component="main"
-//             sx={{
-//               flexGrow: 1,
-
-//               px: 3,
-
-//               py: 2,
-
-//               mt: "80px",
-
-//               background: "#F8FAFC",
-
-//               overflowX: "hidden",
-
-//               display: "flex",
-
-//               justifyContent: "center",
-//             }}
-//           >
-//             <Box
-//               sx={{
-//                 width: "100%",
-
-//                 maxWidth: "1500px",
-//               }}
-//             >
-//               <Outlet />
-//             </Box>
-//           </Box>
-//         </Box>
-//       </Box>
-//     </>
-//   );
-// };
-
-// export default AdminLayout;
-
 import React, { useEffect, useState } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import TopToolbar from "../components/TopToolbar";
-import Sidebar from "../components/Sidebar";
 import { GlobalSessionTimeoutModal } from "../ui/GlobalModal";
 import Footer from "../components/Footer";
 
@@ -99,7 +11,6 @@ const AdminLayout = () => {
 
   const [openTimeoutModal, setOpenTimeoutModal] = useState(false);
   const [countdown, setCountdown] = useState(30);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     let inactivityTimer;
@@ -164,6 +75,7 @@ const AdminLayout = () => {
           display: "flex",
           flexDirection: "column",
           overflowX: "hidden",
+          paddingTop: "env(safe-area-inset-top)",
           paddingBottom: "env(safe-area-inset-bottom)",
 
           background: `
@@ -179,7 +91,7 @@ const AdminLayout = () => {
           `,
         }}
       >
-        {/* Top Navigation */}
+        {/* Top Navigation Bar with Mobile Drawer */}
         <TopToolbar />
 
         <GlobalSessionTimeoutModal
@@ -191,12 +103,15 @@ const AdminLayout = () => {
 
         {/* Page Content */}
         <Box
+          component="main"
           sx={{
             flex: 1,
             width: "100%",
-            px: { xs: 1.5, sm: 2, md: 4 },
-            py: { xs: 2, md: 4 },
-            pt: { xs: "80px", md: "120px" },
+            maxWidth: "1600px",
+            mx: "auto",
+            px: { xs: 1.5, sm: 2.5, md: 4 },
+            py: { xs: 2, md: 3.5 },
+            pt: { xs: "72px", sm: "80px", md: "115px" },
           }}
         >
           <Outlet />

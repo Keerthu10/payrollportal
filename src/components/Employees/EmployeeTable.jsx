@@ -36,7 +36,13 @@ const EmployeeTable = ({
     >
       <Table
         rows={employees}
-        columns={employeeColumns(onView, onEdit, onDelete, onActivate,onResendVerification)}
+        columns={employeeColumns(
+          onView,
+          onEdit,
+          onDelete,
+          onActivate,
+          onResendVerification,
+        )}
         loading={loading}
         height={650}
         paginationMode="server"

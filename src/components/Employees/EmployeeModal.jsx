@@ -694,6 +694,7 @@ const EmployeeModal = ({
                   target: {
                     name: "employmentType",
                     value: e.value,
+                    
                   },
                 })
               }

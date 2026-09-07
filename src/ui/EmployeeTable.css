@@ -1,0 +1,185 @@
+.employee-prime-table {
+  background: linear-gradient(135deg, #1e1b6d 0%, #2b256f 100%);
+}
+
+/* Header */
+.employee-prime-table .p-datatable-thead > tr > th {
+  background: #1a1d52 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(14px, 1vw, 16px);
+  white-space: nowrap;
+}
+
+/* Body rows */
+.employee-prime-table .p-datatable-tbody > tr {
+  background: rgba(255, 255, 255, 0.03);
+  color: #f8fafc;
+}
+
+.employee-prime-table .p-datatable-tbody > tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.employee-prime-table .p-datatable-tbody > tr:hover {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* Cells */
+.employee-prime-table .p-datatable-tbody > tr > td {
+  color: #f8fafc !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  white-space: nowrap;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(13px, 0.95vw, 15px);
+}
+
+/* ================= FROZEN COLUMNS ================= */
+
+.employee-prime-table .p-frozen-column {
+  background: #23255e !important;
+}
+
+.employee-prime-table .p-datatable-thead .p-frozen-column {
+  background: #1a1d52 !important;
+}
+
+/* Add shadow so frozen areas are visually separated */
+.employee-prime-table .p-datatable-frozen-view {
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.15);
+  z-index: 3;
+}
+
+.employee-prime-table .p-datatable-frozen-view[style*="right"] {
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Make frozen and scrollable tables use same width */
+.employee-prime-table
+  .p-datatable-scrollable-table-wrapper
+  .p-datatable-table {
+  min-width: 1700px;
+}
+
+.employee-prime-table .p-datatable-frozen-view .p-datatable-table {
+  background: #23255e;
+}
+
+/* ================= PAGINATION ================= */
+
+.employee-prime-table .p-paginator {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.employee-prime-table .p-paginator .p-paginator-page,
+.employee-prime-table .p-paginator .p-paginator-first,
+.employee-prime-table .p-paginator .p-paginator-prev,
+.employee-prime-table .p-paginator .p-paginator-next,
+.employee-prime-table .p-paginator .p-paginator-last {
+  color: #cbd5e1 !important;
+}
+
+.employee-prime-table .p-paginator .p-highlight {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+}
+
+/* Rows dropdown */
+.employee-prime-table .p-dropdown {
+  background: #23255e !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.employee-prime-table .p-dropdown-label {
+  color: #ffffff !important;
+}
+
+/* ================= SCROLLBAR ================= */
+
+.employee-prime-table .p-datatable-wrapper::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.employee-prime-table .p-datatable-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.employee-prime-table .p-datatable-wrapper::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 10px;
+}
+
+.employee-prime-table .p-datatable-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+
+.employee-prime-table .p-paginator {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 48px;
+
+  padding: 0 16px;
+
+  background: rgba(255, 255, 255, 0.04) !important;
+
+  color: #ffffff !important;
+
+  border: none !important;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Rows per page */
+.employee-prime-table .p-paginator .p-dropdown {
+  width: 70px !important;
+  min-width: 70px !important;
+
+  height: 36px;
+
+  background: transparent !important;
+
+  border: none !important;
+
+  color: #ffffff !important;
+}
+
+.employee-prime-table .p-paginator .p-dropdown-label {
+  color: #ffffff !important;
+  padding: 6px 8px !important;
+}
+
+/* Current page text */
+.employee-prime-table .p-paginator .p-paginator-current {
+  color: #ffffff !important;
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+/* Previous / Next */
+.employee-prime-table .p-paginator .p-paginator-prev,
+.employee-prime-table .p-paginator .p-paginator-next {
+  color: #cbd5e1 !important;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+}
+
+.employee-prime-table .p-paginator .p-paginator-prev:hover,
+.employee-prime-table .p-paginator .p-paginator-next:hover {
+  background: rgba(99, 102, 241, 0.15) !important;
+  color: #ffffff !important;
+}

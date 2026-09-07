@@ -104,53 +104,25 @@ const DashboardHeader = ({
             Welcome to Payroll Portal
           </Typography>
         </Box>
-        {/* <Box sx={{ flex: 1 }}>
-          <Typography
-            sx={{
-              fontSize: 30,
-              fontWeight: 700,
-              color: "#0F172A",
-              letterSpacing: "-0.5px",
-              mb: 1,
-            }}
-          >
-            Welcome, Admin! <span>👋</span>
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: 18,
-              color: "#64748B",
-              fontWeight: 500,
-            }}
-          >
-            Hope you're having a productive day ✨
-          </Typography>
-        </Box> */}
 
         {/* Right */}
         <Box
           sx={{
             display: "flex",
-
             alignItems: "center",
-
             justifyContent: {
-              xs: "space-between",
+              xs: "flex-start",
               md: "flex-end",
             },
-
-            flexWrap: "wrap",
-
+            flexWrap: "nowrap",
             width: {
               xs: "100%",
               md: "auto",
             },
-
             gap: {
-              xs: 2,
-              sm: 3,
-              md: 4,
+              xs: 1.5,
+              sm: 2,
+              md: 3,
             },
           }}
         >
@@ -174,7 +146,6 @@ const DashboardHeader = ({
                   xs: 48,
                   sm: 56,
                 },
-
                 height: {
                   xs: 48,
                   sm: 56,
@@ -183,6 +154,7 @@ const DashboardHeader = ({
                 background: "#fff",
                 border: "1px solid rgba(0,0,0,.12)",
                 boxShadow: "0 6px 16px rgba(0,0,0,.08)",
+                flexShrink: 0,
                 "&:hover": {
                   background: "#F5F3FF",
                   boxShadow: "0 6px 16px rgba(0,0,0,.12)",
@@ -212,18 +184,17 @@ const DashboardHeader = ({
               disableFuture
               maxDate={dayjs()}
               sx={{
+                flex: { xs: 1, sm: "none" },
                 width: {
-                  xs: "100%",
+                  xs: "auto",
                   sm: 200,
                   md: 180,
                 },
-
                 "& .MuiPickersInputBase-root": {
                   background: "#fff",
                   borderRadius: "16px",
                   boxShadow: "0 6px 16px rgba(0,0,0,.08)",
                 },
-
                 "& .MuiSvgIcon-root": {
                   color: "#4F46E5",
                 },

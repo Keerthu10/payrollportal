@@ -20,6 +20,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import CompanyLogo from "../components/CompanyLogo";
 
 const ForgotPassword = () => {
   const { showToast } = useToast();
@@ -274,43 +275,75 @@ const ForgotPassword = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #edf5ff 50%, #fef6f4 50%)",
+        minHeight: "100dvh",
+        background: `
+          radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 35%),
+          radial-gradient(circle at bottom right, rgba(56,189,248,.15), transparent 40%),
+          linear-gradient(
+            135deg,
+            #15123F 0%,
+            #262261 25%,
+            #4338CA 55%,
+            #5B4CF5 75%,
+            #38BDF8 100%
+          )
+        `,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        p: 2,
+        p: { xs: 2, sm: 3 },
+        py: { xs: 4, sm: 6 },
+        paddingTop: "max(16px, env(safe-area-inset-top))",
+        paddingBottom: "max(16px, env(safe-area-inset-bottom))",
       }}
     >
       <Card
         sx={{
-          width: 450,
-          p: 4,
-          borderRadius: 5,
-          boxShadow: "0px 10px 30px rgba(0,0,0,0.1)",
+          width: "100%",
+          maxWidth: 460,
+          p: { xs: 2.5, sm: 4 },
+          borderRadius: { xs: "20px", sm: "28px" },
+          boxShadow: "0 25px 60px rgba(15,23,42,0.25)",
+          background: "rgba(255,255,255,0.98)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.3)",
         }}
       >
+        {/* Logo Section */}
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+          <CompanyLogo size="lg" variant="dark" showText={true} />
+        </Box>
+
         {/* Heading */}
         {!hideStepper && (
           <Typography
-            fontSize={30}
+            fontSize={{ xs: 24, sm: 28 }}
             fontWeight={700}
             textAlign="center"
-            color="#173B8F"
+            color="#15123F"
           >
             Forgot Password
           </Typography>
         )}
 
-        <Typography textAlign="center" color="gray" mt={1} mb={3}>
+        <Typography textAlign="center" color="#64748B" fontSize={{ xs: 13, sm: 14 }} mt={0.5} mb={2.5}>
           Reset your account password securely
         </Typography>
 
-        <Divider sx={{ mb: 4 }} />
+        <Divider sx={{ mb: 3 }} />
 
         {/* Stepper */}
         {!hideStepper && (
-          <Stepper activeStep={stage - 1} alternativeLabel sx={{ mb: 5 }}>
+          <Stepper
+            activeStep={stage - 1}
+            alternativeLabel
+            sx={{
+              mb: 4,
+              "& .MuiStepLabel-label": {
+                fontSize: { xs: "11px", sm: "13px" },
+              },
+            }}
+          >
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -323,7 +356,7 @@ const ForgotPassword = () => {
 
         {stage === 1 && (
           <>
-            <Typography fontSize={14} fontWeight={600} mb={1}>
+            <Typography fontSize={14} fontWeight={600} color="#334155" mb={1}>
               Email Address
             </Typography>
 
@@ -333,19 +366,15 @@ const ForgotPassword = () => {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-
-                // remove error while typing
                 setEmailError("");
               }}
-              // makes border red
               error={Boolean(emailError)}
-              // shows error message
               helperText={emailError}
               sx={{
                 mb: 3,
-
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "14px",
+                  backgroundColor: "#F8FAFC",
                 },
               }}
             />
@@ -358,8 +387,13 @@ const ForgotPassword = () => {
                 py: 1.5,
                 borderRadius: "14px",
                 fontSize: "16px",
+                fontWeight: 600,
                 textTransform: "none",
-                background: "linear-gradient(to right, #091540, #1f3c88)",
+                background: "linear-gradient(90deg, #6D5DFB 0%, #4338CA 100%)",
+                boxShadow: "0 10px 25px rgba(74,58,255,0.25)",
+                "&:hover": {
+                  background: "linear-gradient(90deg, #5B4CF5 0%, #3730A3 100%)",
+                },
               }}
             >
               Send OTP
@@ -374,6 +408,7 @@ const ForgotPassword = () => {
             <Typography
               fontSize={14}
               fontWeight={600}
+              color="#334155"
               mb={2}
               textAlign="center"
             >
@@ -383,9 +418,10 @@ const ForgotPassword = () => {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                gap: 1,
+                justifyContent: "center",
+                gap: { xs: 0.75, sm: 1.25 },
                 mb: 4,
+                width: "100%",
               }}
             >
               {otp.map((digit, index) => (
@@ -394,21 +430,24 @@ const ForgotPassword = () => {
                   value={digit}
                   inputRef={(el) => (otpRefs.current[index] = el)}
                   onChange={(e) => handleOtpChange(e.target.value, index)}
-                  error={Boolean(otpError)} // ✅ red border when error
-                  helperText={index === 0 ? otpError : ""} // show message under first box only
+                  error={Boolean(otpError)}
+                  helperText={index === 0 ? otpError : ""}
                   inputProps={{
                     maxLength: 1,
                     inputMode: "numeric",
                     style: {
                       textAlign: "center",
-                      fontSize: "22px",
+                      fontSize: "20px",
                       fontWeight: "bold",
+                      padding: "10px 0",
                     },
                   }}
                   sx={{
-                    width: 55,
+                    width: { xs: "calc((100% - 30px) / 6)", sm: 52 },
+                    maxWidth: 54,
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "12px",
+                      backgroundColor: "#F8FAFC",
                     },
                   }}
                 />
@@ -423,8 +462,13 @@ const ForgotPassword = () => {
                 py: 1.5,
                 borderRadius: "14px",
                 fontSize: "16px",
+                fontWeight: 600,
                 textTransform: "none",
-                background: "linear-gradient(to right, #091540, #1f3c88)",
+                background: "linear-gradient(90deg, #6D5DFB 0%, #4338CA 100%)",
+                boxShadow: "0 10px 25px rgba(74,58,255,0.25)",
+                "&:hover": {
+                  background: "linear-gradient(90deg, #5B4CF5 0%, #3730A3 100%)",
+                },
               }}
             >
               Verify OTP
@@ -436,7 +480,7 @@ const ForgotPassword = () => {
 
         {stage === 3 && (
           <>
-            <Typography fontSize={14} fontWeight={600} mb={1}>
+            <Typography fontSize={14} fontWeight={600} color="#334155" mb={1}>
               New Password
             </Typography>
 

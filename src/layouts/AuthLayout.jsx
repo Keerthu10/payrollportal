@@ -139,14 +139,13 @@ const AuthLayout = ({ children }) => {
         alignItems: "center",
         position: "relative",
 
-        overflowX: "hidden",
-        overflowY: "auto",
+        overflow:"hidden",
 
         px: { xs: 2, sm: 3, md: 4 },
-        py: { xs: 3, sm: 4, md: 6 },
+        // py: { xs: 3, sm: 4, md: 6 },
 
-        paddingTop: "env(safe-area-inset-top)",
-        paddingBottom: "env(safe-area-inset-bottom)",
+        // paddingTop: "env(safe-area-inset-top)",
+        // paddingBottom: "env(safe-area-inset-bottom)",
 
         background: `
           radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 35%),

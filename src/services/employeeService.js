@@ -50,3 +50,9 @@ export const getEmployeeHistory = (payload) => {
   console.log("Service Payload:", payload);
   return api.post("/ctpl/payroll/employee-history", payload);
 };
+
+export const exportEmployeeReport = (payload) => {
+  return api.post("/ctpl/employee/export", payload, {
+    responseType: "blob",
+  });
+};

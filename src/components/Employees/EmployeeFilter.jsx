@@ -240,6 +240,9 @@ const EmployeeFilters = ({
   const loadDesignation = async () => {
     try {
       const response = await getDesignationInfo();
+
+      console.log("API Response:", response.data);
+
       setDesignations(response.data);
     } catch (error) {
       console.log(error);
@@ -364,11 +367,14 @@ const EmployeeFilters = ({
             options={[{ designationName: "All Designation" }, ...designations]}
             optionLabel="designationName"
             optionValue="designationName"
-            onChange={(e) => setDesignation(e.value)}
+            onChange={(e) => {
+              console.log("Selected:", e.value);
+              setDesignation(e.value);
+            }}
             placeholder="Designation"
             filter
-            filterPlaceholder="Search Designation..."
             filterBy="designationName"
+            filterPlaceholder="Search Designation..."
             style={{ width: "100%" }}
           />
         </Box>

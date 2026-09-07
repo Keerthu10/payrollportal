@@ -11,6 +11,7 @@ export const ToastProvider = ({ children }) => {
     summary = "Info",
     detail = "Message",
   ) => {
+    toastRef.current?.clear();
     toastRef.current.show({
       severity, // "success" | "info" | "warn" | "error"
       summary, // Short title

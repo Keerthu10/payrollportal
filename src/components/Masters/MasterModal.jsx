@@ -61,7 +61,7 @@ const MasterModal = ({
   };
 
   const fieldStyle = {
-    width: "100%",
+    width: "280px !important",
 
     "& .MuiOutlinedInput-root": {
       borderRadius: "12px",
@@ -88,7 +88,7 @@ const MasterModal = ({
           : `Add ${mode === "designation" ? "Designation" : "Employement Type"}`
       }
       subtitle="Master Configuration"
-      maxWidth={600}
+      maxWidth={500}
       modalHeight="auto"
       actions={
         <Box
@@ -141,7 +141,6 @@ const MasterModal = ({
           </Typography>
 
           <TextField
-            fullWidth
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -152,23 +151,6 @@ const MasterModal = ({
             }
             sx={fieldStyle}
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography sx={labelStyle}>Status</Typography>
-
-          <TextField
-            select
-            fullWidth
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            sx={fieldStyle}
-          >
-            <MenuItem value="Active">Active</MenuItem>
-
-            <MenuItem value="Inactive">Inactive</MenuItem>
-          </TextField>
         </Grid>
       </Grid>
     </GlobalModal>

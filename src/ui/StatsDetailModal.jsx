@@ -18,12 +18,12 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const COLUMN_WIDTHS = {
   employeeId: 120,
-  name: 170,
-  email: 260,
-  designation: 170,
-  sentDate: 160,
-  failureReason: 210,
-  status: 140,
+  employeeName: 180,
+  email: 220,
+  designation: 160,
+  emailSentAt: 170,
+  emailError: 220,
+  deliveryStatus: 140,
 };
 
 const StatDetailModal = ({
@@ -66,7 +66,7 @@ const StatDetailModal = ({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: { xs: "94%", sm: hasColumns ? 880 : 400 },
+            width: { xs: "96%", sm: hasColumns ? 1100 : 400 },
             maxWidth: "94vw",
             maxHeight: "85vh",
             borderRadius: "20px",
@@ -223,7 +223,10 @@ const StatDetailModal = ({
                     <Table
                       size="medium"
                       stickyHeader
-                      sx={{ tableLayout: "fixed", width: "100%" }}
+                      sx={{
+                        tableLayout: "auto",
+                        minWidth: 1050,
+                      }}
                     >
                       {/* <TableHead>
                         <TableRow>
@@ -333,7 +336,20 @@ const StatDetailModal = ({
                                   maxWidth: COLUMN_WIDTHS[col.key] || 160,
                                 }}
                               >
-                                {row[col.key] ?? "—"}
+                                {col.key === "emailSentAt"
+                                  ? row.emailSentAt
+                                    ? new Date(row.emailSentAt).toLocaleString(
+                                        "en-GB",
+                                        {
+                                          day: "2-digit",
+                                          month: "short",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: true,
+                                        },
+                                      )
+                                    : "—"
+                                  : (row[col.key] ?? "—")}
                               </TableCell>
                             ))}
                           </TableRow>

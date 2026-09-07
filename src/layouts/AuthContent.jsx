@@ -1,34 +1,9 @@
-// import React from "react";
-// import { Box } from "@mui/material";
-
-// const AuthContent = ({ children }) => {
-//   return (
-//     <Box
-//       sx={{
-//         width: "100%",
-//         maxWidth: 450,
-//         p: 5,
-//         borderRadius: 5,
-
-//         backdropFilter: "blur(20px)",
-//         backgroundColor: "rgba(255,255,255,0.75)",
-//         border: "1px solid rgba(255,255,255,0.3)",
-//         boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
-//       }}
-//     >
-//       {children}
-//     </Box>
-//   );
-// };
-
-// export default AuthContent;
-
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
-import logo from "../../src/assets/cloude.png";
+import CompanyLogo from "../components/CompanyLogo";
 
 const AuthContent = ({ children }) => {
   return (
@@ -36,30 +11,23 @@ const AuthContent = ({ children }) => {
       sx={{
         width: "100%",
         maxWidth: "1250px",
-
-        minHeight: {
-          xs: "100dvh",
-          md: "720px",
-        },
-
+        height: "100%",
+        overflow: "hidden",
         display: "flex",
         alignItems: "center",
         justifyContent: {
           xs: "center",
           md: "space-between",
         },
-
         gap: {
           xs: 0,
           md: 8,
         },
-
         px: {
           xs: 2,
           sm: 3,
           md: 0,
         },
-
         py: {
           xs: 3,
           sm: 4,
@@ -83,29 +51,10 @@ const AuthContent = ({ children }) => {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 2,
             mb: 5,
           }}
         >
-          <Box
-            component="img"
-            src={logo}
-            alt="Cloute"
-            sx={{
-              width: 60,
-            }}
-          />
-
-          <Typography
-            sx={{
-              letterSpacing: 4,
-              fontWeight: 600,
-              fontSize: 16,
-              color: "#E2E8F0",
-            }}
-          >
-            CLOUTE TECHNOLOGIES
-          </Typography>
+          <CompanyLogo size="lg" variant="light" />
         </Box>
 
         <Typography

@@ -24,6 +24,7 @@ import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
 import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import CompanyProfile from "../components/Masters/CompanyProfile";
+import MasterHeader from "../components/Masters/MasterHeader";
 
 const Masters = () => {
   const { showToast } = useToast();
@@ -284,60 +285,14 @@ const title =
   return (
     <Box
       sx={{
-        p: {
-          xs: 2,
-          sm: 3,
-          md: 4,
-        },
+        pt: 1,
+        px: 4,
+        pb: 4,
       }}
     >
       {/* Header Banner */}
 
-      <Box
-        sx={{
-          background: "linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%)",
-          color: "#fff",
-          p: {
-            xs: 2,
-            sm: 3,
-            md: 4,
-          },
-          borderRadius: {
-            xs: 3,
-            md: 4,
-          },
-          mb: 4,
-          boxShadow: "0 10px 30px rgba(15,23,42,0.25)",
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{
-            fontSize: {
-              xs: 26,
-              sm: 34,
-              md: 38,
-            },
-            fontWeight: 700,
-            mb: 1,
-          }}
-        >
-          Master Management
-        </Typography>
-
-        <Typography
-          variant="body1"
-          sx={{
-            fontSize: {
-              xs: 14,
-              sm: 16,
-            },
-            opacity: 0.9,
-          }}
-        >
-          Configure designation, employment types, and business rules
-        </Typography>
-      </Box>
+      <MasterHeader />
 
       {/* Selection Cards */}
 
