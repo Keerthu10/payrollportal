@@ -1,0 +1,1 @@
+import{t as e}from"./api-BKt9kkPy.js";var t=t=>e.post(`/ctpl/auth/login`,t),n=t=>e.post(`/ctpl/auth/forgot-password`,t),r=t=>e.post(`/ctpl/auth/verify-otp`,t),i=t=>e.post(`/ctpl/auth/reset-password`,t);export{r as i,t as n,i as r,n as t};
